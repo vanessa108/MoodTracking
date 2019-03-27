@@ -8,7 +8,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.widget.TextView;
 
-public class MainActivity extends AppCompatActivity {
+public class Stats extends AppCompatActivity {
+
+    private TextView mTextMessage;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -17,19 +19,19 @@ public class MainActivity extends AppCompatActivity {
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.navigation_mood:
-                    Intent intent1 = new Intent(MainActivity.this, MainActivity.class);
+                    Intent intent1 = new Intent(Stats.this, MainActivity.class);
                     startActivity(intent1);
                     return true;
                 case R.id.navigation_calendar:
-                    Intent intent2 = new Intent(MainActivity.this, Calendar.class);
+                    Intent intent2 = new Intent(Stats.this, Calendar.class);
                     startActivity(intent2);
                     return true;
                 case R.id.navigation_stats:
-                    Intent intent3 = new Intent(MainActivity.this, Stats.class);
-                    startActivity(intent3);
+//                    Intent intent3 = new Intent(Stats.this, Stats.class);
+//                    startActivity(intent3);
                     return true;
                 case R.id.navigation_settings:
-                    Intent intent4 = new Intent(MainActivity.this, Settings.class);
+                    Intent intent4 = new Intent(Stats.this, Settings.class);
                     startActivity(intent4);
                     return true;
             }
@@ -40,8 +42,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_stats);
 
+        mTextMessage = (TextView) findViewById(R.id.message);
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
     }

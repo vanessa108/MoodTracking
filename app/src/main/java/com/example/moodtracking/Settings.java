@@ -8,7 +8,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.widget.TextView;
 
-public class MainActivity extends AppCompatActivity {
+import java.util.Set;
+
+public class Settings extends AppCompatActivity {
+
+    private TextView mTextMessage;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -17,20 +21,20 @@ public class MainActivity extends AppCompatActivity {
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.navigation_mood:
-                    Intent intent1 = new Intent(MainActivity.this, MainActivity.class);
+                    Intent intent1 = new Intent(Settings.this, MainActivity.class);
                     startActivity(intent1);
                     return true;
                 case R.id.navigation_calendar:
-                    Intent intent2 = new Intent(MainActivity.this, Calendar.class);
+                    Intent intent2 = new Intent(Settings.this, Calendar.class);
                     startActivity(intent2);
                     return true;
                 case R.id.navigation_stats:
-                    Intent intent3 = new Intent(MainActivity.this, Stats.class);
+                    Intent intent3 = new Intent(Settings.this, Stats.class);
                     startActivity(intent3);
                     return true;
                 case R.id.navigation_settings:
-                    Intent intent4 = new Intent(MainActivity.this, Settings.class);
-                    startActivity(intent4);
+//                    Intent intent4 = new Intent(Settings.this, Settings.class);
+//                    startActivity(intent4);
                     return true;
             }
             return false;
@@ -40,8 +44,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_settings);
 
+        mTextMessage = (TextView) findViewById(R.id.message);
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
     }
