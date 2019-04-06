@@ -30,15 +30,15 @@ public class MoodSelectedFragment extends Fragment {
 
         dateText.setText(date);
 
-        if (selectedMood == 0) {
+        if (selectedMood == 1) {
             whichMood.setImageResource(R.drawable.supersad);
-        } else if (selectedMood == 1) {
-            whichMood.setImageResource(R.drawable.sad);
         } else if (selectedMood == 2) {
-            whichMood.setImageResource(R.drawable.neutral);
+            whichMood.setImageResource(R.drawable.sad);
         } else if (selectedMood == 3) {
-            whichMood.setImageResource(R.drawable.happy);
+            whichMood.setImageResource(R.drawable.neutral);
         } else if (selectedMood == 4) {
+            whichMood.setImageResource(R.drawable.happy);
+        } else if (selectedMood == 5) {
             whichMood.setImageResource(R.drawable.superhappy);
         }
         return relativeLayout;

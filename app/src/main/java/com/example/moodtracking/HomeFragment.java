@@ -42,15 +42,6 @@ public class HomeFragment extends Fragment {
         supersad.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                moodSelected = 0;
-                Fragment newFragment = new MoodSelectedFragment();
-                replaceFragment(newFragment);
-            }
-        });
-
-        supersad.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
                 moodSelected = 1;
                 Fragment newFragment = new MoodSelectedFragment();
                 replaceFragment(newFragment);
