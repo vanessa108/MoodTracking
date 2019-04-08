@@ -29,15 +29,18 @@
         android:layout_toStartOf="@+id/runningIMG"
         app:srcCompat="@drawable/neutral" />
 
-    <ImageView
-        android:id="@+id/editPenIMG"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+    <ImageButton
+        android:id="@+id/editPenButton"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="11dp"
-        android:src="@drawable/edit_pen" />
+        android:layout_marginStart="102dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="0dp"
+        android:layout_toEndOf="@+id/date"
+        android:scaleType="centerCrop"
+        app:srcCompat="@drawable/edit_pen" />
 
     <ImageView
         android:id="@+id/runningIMG"
@@ -111,7 +114,7 @@
         android:layout_marginStart="-11dp"
         android:layout_marginTop="14dp"
         android:layout_marginEnd="-10dp"
-        android:text="xx min"
+        android:text="xx m"
         android:textAlignment="center"
         android:textSize="16sp"
         android:textStyle="bold" />
@@ -165,5 +168,22 @@
         android:layout_below="@+id/textViewExerciseDescription"
         android:layout_marginTop="10dp"
         android:background="?android:attr/listDivider" />
+
+    <View
+        android:id="@+id/divider4"
+        android:layout_width="match_parent"
+        android:layout_height="6dp"
+        android:layout_below="@+id/textViewExerciseDescription"
+        android:layout_marginTop="-189dp"
+        android:background="?android:attr/listDivider" />
+
+    <com.github.mikephil.charting.charts.BarChart
+        android:id="@+id/barchart"
+        android:layout_width="match_parent"
+        android:layout_height="200sp"
+        android:layout_below="@+id/textViewLastDays"
+        android:layout_marginTop="16dp">
+
+    </com.github.mikephil.charting.charts.BarChart>
 
 </RelativeLayout>
