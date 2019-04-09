@@ -20,6 +20,7 @@ import com.github.mikephil.charting.formatter.PercentFormatter;
 import com.github.mikephil.charting.utils.ColorTemplate;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class StatsFragment extends Fragment {
 
@@ -31,29 +32,27 @@ public class StatsFragment extends Fragment {
         final RelativeLayout relativeLayout = (RelativeLayout) inflater.inflate(R.layout.fragment_stats, container, false);
 
         PieChart exerciseChart = (PieChart) relativeLayout.findViewById(R.id.exerciseChart);
-        exerciseChart.setBackgroundColor(Color.WHITE);
-
-        moveOffScreen();
 
 
+        List<PieEntry> entries = new ArrayList<>();
+        entries.add(new PieEntry(18.5f, "Super sad"));
+        entries.add(new PieEntry(26.7f, "Sad"));
+        entries.add(new PieEntry(12f, "Neutral"));
+        entries.add(new PieEntry(12f, "Happy"));
+        entries.add(new PieEntry(12f, "Super Happy"));
+
+        PieDataSet set = new PieDataSet(entries, "Test");
+        PieData data = new PieData(set);
+        exerciseChart.setMaxAngle(180f);
+        exerciseChart.setRotation(270f);
+        set.setSliceSpace(5);
+        set.setColor(Color.MAGENTA);
+        exerciseChart.setData(data);
+        exerciseChart.invalidate();
 
         return relativeLayout;
     }
 
 
 
-
-
-    private void moveOffScreen() {
-        Display display = getActivity().getWindowManager().getDefaultDisplay();
-        DisplayMetrics metrics = new DisplayMetrics();
-        getActivity().getWindowManager().getDefaultDisplay().getMetrics(metrics);
-
-        int height = metrics.heightPixels;
-        int offset = (int) (height * 0.5);
-        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) exerciseChart.getLayoutParams();
-        params.setMargins(0,0,0, -offset);
-        exerciseChart.setLayoutParams(params);
-
-    }
 }
