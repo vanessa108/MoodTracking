@@ -18,4 +18,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:srcCompat="@drawable/neutral" />
+
+    <ProgressBar
+        android:id="@+id/sleepCircle"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        style="?android:progressBarStyleHorizontal"
+        android:progress="66"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="220dp"
+        android:progressDrawable="@drawable/sleep_cirlce"
+        android:rotation="-142.5"/>
+
 </RelativeLayout>

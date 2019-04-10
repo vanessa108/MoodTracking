@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -25,7 +26,7 @@ public class MoodSelectedFragment extends Fragment {
 
         ImageView whichMood = (ImageView) relativeLayout.findViewById(R.id.selectedMoodIMG);
         TextView dateText = (TextView) relativeLayout.findViewById(R.id.date);
-
+        ProgressBar proBar = (ProgressBar) relativeLayout.findViewById(R.id.sleepCircle);
         String date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
 
         dateText.setText(date);
@@ -41,6 +42,8 @@ public class MoodSelectedFragment extends Fragment {
         } else if (selectedMood == 5) {
             whichMood.setImageResource(R.drawable.superhappy);
         }
+
+        proBar.setSecondaryProgress(80);
         return relativeLayout;
 
     }
