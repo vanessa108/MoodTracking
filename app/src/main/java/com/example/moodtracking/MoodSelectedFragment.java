@@ -42,6 +42,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Calendar;
 
 
 
@@ -87,8 +88,8 @@ public class MoodSelectedFragment extends Fragment {
 
         //Create function to calculate the start angle and the progress based on the time
         SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-        String date1 = "2019/04/09 23:00:00";
-        String date2 = "2019/04/10 6:00:00";
+        String date1 = "2019/04/09 21:22:00";
+        String date2 = "2019/04/10 8:41:00";
         Date start = null;
         Date end = null;
         try {
@@ -98,12 +99,13 @@ public class MoodSelectedFragment extends Fragment {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        /*
+        Set sleep progress bar values
+        */
         startSleep.setText(getTime(start));
         endSleep.setText(getTime(end));
-
         proBar.setSecondaryProgress(calcProgress(start,end));
-        //set text values  based on the start time and end time of the sleep data
-
+        proBar.setRotation(calcStartAngleProgressBar(start));
 
         editPen.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -188,15 +190,22 @@ public class MoodSelectedFragment extends Fragment {
             fragmentTransaction.commit();
         }
     }
-    private int calcStartAngleProgressBar(){
-        return 0;
+    private int calcStartAngleProgressBar(Date start){
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(start);
+        int hours = calendar.get(Calendar.HOUR_OF_DAY);
+        int minutes = calendar.get(Calendar.MINUTE);
+        int startOfProgressBar = 90;
+        int angle = ((60*hours+minutes)/2)-startOfProgressBar;
+        return angle;
     }
     private int calcProgress(Date start,Date end){
         long diff = end.getTime() - start.getTime();
         /** remove the milliseconds part */
         diff = diff / 1000;
         long hours = diff / (60 * 60) % 24;
-        return (int)hours;
+        long percentage = hours/12;
+        return (int)percentage;
     }
     private String getTime(Date in){
         String formattedDate = new SimpleDateFormat("HH:mm").format(in);
