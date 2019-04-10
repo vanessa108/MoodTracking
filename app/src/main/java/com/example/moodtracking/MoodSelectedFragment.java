@@ -18,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -42,6 +43,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
+
+
+
 public class MoodSelectedFragment extends Fragment {
 
     static int selectedMood;
@@ -54,9 +58,11 @@ public class MoodSelectedFragment extends Fragment {
         ImageButton editPen = (ImageButton) relativeLayout.findViewById(R.id.editPenButton);
         TextView whichMoodText = (TextView) relativeLayout.findViewById(R.id.textViewMood);
         TextView dateText = (TextView) relativeLayout.findViewById(R.id.date);
+        ProgressBar proBar = (ProgressBar) relativeLayout.findViewById(R.id.sleepCircle);
         TextView sleepDataText = (TextView) relativeLayout.findViewById(R.id.textViewDataSleep);
         BarChart barChart = (BarChart) relativeLayout.findViewById(R.id.barchart);
-
+        TextView startSleep = (TextView) relativeLayout.findViewById(R.id.StartBedTime);
+        TextView endSleep = (TextView) relativeLayout.findViewById(R.id.EndBedTime);
 
         String date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
 
@@ -78,6 +84,26 @@ public class MoodSelectedFragment extends Fragment {
             whichMood.setImageResource(R.drawable.superhappy);
             whichMoodText.setText("Awesome");
         }
+
+        //Create function to calculate the start angle and the progress based on the time
+        SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        String date1 = "2019/04/09 23:00:00";
+        String date2 = "2019/04/10 6:00:00";
+        Date start = null;
+        Date end = null;
+        try {
+            start = format.parse(date1);
+            end = format.parse(date2);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        startSleep.setText(getTime(start));
+        endSleep.setText(getTime(end));
+
+        proBar.setSecondaryProgress(calcProgress(start,end));
+        //set text values  based on the start time and end time of the sleep data
+
 
         editPen.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -147,7 +173,10 @@ public class MoodSelectedFragment extends Fragment {
         sleepDataText.setText(MainActivity.getDataFromFile(getContext(), "trackingdata.txt"));
 
         return relativeLayout;
+    }
 
+    public static void setParameters(int mood) {
+        MoodSelectedFragment.selectedMood = mood;
     }
 
     private void replaceFragment (Fragment fragment) {
@@ -159,9 +188,21 @@ public class MoodSelectedFragment extends Fragment {
             fragmentTransaction.commit();
         }
     }
-
-
-    public static void setParameters(int mood) {
-        MoodSelectedFragment.selectedMood = mood;
+    private int calcStartAngleProgressBar(){
+        return 0;
     }
+    private int calcProgress(Date start,Date end){
+        long diff = end.getTime() - start.getTime();
+        /** remove the milliseconds part */
+        diff = diff / 1000;
+        long hours = diff / (60 * 60) % 24;
+        return (int)hours;
+    }
+    private String getTime(Date in){
+        String formattedDate = new SimpleDateFormat("HH:mm").format(in);
+        return formattedDate;
+    }
+
+
+
 }
