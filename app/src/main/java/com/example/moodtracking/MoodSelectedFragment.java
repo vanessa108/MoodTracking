@@ -18,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -54,9 +55,9 @@ public class MoodSelectedFragment extends Fragment {
         ImageButton editPen = (ImageButton) relativeLayout.findViewById(R.id.editPenButton);
         TextView whichMoodText = (TextView) relativeLayout.findViewById(R.id.textViewMood);
         TextView dateText = (TextView) relativeLayout.findViewById(R.id.date);
+        ProgressBar proBar = (ProgressBar) relativeLayout.findViewById(R.id.sleepCircle);
         TextView sleepDataText = (TextView) relativeLayout.findViewById(R.id.textViewDataSleep);
         BarChart barChart = (BarChart) relativeLayout.findViewById(R.id.barchart);
-
 
         String date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
 
@@ -78,6 +79,9 @@ public class MoodSelectedFragment extends Fragment {
             whichMood.setImageResource(R.drawable.superhappy);
             whichMoodText.setText("Awesome");
         }
+
+        proBar.setSecondaryProgress(80);
+        return relativeLayout;
 
         editPen.setOnClickListener(new View.OnClickListener() {
             @Override
