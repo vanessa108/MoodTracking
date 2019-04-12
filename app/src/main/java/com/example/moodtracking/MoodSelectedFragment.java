@@ -46,7 +46,6 @@ import java.util.Calendar;
 
 
 
-
 public class MoodSelectedFragment extends Fragment {
 
     static int selectedMood;
@@ -64,6 +63,15 @@ public class MoodSelectedFragment extends Fragment {
         BarChart barChart = (BarChart) relativeLayout.findViewById(R.id.barchart);
         TextView startSleep = (TextView) relativeLayout.findViewById(R.id.StartBedTime);
         TextView endSleep = (TextView) relativeLayout.findViewById(R.id.EndBedTime);
+        TextView sleepText = (TextView) relativeLayout.findViewById(R.id.textViewSleep);
+
+
+
+        //Read Object data
+        int lastXDays = 4;
+        HealthData hd = new HealthData();
+
+
 
         String date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
 
@@ -88,8 +96,8 @@ public class MoodSelectedFragment extends Fragment {
 
         //Create function to calculate the start angle and the progress based on the time
         SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-        String date1 = "2019/04/09 21:22:00";
-        String date2 = "2019/04/10 8:41:00";
+        String date1 = "2019/04/09 24:00:00";
+        String date2 = "2019/04/10 8:00:00";
         Date start = null;
         Date end = null;
         try {
@@ -106,6 +114,9 @@ public class MoodSelectedFragment extends Fragment {
         endSleep.setText(getTime(end));
         proBar.setSecondaryProgress(calcProgress(start,end));
         proBar.setRotation(calcStartAngleProgressBar(start));
+        sleepText.setText(getSleepTime(start,end));
+
+
 
         editPen.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -172,7 +183,7 @@ public class MoodSelectedFragment extends Fragment {
 
 
         //Test of reading data
-        sleepDataText.setText(MainActivity.getDataFromFile(getContext(), "trackingdata.txt"));
+        //sleepDataText.setText(MainActivity.getDataFromFile(getContext(), "trackingdata.txt"));
 
         return relativeLayout;
     }
@@ -206,6 +217,15 @@ public class MoodSelectedFragment extends Fragment {
         long hours = diff / (60 * 60) % 24;
         long percentage = hours/12;
         return (int)percentage;
+    }
+    private String getSleepTime(Date start,Date end){
+        long diff = end.getTime() - start.getTime();
+        /** remove the milliseconds part */
+        diff = diff / 1000;
+        long diffMinutes = diff / (60 ) % 60;
+        long diffHours = diff / (60 * 60 );
+        return Long.toString(diffHours)+"h "+Long.toString(diffMinutes)+"m";
+
     }
     private String getTime(Date in){
         String formattedDate = new SimpleDateFormat("HH:mm").format(in);
