@@ -1,6 +1,8 @@
 package com.example.moodtracking;
 
 import android.content.Context;
+import android.content.res.Resources;
+import android.content.res.XmlResourceParser;
 import android.graphics.Color;
 import android.graphics.LinearGradient;
 import android.graphics.Paint;
@@ -13,6 +15,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,22 +31,32 @@ import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
-import com.github.mikephil.charting.formatter.IAxisValueFormatter;
-import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
-import com.github.mikephil.charting.utils.ColorTemplate;
 
-import org.w3c.dom.Text;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
-import java.io.BufferedReader;
+import org.xml.sax.SAXException;
+
+
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.StringWriter;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 import java.util.Calendar;
 
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+import javax.xml.xpath.XPathExpressionException;
+
+import static com.github.mikephil.charting.charts.Chart.LOG_TAG;
 
 
 public class MoodSelectedFragment extends Fragment {
@@ -65,11 +78,26 @@ public class MoodSelectedFragment extends Fragment {
         TextView endSleep = (TextView) relativeLayout.findViewById(R.id.EndBedTime);
         TextView sleepText = (TextView) relativeLayout.findViewById(R.id.textViewSleep);
 
+        //TODO remove testText which is only for test purposes
+        TextView testText = (TextView) relativeLayout.findViewById(R.id.textTest);
 
-
-        //Read Object data
-        int lastXDays = 4;
-        HealthData hd = new HealthData();
+        InputStream is = getResources().openRawResource(R.raw.export);
+        HealthData hd = new HealthData(is);
+        NodeList sd = null;
+        try {
+            //get last 4 available SleepData entries from export.xml
+            sd = hd.getSleepData(4);
+            //set test text to sleepamount of the last available day
+            testText.setText(hd.nodeToSleepDataObj(sd.item(-1)).getSleepAmount());
+        } catch (XPathExpressionException e) {
+            e.printStackTrace();
+        } catch (ParserConfigurationException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (SAXException e) {
+            e.printStackTrace();
+        }
 
 
 
@@ -232,6 +260,16 @@ public class MoodSelectedFragment extends Fragment {
         return formattedDate;
     }
 
-
+    private String nodeToString(Node node) {
+        StringWriter sw = new StringWriter();
+        try {
+            Transformer t = TransformerFactory.newInstance().newTransformer();
+            t.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
+            t.transform(new DOMSource(node), new StreamResult(sw));
+        } catch (TransformerException te) {
+            System.out.println("nodeToString Transformer Exception");
+        }
+        return sw.toString();
+    }
 
 }
