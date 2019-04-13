@@ -23,14 +23,19 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.formatter.IAxisValueFormatter;
+import com.github.mikephil.charting.formatter.IValueFormatter;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
+import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.utils.ColorTemplate;
+import com.github.mikephil.charting.utils.ViewPortHandler;
 
 import org.w3c.dom.Text;
 
@@ -38,8 +43,11 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.text.DateFormat;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
@@ -59,12 +67,14 @@ public class MoodSelectedFragment extends Fragment {
         TextView whichMoodText = (TextView) relativeLayout.findViewById(R.id.textViewMood);
         TextView dateText = (TextView) relativeLayout.findViewById(R.id.date);
         ProgressBar proBar = (ProgressBar) relativeLayout.findViewById(R.id.sleepCircle);
-        TextView sleepDataText = (TextView) relativeLayout.findViewById(R.id.textViewDataSleep);
         BarChart barChart = (BarChart) relativeLayout.findViewById(R.id.barchart);
         TextView startSleep = (TextView) relativeLayout.findViewById(R.id.StartBedTime);
         TextView endSleep = (TextView) relativeLayout.findViewById(R.id.EndBedTime);
+        TextView yesterdayText = (TextView) relativeLayout.findViewById(R.id.textViewYesterday);
+        TextView twoDaysAgoText = (TextView) relativeLayout.findViewById(R.id.textViewTwoDaysAgo);
+        TextView threeDaysAgoText = (TextView) relativeLayout.findViewById(R.id.textViewThreeDaysAgo);
 
-        String date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
+        String date = new SimpleDateFormat("EEE dd/MM", Locale.getDefault()).format(new Date());
 
         dateText.setText(date);
 
@@ -118,11 +128,10 @@ public class MoodSelectedFragment extends Fragment {
         barChart.setMaxVisibleValueCount(50);
         barChart.setPinchZoom(false);
 
-        //TODO add data from files
         ArrayList<BarEntry> barEntries = new ArrayList<>();
         barEntries.add(new BarEntry(0, 40f));
         barEntries.add(new BarEntry(1, 30f));
-        barEntries.add(new BarEntry(2, 20f));
+        barEntries.add(new BarEntry(2, 22f));
         barEntries.add(new BarEntry(3, 46f));
 
         ArrayList<BarEntry> barEntries1 = new ArrayList<>();
@@ -140,37 +149,50 @@ public class MoodSelectedFragment extends Fragment {
         BarData data = new BarData(barDataSet, barDataSet1);
 
         float groupSpace = 0.3f;
-        float barSpace = 0.09f;
+        float barSpace = 0.16f;
         float barWidth = 0.12f;
 
         barChart.setData(data);
         data.setBarWidth(barWidth);
         barChart.groupBars(1, groupSpace, barSpace);
-
-        XAxis xAxis = barChart.getXAxis();
-        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-
-        YAxis yAxisLeft = barChart.getAxisLeft();
-        YAxis yAxisRight = barChart.getAxisRight();
-
-        //TODO do we want labels on Y axis?
-        yAxisLeft.setEnabled(false);
-        yAxisRight.setEnabled(false);
-
-        yAxisLeft.setDrawGridLines(false);
-        xAxis.setDrawGridLines(false);
         barChart.getDescription().setEnabled(false);
         barChart.getLegend().setEnabled(false);
         barDataSet.setValueTextSize(14f);
         barDataSet1.setValueTextSize(14f);
 
-        //TODO if we want a line in different colours for the mood
-        //Paint paint = mChart.getRenderer().getPaintRender();
-        //paint.setShader(new LinearGradient(0, 0, 0, 40, Color.YELLOW, Color.RED, Shader.TileMode.REPEAT));
+        //X-axis
+        XAxis xAxis = barChart.getXAxis();
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        xAxis.setDrawGridLines(false);
+        xAxis.setGranularity(0.1f);
+        xAxis.setGranularityEnabled(true);
 
+        //Yesterday
+        Calendar cal = Calendar.getInstance();
+        DateFormat dateFormat = new SimpleDateFormat("EEE dd/MM");
+        cal.add(Calendar.DATE, -1);
+        yesterdayText.setText(dateFormat.format(cal.getTime()));
 
-        //Test of reading data
-        sleepDataText.setText(MainActivity.getDataFromFile(getContext(), "trackingdata.txt"));
+        //The day before yesterday
+        Calendar cal2 = Calendar.getInstance();
+        cal.add(Calendar.DATE, - 2);
+        twoDaysAgoText.setText(dateFormat.format(cal2.getTime()));
+
+        //Two days before yesterday
+        Calendar cal3 = Calendar.getInstance();
+        cal3.add(Calendar.DATE, - 3);
+        threeDaysAgoText.setText(dateFormat.format(cal3.getTime()));
+
+        //TODO get IndexValueFormatter to work...
+        String[] values = new String[] {"one", "two", "three"};
+        //xAxis.setValueFormatter(new MyXAxisValueFormatter(values));
+
+        //Y-axis
+        YAxis yAxisLeft = barChart.getAxisLeft();
+        YAxis yAxisRight = barChart.getAxisRight();
+        yAxisLeft.setEnabled(false);
+        yAxisRight.setEnabled(false);
+        yAxisLeft.setDrawGridLines(false);
 
         return relativeLayout;
     }
@@ -178,7 +200,6 @@ public class MoodSelectedFragment extends Fragment {
     public static void setParameters(int mood) {
         MoodSelectedFragment.selectedMood = mood;
     }
-
     private void replaceFragment (Fragment fragment) {
         if (fragment != null) {
             FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
@@ -193,7 +214,7 @@ public class MoodSelectedFragment extends Fragment {
     }
     private int calcProgress(Date start,Date end){
         long diff = end.getTime() - start.getTime();
-        /** remove the milliseconds part */
+        /* remove the milliseconds part */
         diff = diff / 1000;
         long hours = diff / (60 * 60) % 24;
         return (int)hours;
@@ -205,4 +226,5 @@ public class MoodSelectedFragment extends Fragment {
 
 
 
-}
+    //public class MyXAxisValueFormatter implements IndexAxisValueFormatter {
+    }

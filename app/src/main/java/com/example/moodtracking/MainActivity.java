@@ -67,22 +67,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         return false;
     }
 
-    public static String getDataFromFile(Context context, String filename) {
-        String data = "";
-        try{
-            InputStream is = context.getAssets().open(filename);
-            int size = is.available();
-            byte[] buffer = new byte[size];
-            is.read(buffer);
-            is.close();
-            data = new String(buffer);
-        } catch (IOException ex){
-            ex.printStackTrace();
-        }
-
-        return data;
-    }
-
 }
 
 
