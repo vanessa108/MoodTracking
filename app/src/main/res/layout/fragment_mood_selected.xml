@@ -74,7 +74,6 @@
         android:layout_marginRight="20dp"
         android:layout_marginLeft="310dp"
         android:layout_marginTop="65dp"
-
         android:progressDrawable="@drawable/sleep_cirlce"
         android:rotation="-142.5"/>
     <ImageView
@@ -236,31 +235,18 @@
     </com.github.mikephil.charting.charts.BarChart>
 
     <TextView
-        android:id="@+id/textViewThreeDaysAgo"
+        android:id="@+id/textTest"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="556dp"
-        android:text="TextView" />
-
+        android:layout_below="@+id/barchart"
+        android:layout_marginTop="38dp"
+        android:text="text" />
     <TextView
-        android:id="@+id/textViewYesterday"
+        android:id="@+id/textViewDataSleep"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="263dp"
-        android:layout_marginTop="557dp"
-        android:text="TextView" />
-
-    <TextView
-        android:id="@+id/textViewTwoDaysAgo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="135dp"
-        android:layout_marginTop="559dp"
-        android:text="TextView" />
+        android:layout_below="@+id/barchart"
+        android:layout_marginTop="80dp"
+        android:text="placeholder" />
 
 </RelativeLayout>

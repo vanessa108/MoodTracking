@@ -32,7 +32,6 @@ public class StatsFragment extends Fragment {
         final RelativeLayout relativeLayout = (RelativeLayout) inflater.inflate(R.layout.fragment_stats, container, false);
 
         PieChart exerciseChart = (PieChart) relativeLayout.findViewById(R.id.exerciseChart);
-        PieChart sleepChart = (PieChart) relativeLayout.findViewById(R.id.sleepChart);
 
 
         List<PieEntry> entries = new ArrayList<>();
@@ -42,13 +41,13 @@ public class StatsFragment extends Fragment {
         entries.add(new PieEntry(12f, "Happy"));
         entries.add(new PieEntry(12f, "Super Happy"));
 
-        PieDataSet exerciseSet = new PieDataSet(entries, "Test");
-        PieData exerciseData = new PieData(exerciseSet);
+        PieDataSet set = new PieDataSet(entries, "Test");
+        PieData data = new PieData(set);
         exerciseChart.setMaxAngle(180f);
         exerciseChart.setRotation(270f);
-        exerciseSet.setSliceSpace(5);
-        exerciseSet.setColor(Color.MAGENTA);
-        exerciseChart.setData(exerciseData);
+        set.setSliceSpace(5);
+        set.setColor(Color.MAGENTA);
+        exerciseChart.setData(data);
         exerciseChart.invalidate();
 
         return relativeLayout;
