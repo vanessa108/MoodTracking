@@ -44,6 +44,7 @@ import java.io.StringWriter;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import java.util.Calendar;
 
@@ -83,12 +84,12 @@ public class MoodSelectedFragment extends Fragment {
 
         InputStream is = getResources().openRawResource(R.raw.export);
         HealthData hd = new HealthData(is);
-        NodeList sd = null;
+        List<extData> sd = null;
         try {
             //get last 4 available SleepData entries from export.xml
             sd = hd.getSleepData(4);
             //set test text to sleepamount of the last available day
-            testText.setText(hd.nodeToSleepDataObj(sd.item(-1)).getSleepAmount());
+            testText.setText(sd.get(0).getValue());
         } catch (XPathExpressionException e) {
             e.printStackTrace();
         } catch (ParserConfigurationException e) {
