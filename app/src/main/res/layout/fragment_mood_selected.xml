@@ -235,4 +235,32 @@
 
     </com.github.mikephil.charting.charts.BarChart>
 
+    <TextView
+        android:id="@+id/textViewThreeDaysAgo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="556dp"
+        android:text="TextView" />
+
+    <TextView
+        android:id="@+id/textViewYesterday"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="263dp"
+        android:layout_marginTop="557dp"
+        android:text="TextView" />
+
+    <TextView
+        android:id="@+id/textViewTwoDaysAgo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="135dp"
+        android:layout_marginTop="559dp"
+        android:text="TextView" />
+
 </RelativeLayout>
