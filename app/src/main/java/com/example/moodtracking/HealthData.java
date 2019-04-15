@@ -7,10 +7,11 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -29,8 +30,10 @@ import javax.xml.xpath.XPathFactory;
 public class HealthData {
     Document xmlDocument = null;
     XPath xPath = XPathFactory.newInstance().newXPath();
+    List<extData> lastDaysSleep = new ArrayList<extData>();
+    List<extData>lastDaysActivity = new ArrayList<extData>();
 
-    //constuctor of the class HealthData
+    /*constuctor of the class HealthData*/
     public HealthData(InputStream is) {
         DocumentBuilderFactory builderFactory =
                 DocumentBuilderFactory.newInstance();
@@ -50,18 +53,34 @@ public class HealthData {
         }
     }
     //function to get sleep data of the last x days
-    public NodeList getSleepData(int lastXDays) throws XPathExpressionException {
+    public List<extData> getSleepData(int lastXDays) throws XPathExpressionException, IOException, SAXException, ParserConfigurationException {
+        //TODO working with date comparison instead of using the last x days
+        // xpath expresstion /Record[number(translate(substring(/Record/@startDate, 0,11),'-',''))>20160520]
+        String expression = "/HealthData/Record[(@type = 'HKCategoryTypeIdentifierSleepAnalysis') and position()>last()-" + lastXDays + "]";
+        NodeList nl = (NodeList) xPath.compile(expression).evaluate(xmlDocument, XPathConstants.NODESET);
+        //return Integer.toString(nodeList.getLength());
+        int length = nl.getLength();
+        for (int i = 0; i < length; i++) {
+            if (nl.item(i).getNodeType() == Node.ELEMENT_NODE) {
+                lastDaysSleep.add(nodeToSleepDataObj(nl.item(i)));
+            }
+        }
+        return lastDaysSleep;
+    }
+
+    public List<extData> getStepData(int lastXDays) throws XPathExpressionException, IOException, SAXException, ParserConfigurationException {
         //TODO working with date comparison instead of using the last x days
         String expression = "/HealthData/Record[(@type = 'HKCategoryTypeIdentifierSleepAnalysis') and position()>last()-" + lastXDays + "]";
-        NodeList nodeList = (NodeList) xPath.compile(expression).evaluate(xmlDocument, XPathConstants.NODESET);
+        NodeList nl = (NodeList) xPath.compile(expression).evaluate(xmlDocument, XPathConstants.NODESET);
         //return Integer.toString(nodeList.getLength());
-        return nodeList;
-    }
-
-    public void getStepData() {
-    //TODO needs to be implemented
-    }
-
+        int length = nl.getLength();
+        for (int i = 0; i < length; i++) {
+            if (nl.item(i).getNodeType() == Node.ELEMENT_NODE) {
+                lastDaysActivity.add(nodeToActivityDataObj(nl.item(i)));
+            }
+        }
+        return lastDaysActivity;                                                                                                                   }
+     
     public void getActivityData() {
     //TODO needs to be implemented
     }
@@ -89,19 +108,13 @@ public class HealthData {
         }
         return sw.toString();
     }
-
     public SleepData nodeToSleepDataObj(Node node) throws ParserConfigurationException, SAXException, XPathExpressionException, IOException {
-        StringWriter sw = new StringWriter();
-        try {
-            Transformer t = TransformerFactory.newInstance().newTransformer();
-            t.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
-            t.setOutputProperty(OutputKeys.INDENT, "yes");
-            t.transform(new DOMSource(node), new StreamResult(sw));
-        } catch (TransformerException te) {
-            System.out.println("nodeToString Transformer Exception");
-        }
-        return new SleepData(sw.toString());
+        return new SleepData(nodeToString(node));
     }
+    public ActivityData nodeToActivityDataObj(Node node) throws ParserConfigurationException, SAXException, XPathExpressionException, IOException {
+        return new ActivityData(nodeToString(node));
+    }
+
 }
 
 
