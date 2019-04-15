@@ -41,6 +41,7 @@ import org.xml.sax.SAXException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -77,29 +78,6 @@ public class MoodSelectedFragment extends Fragment {
         TextView startSleep = (TextView) relativeLayout.findViewById(R.id.StartBedTime);
         TextView endSleep = (TextView) relativeLayout.findViewById(R.id.EndBedTime);
         TextView sleepText = (TextView) relativeLayout.findViewById(R.id.textViewSleep);
-
-        //TODO remove testText which is only for test purposes
-        TextView testText = (TextView) relativeLayout.findViewById(R.id.textTest);
-
-        InputStream is = getResources().openRawResource(R.raw.export);
-        HealthData hd = new HealthData(is);
-        NodeList sd = null;
-        try {
-            //get last 4 available SleepData entries from export.xml
-            sd = hd.getSleepData(4);
-            //set test text to sleepamount of the last available day
-            testText.setText(hd.nodeToSleepDataObj(sd.item(-1)).getSleepAmount());
-        } catch (XPathExpressionException e) {
-            e.printStackTrace();
-        } catch (ParserConfigurationException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (SAXException e) {
-            e.printStackTrace();
-        }
-
-
 
         String date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
 
@@ -145,7 +123,6 @@ public class MoodSelectedFragment extends Fragment {
         sleepText.setText(getSleepTime(start,end));
 
 
-
         editPen.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -154,31 +131,76 @@ public class MoodSelectedFragment extends Fragment {
             }
         });
 
+        //Bar Chart
         barChart.setDrawBarShadow(false);
         barChart.setDrawValueAboveBar(true);
-        barChart.setMaxVisibleValueCount(50);
+        barChart.setMaxVisibleValueCount(600);
         barChart.setPinchZoom(false);
+        barChart.getDescription().setEnabled(false);
+        barChart.getLegend().setEnabled(false);
 
-        //TODO add data from files
-        ArrayList<BarEntry> barEntries = new ArrayList<>();
-        barEntries.add(new BarEntry(0, 40f));
-        barEntries.add(new BarEntry(1, 30f));
-        barEntries.add(new BarEntry(2, 20f));
-        barEntries.add(new BarEntry(3, 46f));
+        //TODO add dates
+        ArrayList<BarEntry> barEntriesExercise = new ArrayList<>();
+        barEntriesExercise.add(new BarEntry(0, 40f));
+        barEntriesExercise.add(new BarEntry(1, 30f));
+        barEntriesExercise.add(new BarEntry(2, 20f));
+        barEntriesExercise.add(new BarEntry(3, 46f));
 
-        ArrayList<BarEntry> barEntries1 = new ArrayList<>();
-        barEntries1.add(new BarEntry(0, 30f));
-        barEntries1.add(new BarEntry(1, 21f));
-        barEntries1.add(new BarEntry(2, 22f));
-        barEntries1.add(new BarEntry(3, 46f));
+        ArrayList<BarEntry> barEntriesSleep = new ArrayList<>();
 
-        BarDataSet barDataSet = new BarDataSet(barEntries, "Exercise");
-        barDataSet.setColors(Color.rgb(242, 162, 162));
+        InputStream is = getResources().openRawResource(R.raw.export);
+        HealthData hd = new HealthData(is);
+        NodeList sd = null;
+        String todaySleep;
+        String yesterdaySleep;
+        String twoDaysAgoSleep;
+        String threeDaysAgoSleep;
+        float todaySleepMins;
+        float yesterdaySleepMins;
+        float twoDaysAgoSleepMins;
+        float threeDaysAgoSleepMins;
 
-        BarDataSet barDataSet1 = new BarDataSet(barEntries1, "Sleep");
-        barDataSet1.setColors(Color.rgb(136, 139, 221));
+        try {
+            sd = hd.getSleepData(4);
 
-        BarData data = new BarData(barDataSet, barDataSet1);
+            todaySleep = hd.nodeToSleepDataObj(sd.item(0)).getSleepAmount();
+            todaySleepMins = calcMinutes(todaySleep);
+
+            yesterdaySleep = hd.nodeToSleepDataObj(sd.item(1)).getSleepAmount();
+            yesterdaySleepMins = calcMinutes(yesterdaySleep);
+
+            twoDaysAgoSleep = hd.nodeToSleepDataObj(sd.item(2)).getSleepAmount();
+            twoDaysAgoSleepMins = calcMinutes(twoDaysAgoSleep);
+
+            threeDaysAgoSleep = hd.nodeToSleepDataObj(sd.item(3)).getSleepAmount();
+            threeDaysAgoSleepMins = calcMinutes(threeDaysAgoSleep);
+
+            barEntriesSleep.add(new BarEntry(1, threeDaysAgoSleepMins));
+            barEntriesSleep.add(new BarEntry(2, twoDaysAgoSleepMins));
+            barEntriesSleep.add(new BarEntry(3, yesterdaySleepMins));
+            barEntriesSleep.add(new BarEntry(4, todaySleepMins));
+
+        } catch (XPathExpressionException e) {
+            e.printStackTrace();
+        } catch (ParserConfigurationException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (SAXException e) {
+            e.printStackTrace();
+        }
+
+        //BarDataSets
+        BarDataSet barDataSetExercise = new BarDataSet(barEntriesExercise, "Exercise");
+        barDataSetExercise.setColors(Color.rgb(242, 162, 162));
+
+        BarDataSet barDataSetSleep = new BarDataSet(barEntriesSleep, "Sleep");
+        barDataSetSleep.setColors(Color.rgb(136, 139, 221));
+
+        barDataSetExercise.setValueTextSize(14f);
+        barDataSetSleep.setValueTextSize(14f);
+
+        BarData data = new BarData(barDataSetExercise, barDataSetSleep);
 
         float groupSpace = 0.3f;
         float barSpace = 0.09f;
@@ -188,30 +210,40 @@ public class MoodSelectedFragment extends Fragment {
         data.setBarWidth(barWidth);
         barChart.groupBars(1, groupSpace, barSpace);
 
+        //X-axis
         XAxis xAxis = barChart.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        //TODO fix axis spacing & values above bars to 4 h 30 m..
+        xAxis.setGranularity(2*barWidth + barSpace + groupSpace);
+        xAxis.setDrawGridLines(false);
 
+        //Y-axis
+        //TODO do we want labels on Y axis?
         YAxis yAxisLeft = barChart.getAxisLeft();
         YAxis yAxisRight = barChart.getAxisRight();
-
-        //TODO do we want labels on Y axis?
         yAxisLeft.setEnabled(false);
         yAxisRight.setEnabled(false);
-
         yAxisLeft.setDrawGridLines(false);
-        xAxis.setDrawGridLines(false);
-        barChart.getDescription().setEnabled(false);
-        barChart.getLegend().setEnabled(false);
-        barDataSet.setValueTextSize(14f);
-        barDataSet1.setValueTextSize(14f);
 
-        //TODO if we want a line in different colours for the mood
-        //Paint paint = mChart.getRenderer().getPaintRender();
-        //paint.setShader(new LinearGradient(0, 0, 0, 40, Color.YELLOW, Color.RED, Shader.TileMode.REPEAT));
+        //Yesterday
+        Calendar cal = Calendar.getInstance();
+        DateFormat dateFormat = new SimpleDateFormat("EEE dd/MM");
+        cal.add(Calendar.DATE, -1);
+        //yesterdayText.setText(dateFormat.format(cal.getTime()));
 
+        //The day before yesterday
+        Calendar cal2 = Calendar.getInstance();
+        cal.add(Calendar.DATE, - 2);
+        //twoDaysAgoText.setText(dateFormat.format(cal2.getTime()));
 
-        //Test of reading data
-        //sleepDataText.setText(MainActivity.getDataFromFile(getContext(), "trackingdata.txt"));
+        //Two days before yesterday
+        Calendar cal3 = Calendar.getInstance();
+        cal3.add(Calendar.DATE, - 3);
+        //threeDaysAgoText.setText(dateFormat.format(cal3.getTime()));
+
+        //TODO get IndexValueFormatter to work...
+        String[] values = new String[] {"one", "two", "three"};
+        //xAxis.setValueFormatter(new MyXAxisValueFormatter(values));
 
         return relativeLayout;
     }
@@ -272,4 +304,17 @@ public class MoodSelectedFragment extends Fragment {
         return sw.toString();
     }
 
+    public float calcMinutes(String hoursMins){
+
+        String hourString = hoursMins.split("h")[0];
+        float hours = Float.parseFloat(hourString);
+
+        String minsString = hoursMins.split("m")[0];
+        minsString = minsString.substring(Math.max(minsString.length() - 2, 0));
+        float mins = Float.parseFloat(minsString);
+
+        float totalMins = hours * 60f + mins;
+
+        return totalMins;
+    }
 }
