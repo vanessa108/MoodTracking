@@ -1,21 +1,12 @@
 package com.example.moodtracking;
 
-import android.content.Context;
-import android.content.res.Resources;
-import android.content.res.XmlResourceParser;
 import android.graphics.Color;
-import android.graphics.LinearGradient;
-import android.graphics.Paint;
-import android.graphics.Shader;
 import android.os.Bundle;
-import android.renderscript.ScriptGroup;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.content.ContextCompat;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,7 +24,6 @@ import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 
 import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 
 import org.xml.sax.SAXException;
 
@@ -45,6 +35,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import java.util.Calendar;
 
@@ -56,8 +47,6 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.xpath.XPathExpressionException;
-
-import static com.github.mikephil.charting.charts.Chart.LOG_TAG;
 
 
 public class MoodSelectedFragment extends Fragment {
@@ -72,16 +61,20 @@ public class MoodSelectedFragment extends Fragment {
         ImageButton editPen = (ImageButton) relativeLayout.findViewById(R.id.editPenButton);
         TextView whichMoodText = (TextView) relativeLayout.findViewById(R.id.textViewMood);
         TextView dateText = (TextView) relativeLayout.findViewById(R.id.date);
+        TextView dateText2 = (TextView) relativeLayout.findViewById(R.id.date2);
         ProgressBar proBar = (ProgressBar) relativeLayout.findViewById(R.id.sleepCircle);
-        TextView sleepDataText = (TextView) relativeLayout.findViewById(R.id.textViewDataSleep);
         BarChart barChart = (BarChart) relativeLayout.findViewById(R.id.barchart);
         TextView startSleep = (TextView) relativeLayout.findViewById(R.id.StartBedTime);
         TextView endSleep = (TextView) relativeLayout.findViewById(R.id.EndBedTime);
         TextView sleepText = (TextView) relativeLayout.findViewById(R.id.textViewSleep);
+        TextView threeDaysAgoText = (TextView) relativeLayout.findViewById(R.id.textViewThreeDaysAgo);
+        TextView twoDaysAgoText = (TextView) relativeLayout.findViewById(R.id.textViewTwoDaysAgo);
+        TextView yesterdayText = (TextView) relativeLayout.findViewById(R.id.textViewYesterday);
 
-        String date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
+        String date = new SimpleDateFormat("EEE dd/MM", Locale.getDefault()).format(new Date());
 
         dateText.setText(date);
+        dateText2.setText(date);
 
         if (selectedMood == 1) {
             whichMood.setImageResource(R.drawable.supersad);
@@ -139,7 +132,6 @@ public class MoodSelectedFragment extends Fragment {
         barChart.getDescription().setEnabled(false);
         barChart.getLegend().setEnabled(false);
 
-        //TODO add dates
         ArrayList<BarEntry> barEntriesExercise = new ArrayList<>();
         barEntriesExercise.add(new BarEntry(0, 40f));
         barEntriesExercise.add(new BarEntry(1, 30f));
@@ -148,9 +140,6 @@ public class MoodSelectedFragment extends Fragment {
 
         ArrayList<BarEntry> barEntriesSleep = new ArrayList<>();
 
-        InputStream is = getResources().openRawResource(R.raw.export);
-        HealthData hd = new HealthData(is);
-        NodeList sd = null;
         String todaySleep;
         String yesterdaySleep;
         String twoDaysAgoSleep;
@@ -160,25 +149,29 @@ public class MoodSelectedFragment extends Fragment {
         float twoDaysAgoSleepMins;
         float threeDaysAgoSleepMins;
 
+        InputStream is = getResources().openRawResource(R.raw.export);
+        HealthData hd = new HealthData(is);
+        List<extData> sd = null;
+
         try {
             sd = hd.getSleepData(4);
 
-            todaySleep = hd.nodeToSleepDataObj(sd.item(0)).getSleepAmount();
+            todaySleep = sd.get(0).getValue();
             todaySleepMins = calcMinutes(todaySleep);
 
-            yesterdaySleep = hd.nodeToSleepDataObj(sd.item(1)).getSleepAmount();
+            yesterdaySleep = sd.get(1).getValue();
             yesterdaySleepMins = calcMinutes(yesterdaySleep);
 
-            twoDaysAgoSleep = hd.nodeToSleepDataObj(sd.item(2)).getSleepAmount();
+            twoDaysAgoSleep = sd.get(2).getValue();
             twoDaysAgoSleepMins = calcMinutes(twoDaysAgoSleep);
 
-            threeDaysAgoSleep = hd.nodeToSleepDataObj(sd.item(3)).getSleepAmount();
+            threeDaysAgoSleep = sd.get(3).getValue();
             threeDaysAgoSleepMins = calcMinutes(threeDaysAgoSleep);
 
-            barEntriesSleep.add(new BarEntry(1, threeDaysAgoSleepMins));
-            barEntriesSleep.add(new BarEntry(2, twoDaysAgoSleepMins));
-            barEntriesSleep.add(new BarEntry(3, yesterdaySleepMins));
-            barEntriesSleep.add(new BarEntry(4, todaySleepMins));
+            barEntriesSleep.add(new BarEntry(0, threeDaysAgoSleepMins));
+            barEntriesSleep.add(new BarEntry(1, twoDaysAgoSleepMins));
+            barEntriesSleep.add(new BarEntry(2, yesterdaySleepMins));
+            barEntriesSleep.add(new BarEntry(3, todaySleepMins));
 
         } catch (XPathExpressionException e) {
             e.printStackTrace();
@@ -202,8 +195,8 @@ public class MoodSelectedFragment extends Fragment {
 
         BarData data = new BarData(barDataSetExercise, barDataSetSleep);
 
-        float groupSpace = 0.3f;
-        float barSpace = 0.09f;
+        float groupSpace = 0.5f;
+        float barSpace = 0.13f;
         float barWidth = 0.12f;
 
         barChart.setData(data);
@@ -214,36 +207,34 @@ public class MoodSelectedFragment extends Fragment {
         XAxis xAxis = barChart.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         //TODO fix axis spacing & values above bars to 4 h 30 m..
-        xAxis.setGranularity(2*barWidth + barSpace + groupSpace);
-        xAxis.setDrawGridLines(false);
+        xAxis.setGranularity(1);
+        barChart.getXAxis().setGranularityEnabled(true);
+        xAxis.setEnabled(false);
+        xAxis.setAxisMinimum(1f);
+        xAxis.setAxisMaximum(5);
+
 
         //Y-axis
-        //TODO do we want labels on Y axis?
         YAxis yAxisLeft = barChart.getAxisLeft();
         YAxis yAxisRight = barChart.getAxisRight();
         yAxisLeft.setEnabled(false);
         yAxisRight.setEnabled(false);
         yAxisLeft.setDrawGridLines(false);
 
-        //Yesterday
+        barChart.invalidate();
+
         Calendar cal = Calendar.getInstance();
         DateFormat dateFormat = new SimpleDateFormat("EEE dd/MM");
         cal.add(Calendar.DATE, -1);
-        //yesterdayText.setText(dateFormat.format(cal.getTime()));
+        yesterdayText.setText(dateFormat.format(cal.getTime()));
 
-        //The day before yesterday
         Calendar cal2 = Calendar.getInstance();
         cal.add(Calendar.DATE, - 2);
-        //twoDaysAgoText.setText(dateFormat.format(cal2.getTime()));
+        twoDaysAgoText.setText(dateFormat.format(cal2.getTime()));
 
-        //Two days before yesterday
         Calendar cal3 = Calendar.getInstance();
         cal3.add(Calendar.DATE, - 3);
-        //threeDaysAgoText.setText(dateFormat.format(cal3.getTime()));
-
-        //TODO get IndexValueFormatter to work...
-        String[] values = new String[] {"one", "two", "three"};
-        //xAxis.setValueFormatter(new MyXAxisValueFormatter(values));
+        threeDaysAgoText.setText(dateFormat.format(cal3.getTime()));
 
         return relativeLayout;
     }
@@ -317,4 +308,5 @@ public class MoodSelectedFragment extends Fragment {
 
         return totalMins;
     }
+
 }
