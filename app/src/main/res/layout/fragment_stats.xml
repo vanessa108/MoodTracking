@@ -4,36 +4,30 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <ImageView
+        android:id="@+id/activity_semicircle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/stats_90days"
+        android:layout_marginTop="60dp"
+        android:layout_centerHorizontal="true"
+        app:srcCompat="@drawable/activity_semicircle" />
 
-    <com.github.mikephil.charting.charts.PieChart
-        android:id="@+id/exerciseChart"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"></com.github.mikephil.charting.charts.PieChart>
-
-    <com.github.mikephil.charting.charts.PieChart
-        android:id="@+id/sleepChart"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"></com.github.mikephil.charting.charts.PieChart>
-
-
-    <!--<ImageView-->
-        <!--android:id="@+id/activity_semicircle"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_alignParentBottom="true"-->
-        <!--android:layout_centerHorizontal="true"-->
-        <!--android:layout_marginBottom="434dp"-->
-        <!--app:srcCompat="@drawable/activity_semicircle" />-->
-
-    <!--<ImageView-->
-        <!--android:id="@+id/sleep_semicircle"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_centerHorizontal="true"-->
-        <!--android:layout_alignParentBottom="true"-->
-        <!--android:layout_marginBottom="86dp"-->
-        <!--app:srcCompat="@drawable/sleep_semicircle" />-->
-
+    <ImageView
+        android:id="@+id/sleep_semicircle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/activity_semicircle"
+        android:layout_marginTop="90dp"
+        android:layout_centerHorizontal="true"
+        app:srcCompat="@drawable/sleep_semicircle" />
+    <Button
+        android:id="@+id/stats_alltime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="0dp"
+        android:text="All Time" />
 
     <Button
         android:id="@+id/stats_30days"
@@ -49,14 +43,16 @@
         android:layout_toLeftOf="@id/stats_alltime"
         android:text="Button" />
 
-    <Button
-        android:id="@+id/stats_alltime"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_marginEnd="0dp"
-        android:text="All Time" />
 
+    <ImageView
+        android:id="@+id/supsadExercise"
+        android:layout_width="230dp"
+        android:layout_height="250dp"
+        android:layout_alignBottom="@+id/activity_semicircle"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="94dp"
+        android:layout_marginBottom="-4dp"
+        app:srcCompat="@drawable/arrow" />
 
 
 </RelativeLayout>
