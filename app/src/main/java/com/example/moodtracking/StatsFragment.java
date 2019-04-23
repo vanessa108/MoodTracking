@@ -24,7 +24,7 @@ import java.util.List;
 
 public class StatsFragment extends Fragment {
 
-    private float rotation = 90F;
+    private float rotation = -45F;
     Bitmap supsadExBMP;
     int supsadExBmpWidth, supsadExBmpHeight;
     ImageView supsadExercise;
@@ -51,10 +51,10 @@ public class StatsFragment extends Fragment {
 //        Matrix matrixb = new Matrix();
 //        Matrix matrixc = new Matrix();
 
-//        matrix.postRotate(rotation);
-        matrix.setRotate(rotation, supsadExBmpWidth/2, supsadExBmpHeight/2);
+        matrix.postRotate(rotation);
+        //matrix.setRotate(rotation, supsadExBmpWidth/2, supsadExBmpHeight/2);
 //        matrix.setRotate(rotation, 100, bmpHeight);
-//        matrix.setTranslate(100, 0);
+        //matrix.setTranslate(100, 0);
 //        matrix.setConcat(matrixb, matrixc);
 
 //        Bitmap targetBitmap = Bitmap.createBitmap(100, bmpHeight, bitmap.getConfig());
