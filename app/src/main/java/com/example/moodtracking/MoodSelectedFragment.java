@@ -149,24 +149,30 @@ public class MoodSelectedFragment extends Fragment {
         float twoDaysAgoSleepMins;
         float threeDaysAgoSleepMins;
 
-        InputStream is = getResources().openRawResource(R.raw.export);
-        HealthData hd = new HealthData(is);
+        InputStream exp = getResources().openRawResource(R.raw.export);
+        InputStream mod = getResources().openRawResource(R.raw.mooddata);
+        HealthData hd = new HealthData(exp,mod);
         List<extData> sd = null;
 
+        //TODO avoid casting from int to float and back
         try {
             sd = hd.getSleepData(4);
+            long temp1 = (long)sd.get(0).getValue();
+            long temp2 = (long)sd.get(1).getValue();
+            long temp3 = (long)sd.get(2).getValue();
+            long temp4 = (long)sd.get(3).getValue();
 
-            todaySleep = sd.get(0).getValue();
-            todaySleepMins = calcMinutes(todaySleep);
+            todaySleepMins = (float)temp1;
+            todaySleep = getSleepTime(temp1);
 
-            yesterdaySleep = sd.get(1).getValue();
-            yesterdaySleepMins = calcMinutes(yesterdaySleep);
+            yesterdaySleepMins = (float)temp2;
+            yesterdaySleep = getSleepTime(temp2);
 
-            twoDaysAgoSleep = sd.get(2).getValue();
-            twoDaysAgoSleepMins = calcMinutes(twoDaysAgoSleep);
+            twoDaysAgoSleepMins = (float)temp3;
+            twoDaysAgoSleep = getSleepTime(temp3);
 
-            threeDaysAgoSleep = sd.get(3).getValue();
-            threeDaysAgoSleepMins = calcMinutes(threeDaysAgoSleep);
+            threeDaysAgoSleepMins = (float)temp4;
+            threeDaysAgoSleep = getSleepTime(temp4);
 
             barEntriesSleep.add(new BarEntry(0, threeDaysAgoSleepMins));
             barEntriesSleep.add(new BarEntry(1, twoDaysAgoSleepMins));
@@ -271,6 +277,14 @@ public class MoodSelectedFragment extends Fragment {
     }
     private String getSleepTime(Date start,Date end){
         long diff = end.getTime() - start.getTime();
+        /** remove the milliseconds part */
+        diff = diff / 1000;
+        long diffMinutes = diff / (60 ) % 60;
+        long diffHours = diff / (60 * 60 );
+        return Long.toString(diffHours)+"h "+Long.toString(diffMinutes)+"m";
+
+    }
+    private String getSleepTime(long diff){
         /** remove the milliseconds part */
         diff = diff / 1000;
         long diffMinutes = diff / (60 ) % 60;
