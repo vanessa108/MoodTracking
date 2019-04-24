@@ -1,3 +1,7 @@
+//TODO clean export data from unnecessary stuff to speed up the app
+//TODO genrate data for upcoming months based on current data
+//TODO import mood data
+//TODO build a model that get minutes of activity by day
 package com.example.moodtracking;
 
 import android.content.res.XmlResourceParser;
@@ -10,7 +14,12 @@ import org.xml.sax.SAXException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -28,13 +37,21 @@ import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
 public class HealthData {
-    Document xmlDocument = null;
+    Document xmlDocument_ext = null;
+    Document xmlDocument_mod = null;
     XPath xPath = XPathFactory.newInstance().newXPath();
     List<extData> lastDaysSleep = new ArrayList<extData>();
-    List<extData>lastDaysActivity = new ArrayList<extData>();
+    List<extData> lastDaysActivity = new ArrayList<extData>();
+    List<extData> lastDaysStepActivity = new ArrayList<extData>();
+    List<extData> lastDaysMood = new ArrayList<extData>();
 
     /*constuctor of the class HealthData*/
-    public HealthData(InputStream is) {
+    public HealthData(InputStream ext,InputStream mod) {
+        this.xmlDocument_ext = readXMLToDocument(ext);
+        this.xmlDocument_mod = readXMLToDocument(mod);
+    }
+    private Document readXMLToDocument(InputStream x_is){
+        Document xmlDocument = null;
         DocumentBuilderFactory builderFactory =
                 DocumentBuilderFactory.newInstance();
         DocumentBuilder builder = null;
@@ -45,19 +62,39 @@ public class HealthData {
         }
         try {
             //XmlResourceParser xpp = getResources().getXml(R.xml.export);
-            this.xmlDocument = builder.parse(is);
+            xmlDocument = builder.parse(x_is);
         } catch (SAXException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return xmlDocument;
     }
     //function to get sleep data of the last x days
     public List<extData> getSleepData(int lastXDays) throws XPathExpressionException, IOException, SAXException, ParserConfigurationException {
+        for (int i = 0; i < lastXDays; i++) {
+            String Date = getDayMinusXasString(i);
+            String expression = "/HealthData/Record[(@type = 'HKCategoryTypeIdentifierSleepAnalysis') and number(translate(substring(/HealthData/Record/@endDate, 0,11),'-',''))="+Date+"]";
+            NodeList nl = (NodeList) xPath.compile(expression).evaluate(xmlDocument_ext, XPathConstants.NODESET);
+            if(nl.getLength()>0) {
+                if (nl.item(0).getNodeType() == Node.ELEMENT_NODE) {
+                    lastDaysSleep.add(nodeToStepActivityDataObj(nl));
+                }
+            }
+            else{
+                lastDaysSleep.add(new SleepData(null));
+            }
+        }
+        return lastDaysSleep;
+    }
+
+
+     /*
+
         //TODO working with date comparison instead of using the last x days
         // xpath expresstion /Record[number(translate(substring(/Record/@startDate, 0,11),'-',''))>20160520]
         String expression = "/HealthData/Record[(@type = 'HKCategoryTypeIdentifierSleepAnalysis') and position()>last()-" + lastXDays + "]";
-        NodeList nl = (NodeList) xPath.compile(expression).evaluate(xmlDocument, XPathConstants.NODESET);
+        NodeList nl = (NodeList) xPath.compile(expression).evaluate(xmlDocument_ext, XPathConstants.NODESET);
         //return Integer.toString(nodeList.getLength());
         int length = nl.getLength();
         for (int i = 0; i < length; i++) {
@@ -65,18 +102,21 @@ public class HealthData {
                 lastDaysSleep.add(nodeToSleepDataObj(nl.item(i)));
             }
         }
-        return lastDaysSleep;
-    }
+        */
+
 
     public List<extData> getStepData(int lastXDays) throws XPathExpressionException, IOException, SAXException, ParserConfigurationException {
-        //TODO working with date comparison instead of using the last x days
-        String expression = "/HealthData/Record[(@type = 'HKCategoryTypeIdentifierSleepAnalysis') and position()>last()-" + lastXDays + "]";
-        NodeList nl = (NodeList) xPath.compile(expression).evaluate(xmlDocument, XPathConstants.NODESET);
-        //return Integer.toString(nodeList.getLength());
-        int length = nl.getLength();
-        for (int i = 0; i < length; i++) {
-            if (nl.item(i).getNodeType() == Node.ELEMENT_NODE) {
-                lastDaysActivity.add(nodeToActivityDataObj(nl.item(i)));
+        for (int i = 0; i < lastXDays; i++) {
+            String Date = getDayMinusXasString(i);
+            String expression = "/HealthData/Record[(@type = 'HKQuantityTypeIdentifierStepCount') and number(translate(substring(/HealthData/Record/@startDate, 0,11),'-',''))="+Date+"]";
+            NodeList nl = (NodeList) xPath.compile(expression).evaluate(xmlDocument_ext, XPathConstants.NODESET);
+            if(nl.getLength()>0) {
+                if (nl.item(0).getNodeType() == Node.ELEMENT_NODE) {
+                    lastDaysStepActivity.add(nodeToSleepDataObj(nl));
+                }
+            }
+            else{
+                lastDaysStepActivity.add(new StepActivityData(null));
             }
         }
         return lastDaysActivity;                                                                                                                   }
@@ -92,11 +132,11 @@ public class HealthData {
     public String getExportDate() throws XPathExpressionException {
         String expression = "/HealthData/ExportDate/@value";
         //read an xml node using xpath
-        Node node = (Node) this.xPath.compile(expression).evaluate(this.xmlDocument, XPathConstants.NODE);
+        Node node = (Node) this.xPath.compile(expression).evaluate(this.xmlDocument_ext, XPathConstants.NODE);
         return nodeToString(node);
     }
 
-    public String nodeToString(Node node) {
+    private String nodeToString(Node node) {
         StringWriter sw = new StringWriter();
         try {
             Transformer t = TransformerFactory.newInstance().newTransformer();
@@ -108,13 +148,37 @@ public class HealthData {
         }
         return sw.toString();
     }
-    public SleepData nodeToSleepDataObj(Node node) throws ParserConfigurationException, SAXException, XPathExpressionException, IOException {
-        return new SleepData(nodeToString(node));
-    }
-    public ActivityData nodeToActivityDataObj(Node node) throws ParserConfigurationException, SAXException, XPathExpressionException, IOException {
-        return new ActivityData(nodeToString(node));
-    }
+    public SleepData nodeToSleepDataObj(NodeList nl) throws ParserConfigurationException, SAXException, XPathExpressionException, IOException {
+        List<Node> nodes = new ArrayList<>();
+        int length = nl.getLength();
 
+        for (int i = 0; i < length; i++) {
+            if (nl.item(i).getNodeType() == Node.ELEMENT_NODE) {
+                nodes.add(nl.item(i));
+            }
+        }
+        return new SleepData(nodes);
+    }
+    public StepActivityData nodeToStepActivityDataObj(NodeList nl) throws ParserConfigurationException, SAXException, XPathExpressionException, IOException {
+        List<Node> nodes = new ArrayList<>();
+        int length = nl.getLength();
+
+        for (int i = 0; i < length; i++) {
+            if (nl.item(i).getNodeType() == Node.ELEMENT_NODE) {
+                nodes.add(nl.item(i));
+            }
+        }
+        return new StepActivityData(nodes);
+    }
+    private Date dayMinusX(int x) {
+        final Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.DATE, -x);
+        return cal.getTime();
+    }
+    private String getDayMinusXasString(int x) {
+        DateFormat dateFormat = new SimpleDateFormat("yyyyddMM");
+        return dateFormat.format(dayMinusX(x));
+    }
 }
 
 
