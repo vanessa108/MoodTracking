@@ -80,14 +80,13 @@
 
     <ImageButton
         android:id="@+id/editPenButton"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginStart="102dp"
-        android:layout_marginTop="4dp"
-        android:layout_marginEnd="0dp"
-        android:layout_toEndOf="@+id/date"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:background="@android:color/transparent"
         android:scaleType="centerCrop"
         app:srcCompat="@drawable/edit_pen" />
 
