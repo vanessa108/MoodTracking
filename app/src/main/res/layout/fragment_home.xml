@@ -66,10 +66,10 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/neutralButton"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="100dp"
+        android:layout_marginBottom="80dp"
+        android:fontFamily="sans-serif-medium"
         android:text="How did you feel today?"
-        android:textSize="24sp"
-        android:textStyle="bold" />
+        android:textSize="30sp" />
 
     <ImageButton
         android:id="@+id/infoButton"
