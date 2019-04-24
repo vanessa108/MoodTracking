@@ -7,15 +7,21 @@ import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.RectF;
+import android.media.Image;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.LinearInterpolator;
+import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
@@ -24,10 +30,11 @@ import java.util.List;
 
 public class StatsFragment extends Fragment {
 
-    private float rotation = -45F;
+    private float rotation = 45F;
     Bitmap supsadExBMP;
-    int supsadExBmpWidth, supsadExBmpHeight;
-    ImageView supsadExercise;
+    int supsadExBmpWidth, supsadExBmpHeight, arrow_x, arrow_y;
+    ImageView supsadExercise, sadExercise, neutralExercise, happyExercise,suphappyExercise;
+    ImageView supsadSleep, sadSleep, neutralSleep, happySleep, suphappySleep;
 
     @Nullable
     @Override
@@ -35,36 +42,49 @@ public class StatsFragment extends Fragment {
         final RelativeLayout relativeLayout = (RelativeLayout) inflater.inflate(R.layout.fragment_stats, container, false);
 
         supsadExercise = (ImageView) relativeLayout.findViewById(R.id.supsadExercise);
-        supsadExBMP =  BitmapFactory.decodeResource(getContext().getResources(), R.drawable.arrow);
-        supsadExBmpHeight = supsadExBMP.getHeight();
-        supsadExBmpWidth = supsadExBMP.getWidth();
+        sadExercise = (ImageView) relativeLayout.findViewById(R.id.sadExercise);
+        neutralExercise = (ImageView) relativeLayout.findViewById(R.id.neutralExercise);
+        happyExercise = (ImageView) relativeLayout.findViewById(R.id.happyExercise);
+        suphappyExercise = (ImageView) relativeLayout.findViewById(R.id.suphappyExercise);
+
+        supsadSleep = (ImageView) relativeLayout.findViewById(R.id.supsadSleep);
+        sadSleep = (ImageView) relativeLayout.findViewById(R.id.sadSleep);
+        neutralSleep = (ImageView) relativeLayout.findViewById(R.id.neutralSleep);
+        happySleep = (ImageView) relativeLayout.findViewById(R.id.happySleep);
+        suphappySleep = (ImageView) relativeLayout.findViewById(R.id.suphappySleep);
 
 
-        drawMatrix();
+
+
+        rotateArrow(-42f, supsadExercise);
+        rotateArrow(28, sadExercise);
+        rotateArrow(-19, neutralExercise);
+        rotateArrow(-35, happyExercise);
+        rotateArrow(85, suphappyExercise);
+
+        rotateArrow(20f, supsadSleep);
+        rotateArrow(10f, sadSleep);
+        rotateArrow(-2f, neutralSleep);
+        rotateArrow(-40f, happySleep);
+        rotateArrow(89f, suphappySleep);
+
+
 
 
         return relativeLayout;
     }
 
-    private void drawMatrix() {
-        Matrix matrix = new Matrix();
-//        Matrix matrixb = new Matrix();
-//        Matrix matrixc = new Matrix();
+    private void rotateArrow(float rotation, ImageView emoji) {
 
-        matrix.postRotate(rotation);
-        //matrix.setRotate(rotation, supsadExBmpWidth/2, supsadExBmpHeight/2);
-//        matrix.setRotate(rotation, 100, bmpHeight);
-        //matrix.setTranslate(100, 0);
-//        matrix.setConcat(matrixb, matrixc);
+        RotateAnimation rotate = new RotateAnimation(0.0f, rotation, Animation.RELATIVE_TO_SELF, 0.5f,
+                Animation.RELATIVE_TO_SELF, 1.0f);
+        rotate.setInterpolator(new LinearInterpolator());
+        rotate.setDuration(0);
+        rotate.setFillAfter(true);
+        emoji.startAnimation(rotate);
 
-//        Bitmap targetBitmap = Bitmap.createBitmap(100, bmpHeight, bitmap.getConfig());
-//        Canvas canvas = new Canvas(targetBitmap);
-//        canvas.drawBitmap(bitmap, matrix, new Paint());
-//        arrowImage.setImageBitmap(targetBitmap);
 
-//
-        Bitmap rotatedBitmap = Bitmap.createBitmap(supsadExBMP, 0, 0, supsadExBmpWidth, supsadExBmpHeight, matrix, true);
-        supsadExercise.setImageBitmap(rotatedBitmap);
+
 
     }
 
