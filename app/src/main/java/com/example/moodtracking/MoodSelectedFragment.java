@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +23,9 @@ import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.formatter.IValueFormatter;
+import com.github.mikephil.charting.utils.ViewPortHandler;
 
 import org.w3c.dom.Node;
 
@@ -58,10 +62,11 @@ public class MoodSelectedFragment extends Fragment {
         final RelativeLayout relativeLayout = (RelativeLayout) inflater.inflate(R.layout.fragment_mood_selected, container, false);
 
         ImageView whichMood = (ImageView) relativeLayout.findViewById(R.id.selectedMoodIMG);
+        ImageView whichMood1 = (ImageView) relativeLayout.findViewById(R.id.selectedMoodIMG1);
         ImageButton editPen = (ImageButton) relativeLayout.findViewById(R.id.editPenButton);
         TextView whichMoodText = (TextView) relativeLayout.findViewById(R.id.textViewMood);
         TextView dateText = (TextView) relativeLayout.findViewById(R.id.date);
-        TextView dateText2 = (TextView) relativeLayout.findViewById(R.id.date2);
+        TextView dateText2 = (TextView) relativeLayout.findViewById(R.id.today);
         ProgressBar proBar = (ProgressBar) relativeLayout.findViewById(R.id.sleepCircle);
         BarChart barChart = (BarChart) relativeLayout.findViewById(R.id.barchart);
         TextView startSleep = (TextView) relativeLayout.findViewById(R.id.StartBedTime);
@@ -72,24 +77,27 @@ public class MoodSelectedFragment extends Fragment {
         TextView yesterdayText = (TextView) relativeLayout.findViewById(R.id.textViewYesterday);
 
         String date = new SimpleDateFormat("EEE dd/MM", Locale.getDefault()).format(new Date());
-
         dateText.setText(date);
-        dateText2.setText(date);
 
         if (selectedMood == 1) {
             whichMood.setImageResource(R.drawable.supersad);
             whichMoodText.setText("Awful");
+            whichMood1.setImageResource(R.drawable.supersad);
         } else if (selectedMood == 2) {
             whichMood.setImageResource(R.drawable.sad);
+            whichMood1.setImageResource(R.drawable.sad);
             whichMoodText.setText("Rough");
         } else if (selectedMood == 3) {
             whichMood.setImageResource(R.drawable.neutral);
+            whichMood1.setImageResource(R.drawable.neutral);
             whichMoodText.setText("Ok");
         } else if (selectedMood == 4) {
             whichMood.setImageResource(R.drawable.happy);
+            whichMood1.setImageResource(R.drawable.happy);
             whichMoodText.setText("Good");
         } else if (selectedMood == 5) {
             whichMood.setImageResource(R.drawable.superhappy);
+            whichMood1.setImageResource(R.drawable.superhappy);
             whichMoodText.setText("Awesome");
         }
 
@@ -149,24 +157,23 @@ public class MoodSelectedFragment extends Fragment {
         float twoDaysAgoSleepMins;
         float threeDaysAgoSleepMins;
 
-        InputStream is = getResources().openRawResource(R.raw.export);
-        HealthData hd = new HealthData(is);
+        InputStream exp = getResources().openRawResource(R.raw.export);
+        InputStream mod = getResources().openRawResource(R.raw.mooddata);
+        HealthData hd = new HealthData(exp,mod);
         List<extData> sd = null;
 
+        //TODO avoid casting from int to float and back
         try {
             sd = hd.getSleepData(4);
+            long temp1 = (long)sd.get(0).getValue();
+            long temp2 = (long)sd.get(1).getValue();
+            long temp3 = (long)sd.get(2).getValue();
+            long temp4 = (long)sd.get(3).getValue();
 
-            todaySleep = sd.get(0).getValue();
-            todaySleepMins = calcMinutes(todaySleep);
-
-            yesterdaySleep = sd.get(1).getValue();
-            yesterdaySleepMins = calcMinutes(yesterdaySleep);
-
-            twoDaysAgoSleep = sd.get(2).getValue();
-            twoDaysAgoSleepMins = calcMinutes(twoDaysAgoSleep);
-
-            threeDaysAgoSleep = sd.get(3).getValue();
-            threeDaysAgoSleepMins = calcMinutes(threeDaysAgoSleep);
+            todaySleepMins = (float)temp1;
+            yesterdaySleepMins = (float)temp2;
+            twoDaysAgoSleepMins = (float)temp3;
+            threeDaysAgoSleepMins = (float)temp4;
 
             barEntriesSleep.add(new BarEntry(0, threeDaysAgoSleepMins));
             barEntriesSleep.add(new BarEntry(1, twoDaysAgoSleepMins));
@@ -190,10 +197,14 @@ public class MoodSelectedFragment extends Fragment {
         BarDataSet barDataSetSleep = new BarDataSet(barEntriesSleep, "Sleep");
         barDataSetSleep.setColors(Color.rgb(136, 139, 221));
 
+        barDataSetSleep.setValueFormatter(new SleepValueFormatter());
+
         barDataSetExercise.setValueTextSize(14f);
         barDataSetSleep.setValueTextSize(14f);
 
         BarData data = new BarData(barDataSetExercise, barDataSetSleep);
+
+
 
         float groupSpace = 0.5f;
         float barSpace = 0.13f;
@@ -223,13 +234,16 @@ public class MoodSelectedFragment extends Fragment {
 
         barChart.invalidate();
 
+        String today = new SimpleDateFormat("dd/MM", Locale.getDefault()).format(new Date());
+        dateText2.setText("Today " + today);
+
         Calendar cal = Calendar.getInstance();
         DateFormat dateFormat = new SimpleDateFormat("EEE dd/MM");
         cal.add(Calendar.DATE, -1);
         yesterdayText.setText(dateFormat.format(cal.getTime()));
 
         Calendar cal2 = Calendar.getInstance();
-        cal.add(Calendar.DATE, - 2);
+        cal2.add(Calendar.DATE, - 2);
         twoDaysAgoText.setText(dateFormat.format(cal2.getTime()));
 
         Calendar cal3 = Calendar.getInstance();
@@ -278,6 +292,7 @@ public class MoodSelectedFragment extends Fragment {
         return Long.toString(diffHours)+"h "+Long.toString(diffMinutes)+"m";
 
     }
+
     private String getTime(Date in){
         String formattedDate = new SimpleDateFormat("HH:mm").format(in);
         return formattedDate;
@@ -307,6 +322,19 @@ public class MoodSelectedFragment extends Fragment {
         float totalMins = hours * 60f + mins;
 
         return totalMins;
+    }
+
+    public class SleepValueFormatter implements IValueFormatter
+    {
+        @Override
+        public String getFormattedValue(float value, Entry entry, int dataSetIndex, ViewPortHandler viewPortHandler)
+        {
+            int totalMins = Math.round(value);
+            int diffHours = totalMins/ 60;
+            int diffMinutes = totalMins - (diffHours * 60);
+
+            return diffHours + "h "+ diffMinutes +"m";
+        }
     }
 
 }
