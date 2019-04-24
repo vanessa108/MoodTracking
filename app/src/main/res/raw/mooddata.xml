@@ -1,171 +1,62 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <root>
-    <row>
-        <DateTime>2019-02-24 23:56:00</DateTime>
-        <Mood></Mood>
-    </row>
-    <row>
-        <DateTime>2019-02-25 23:19:04</DateTime>
-        <Mood></Mood>
-    </row>
-    <row>
-        <DateTime>2019-02-26 22:51:31</DateTime>
-        <Mood></Mood>
-    </row>
-    <row>
-        <DateTime>2019-02-27 23:02:28</DateTime>
-        <Mood></Mood>
-    </row>
-    <row>
-        <DateTime>2019-02-28 23:11:58</DateTime>
-        <Mood></Mood>
-    </row>
-    <row>
-        <DateTime>2019-03-01 23:13:37</DateTime>
-        <Mood></Mood>
-    </row>
-    <row>
-        <DateTime>2019-03-02 22:11:13</DateTime>
-        <Mood></Mood>
-    </row>
-    <row>
-        <DateTime>2019-03-03 23:27:19</DateTime>
-        <Mood></Mood>
-    </row>
-    <row>
-        <DateTime>2019-03-04 23:16:22</DateTime>
-        <Mood></Mood>
-    </row>
-    <row>
-        <DateTime>2019-03-05 23:16:22</DateTime>
-        <Mood></Mood>
-    </row>
-    <row>
-        <DateTime>2019-03-06 00:12:54</DateTime>
-        <Mood></Mood>
-    </row>
-    <row>
-        <DateTime>2019-03-07 22:55:39</DateTime>
-        <Mood></Mood>
-    </row>
-    <row>
-        <DateTime>2019-03-08 23:24:19</DateTime>
-        <Mood></Mood>
-    </row>
-    <row>
-        <DateTime>2019-03-09 22:48:05</DateTime>
-        <Mood></Mood>
-    </row>
-    <row>
-        <DateTime>2019-03-10 23:09:07</DateTime>
-        <Mood></Mood>
-    </row>
-    <row>
-        <DateTime>2019-03-11 23:09:07</DateTime>
-        <Mood></Mood>
-    </row>
-    <row>
-        <DateTime>2019-03-12 23:09:07</DateTime>
-        <Mood></Mood>
-    </row>
-    <row>
-        <DateTime>2019-03-13 01:06:21</DateTime>
-        <Mood></Mood>
-    </row>
-    <row>
-        <DateTime>2019-03-14 00:37:11</DateTime>
-        <Mood></Mood>
-    </row>
-    <row>
-        <DateTime>2019-03-15 22:37:39</DateTime>
-        <Mood></Mood>
-    </row>
-    <row>
-        <DateTime>2019-03-16 01:25:37</DateTime>
-        <Mood></Mood>
-    </row>
-    <row>
-        <DateTime>2019-03-17 23:59:47</DateTime>
-        <Mood></Mood>
-    </row>
-    <row>
-        <DateTime>2019-03-18 23:17:25</DateTime>
-        <Mood></Mood>
-    </row>
-    <row>
-        <DateTime>2019-03-19 22:30:20</DateTime>
-        <Mood></Mood>
-    </row>
-    <row>
-        <DateTime>2019-03-20 23:13:33</DateTime>
-        <Mood></Mood>
-    </row>
-    <row>
-        <DateTime>2019-03-21 00:26:20</DateTime>
-        <Mood>3</Mood>
-    </row>
-    <row>
-        <DateTime>2019-03-22 23:50:09</DateTime>
-        <Mood>4</Mood>
-    </row>
-    <row>
-        <DateTime>2019-03-23 23:28:52</DateTime>
-        <Mood>4</Mood>
-    </row>
-    <row>
-        <DateTime>2019-03-24 23:28:52</DateTime>
-        <Mood>4</Mood>
-    </row>
-    <row>
-        <DateTime>2019-03-25 21:21:30</DateTime>
-        <Mood>2</Mood>
-    </row>
-    <row>
-        <DateTime>2019-03-26 22:29:01</DateTime>
-        <Mood>4</Mood>
-    </row>
-    <row>
-        <DateTime>2019-03-27 22:49:11</DateTime>
-        <Mood>3</Mood>
-    </row>
-    <row>
-        <DateTime>2019-03-28 21:40:39</DateTime>
-        <Mood>3</Mood>
-    </row>
-    <row>
-        <DateTime>2019-03-29 22:50:26</DateTime>
-        <Mood>3</Mood>
-    </row>
-    <row>
-        <DateTime>2019-03-30 23:25:53</DateTime>
-        <Mood>4</Mood>
-    </row>
-    <row>
-        <DateTime>2019-03-31 22:55:22</DateTime>
-        <Mood>5</Mood>
-    </row>
-    <row>
-        <DateTime>2019-04-01 22:52:30</DateTime>
-        <Mood>2</Mood>
-    </row>
-    <row>
-        <DateTime>2019-04-02 23:27:43</DateTime>
-        <Mood>3</Mood>
-    </row>
-    <row>
-        <DateTime>2019-04-03 22:28:28</DateTime>
-        <Mood>3</Mood>
-    </row>
-    <row>
-        <DateTime>2019-04-04 23:26:13</DateTime>
-        <Mood>3</Mood>
-    </row>
-    <row>
-        <DateTime>2019-04-05 22:58:56</DateTime>
-        <Mood>4</Mood>
-    </row>
-    <row>
-        <DateTime>2019-04-06 20:58:56</DateTime>
-        <Mood>4</Mood>
-    </row>
+    <row DateTime="2019-02-24 23:56:00" Mood=""></row>
+    <row DateTime="2019-02-25 23:19:04" Mood=""></row>
+    <row DateTime="2019-02-26 22:51:31" Mood=""></row>
+    <row DateTime="2019-02-27 23:02:28" Mood=""></row>
+    <row DateTime="2019-02-28 23:11:58" Mood=""></row>
+    <row DateTime="2019-03-01 23:13:37" Mood=""></row>
+    <row DateTime="2019-03-02 22:11:13" Mood=""></row>
+    <row DateTime="2019-03-03 23:27:19" Mood=""></row>
+    <row DateTime="2019-03-04 23:16:22" Mood=""></row>
+    <row DateTime="2019-03-05 23:16:22" Mood=""></row>
+    <row DateTime="2019-03-06 00:12:54" Mood=""></row>
+    <row DateTime="2019-03-07 22:55:39" Mood=""></row>
+    <row DateTime="2019-03-08 23:24:19" Mood=""></row>
+    <row DateTime="2019-03-09 22:48:05" Mood=""></row>
+    <row DateTime="2019-03-10 23:09:07" Mood=""></row>
+    <row DateTime="2019-03-11 23:09:07" Mood=""></row>
+    <row DateTime="2019-03-12 23:09:07" Mood=""></row>
+    <row DateTime="2019-03-13 01:06:21" Mood=""></row>
+    <row DateTime="2019-03-14 00:37:11" Mood=""></row>
+    <row DateTime="2019-03-15 22:37:39" Mood=""></row>
+    <row DateTime="2019-03-16 01:25:37" Mood=""></row>
+    <row DateTime="2019-03-17 23:59:47" Mood=""></row>
+    <row DateTime="2019-03-18 23:17:25" Mood=""></row>
+    <row DateTime="2019-03-19 22:30:20" Mood=""></row>
+    <row DateTime="2019-03-20 23:13:33" Mood=""></row>
+    <row DateTime="2019-03-21 00:26:20" Mood="3"></row>
+    <row DateTime="2019-03-22 23:50:09" Mood="4"></row>
+    <row DateTime="2019-03-23 23:28:52" Mood="4"></row>
+    <row DateTime="2019-03-24 23:28:52" Mood="4"></row>
+    <row DateTime="2019-03-25 21:21:30" Mood="2"></row>
+    <row DateTime="2019-03-26 22:29:01" Mood="4"></row>
+    <row DateTime="2019-03-27 22:49:11" Mood="3"></row>
+    <row DateTime="2019-03-28 21:40:39" Mood="3"></row>
+    <row DateTime="2019-03-29 22:50:26" Mood="3"></row>
+    <row DateTime="2019-03-30 23:25:53" Mood="4"></row>
+    <row DateTime="2019-03-31 22:55:22" Mood="5"></row>
+    <row DateTime="2019-04-01 22:52:30" Mood="2"></row>
+    <row DateTime="2019-04-02 23:27:43" Mood="3"></row>
+    <row DateTime="2019-04-03 22:28:28" Mood="3"></row>
+    <row DateTime="2019-04-04 23:26:13" Mood="3"></row>
+    <row DateTime="2019-04-05 22:58:56" Mood="4"></row>
+    <row DateTime="2019-04-06 20:58:56" Mood="4"></row>
+    <row DateTime="2019-04-07 20:58:56" Mood="3"></row>
+    <row DateTime="2019-04-08 20:58:56" Mood="3"></row>
+    <row DateTime="2019-04-09 20:58:56" Mood="4"></row>
+    <row DateTime="2019-04-10 20:58:56" Mood="2"></row>
+    <row DateTime="2019-04-11 20:58:56" Mood="3"></row>
+    <row DateTime="2019-04-12 20:58:56" Mood="3"></row>
+    <row DateTime="2019-04-13 20:58:56" Mood="3"></row>
+    <row DateTime="2019-04-14 20:58:56" Mood="4"></row>
+    <row DateTime="2019-04-15 20:58:56" Mood="4"></row>
+    <row DateTime="2019-04-16 20:58:56" Mood="4"></row>
+    <row DateTime="2019-04-17 20:58:56" Mood="4"></row>
+    <row DateTime="2019-04-18 20:58:56" Mood="4"></row>
+    <row DateTime="2019-04-19 20:58:56" Mood="4"></row>
+    <row DateTime="2019-04-20 20:58:56" Mood="4"></row>
+    <row DateTime="2019-04-21 20:58:56" Mood="1"></row>
+    <row DateTime="2019-04-22 20:58:56" Mood="3"></row>
+    <row DateTime="2019-04-23 20:58:56" Mood="5"></row>
 </root>

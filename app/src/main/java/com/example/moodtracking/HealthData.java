@@ -4,6 +4,8 @@
 //TODO build a model that get minutes of activity by day
 package com.example.moodtracking;
 
+import android.util.Log;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -75,7 +77,7 @@ public class HealthData {
             NodeList nl = (NodeList) xPath.compile(expression).evaluate(xmlDocument_ext, XPathConstants.NODESET);
             if(nl.getLength()>0) {
                 if (nl.item(0).getNodeType() == Node.ELEMENT_NODE) {
-                    lastDaysSleep.add(nodeToStepActivityDataObj(nl));
+                    lastDaysSleep.add(new SleepData(nodeListTOList(nl)));
                 }
             }
             else{
@@ -109,7 +111,7 @@ public class HealthData {
             NodeList nl = (NodeList) xPath.compile(expression).evaluate(xmlDocument_ext, XPathConstants.NODESET);
             if(nl.getLength()>0) {
                 if (nl.item(0).getNodeType() == Node.ELEMENT_NODE) {
-                    lastDaysStepActivity.add(nodeToSleepDataObj(nl));
+                    lastDaysStepActivity.add(new StepActivityData(nodeListTOList(nl)));
                 }
             }
             else{
@@ -118,21 +120,47 @@ public class HealthData {
         }
         return lastDaysActivity;                                                                                                                   }
      
-    public void getActivityData() {
-    //TODO needs to be implemented
+    public List<extData> getMoodData(int lastXDays) throws XPathExpressionException, IOException, SAXException, ParserConfigurationException {
+        for (int i = 0; i < lastXDays; i++) {
+            String Date = getDayMinusXasString(i);
+            Log.d("Date",Date);
+            String expression = "//*[number(translate(substring(@DateTime, 0,11),'-',''))="+Date+"]";
+            Log.d("exp",expression);
+            NodeList nl = (NodeList) xPath.compile(expression).evaluate(xmlDocument_mod, XPathConstants.NODESET);
+            if(nl.getLength()>0) {
+                if (nl.item(0).getNodeType() == Node.ELEMENT_NODE) {
+                    lastDaysMood.add(new MoodData(nodeListTOList(nl)));
+                }
+            }
+            else{
+                lastDaysMood.add(new MoodData(null));
+            }
+        }
+        return lastDaysMood;
     }
 
-    public void combineStepsActivity() {
-    //TODO needs to be implemented
+
+    private List<Node> nodeListTOList(NodeList nl){
+        List<Node> nodes = new ArrayList<>();
+        int length = nl.getLength();
+        for (int i = 0; i < length; i++) {
+            if (nl.item(i).getNodeType() == Node.ELEMENT_NODE) {
+                nodes.add(nl.item(i));
+            }
+        }
+        return nodes;
     }
 
-    public String getExportDate() throws XPathExpressionException {
-        String expression = "/HealthData/ExportDate/@value";
-        //read an xml node using xpath
-        Node node = (Node) this.xPath.compile(expression).evaluate(this.xmlDocument_ext, XPathConstants.NODE);
-        return nodeToString(node);
+    /*Help functions*/
+    private Date dayMinusX(int x) {
+        final Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.DATE, -x);
+        return cal.getTime();
     }
-
+    private String getDayMinusXasString(int x) {
+        DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
+        return dateFormat.format(dayMinusX(x));
+    }
     private String nodeToString(Node node) {
         StringWriter sw = new StringWriter();
         try {
@@ -144,37 +172,6 @@ public class HealthData {
             System.out.println("nodeToString Transformer Exception");
         }
         return sw.toString();
-    }
-    public SleepData nodeToSleepDataObj(NodeList nl) throws ParserConfigurationException, SAXException, XPathExpressionException, IOException {
-        List<Node> nodes = new ArrayList<>();
-        int length = nl.getLength();
-
-        for (int i = 0; i < length; i++) {
-            if (nl.item(i).getNodeType() == Node.ELEMENT_NODE) {
-                nodes.add(nl.item(i));
-            }
-        }
-        return new SleepData(nodes);
-    }
-    public StepActivityData nodeToStepActivityDataObj(NodeList nl) throws ParserConfigurationException, SAXException, XPathExpressionException, IOException {
-        List<Node> nodes = new ArrayList<>();
-        int length = nl.getLength();
-
-        for (int i = 0; i < length; i++) {
-            if (nl.item(i).getNodeType() == Node.ELEMENT_NODE) {
-                nodes.add(nl.item(i));
-            }
-        }
-        return new StepActivityData(nodes);
-    }
-    private Date dayMinusX(int x) {
-        final Calendar cal = Calendar.getInstance();
-        cal.add(Calendar.DATE, -x);
-        return cal.getTime();
-    }
-    private String getDayMinusXasString(int x) {
-        DateFormat dateFormat = new SimpleDateFormat("yyyyddMM");
-        return dateFormat.format(dayMinusX(x));
     }
 }
 

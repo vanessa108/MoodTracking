@@ -14,6 +14,7 @@ import java.io.StringWriter;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -31,8 +32,8 @@ import javax.xml.xpath.XPathFactory;
 public abstract class extData<T,K> {
     List<Node> nodes;
     String xml;
-    Date startDate;
-    Date endDate;
+    Date startDate = new Date();
+    Date endDate = new Date();
     Document document;
     public extData(List<Node> nodes) throws ParserConfigurationException, SAXException, XPathExpressionException, IOException {
         nodes = nodes;
@@ -53,13 +54,13 @@ public abstract class extData<T,K> {
     }
     public abstract K getValue();
     public abstract void calcValue() throws ParserConfigurationException, SAXException, XPathExpressionException, IOException;
-    public String getStartDate(){
-        String formattedDate = new SimpleDateFormat("dd-MM-yy").format(startDate);
-        return formattedDate;
+    public Date getStartDate(){
+        //String formattedDate = new SimpleDateFormat("dd-MM-yy").format(startDate);
+        return startDate;
     }
-    public String getEndDate(){
-        String formattedDate = new SimpleDateFormat("dd-MM-yy").format(endDate);
-        return formattedDate;
+    public Date getEndDate(){
+        //String formattedDate = new SimpleDateFormat("dd-MM-yy").format(endDate);
+        return endDate;
     }
 }
 
@@ -121,8 +122,8 @@ class SleepData extends extData<Boolean,Long>{
 class StepActivityData extends extData<Long,String>{
     private String stepAmount;
     private String stepActivityMin;
-    int stepamount=0;
-    long activityTime = 0;
+    private int stepamount=0;
+    private long activityTime = 0;
 
 
     public StepActivityData(List<Node> nodes) throws ParserConfigurationException, SAXException, XPathExpressionException, IOException {
@@ -188,20 +189,45 @@ class StepActivityData extends extData<Long,String>{
         Log.d("Count",Integer.toString(stepamount));
     }
 }
-class MoodData extends extData<String,String>{
+class MoodData extends extData<String,Integer>{
+    int mood = 999;
     public MoodData(List<Node> nodes) throws ParserConfigurationException, SAXException, XPathExpressionException, IOException {
         super(nodes);
+        if(nodes!=null){
+            parseXML(super.nodeToString(nodes.get(0)));
+        }
     }
 
     @Override
-    public String parseXML(String xml) {
-        return null;
+    public String parseXML(String xml) throws ParserConfigurationException, IOException, SAXException, XPathExpressionException {
+        InputSource source = new InputSource(new StringReader(xml));
+
+        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+        DocumentBuilder db = dbf.newDocumentBuilder();
+        document = db.parse(source);
+
+        XPathFactory xpathFactory = XPathFactory.newInstance();
+        XPath xpath = xpathFactory.newXPath();
+
+        String date1 = xpath.evaluate("/row/@DateTime", document);
+        mood = Integer.parseInt(xpath.evaluate("/row/@Mood", document));
+
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss Z");
+
+        try {
+            startDate = format.parse(date1);
+            endDate = format.parse(date1);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+
+        }
+        return "";
     }
 
-    public String getValue(){
-       return "MoodData";
+    public Integer getValue(){
+        return mood;
     }
-    public void calcValue(){
-    }
+    public void calcValue(){}
 }
 

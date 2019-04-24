@@ -38,10 +38,13 @@ import java.io.StringWriter;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Calendar;
+import java.util.Map;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.OutputKeys;
@@ -63,11 +66,30 @@ public class MoodSelectedFragment extends Fragment {
 
         ImageView whichMood = (ImageView) relativeLayout.findViewById(R.id.selectedMoodIMG);
         ImageView whichMood1 = (ImageView) relativeLayout.findViewById(R.id.selectedMoodIMG1);
+        ImageView whichMood2 = (ImageView) relativeLayout.findViewById(R.id.selectedMoodIMG2);
+        ImageView whichMood3 = (ImageView) relativeLayout.findViewById(R.id.selectedMoodIMG3);
+        ImageView whichMood4 = (ImageView) relativeLayout.findViewById(R.id.selectedMoodIMG4);
+        List<ImageView> wMood = Arrays.asList(whichMood2,whichMood3,whichMood4);
         ImageButton editPen = (ImageButton) relativeLayout.findViewById(R.id.editPenButton);
         TextView whichMoodText = (TextView) relativeLayout.findViewById(R.id.textViewMood);
         TextView dateText = (TextView) relativeLayout.findViewById(R.id.date);
         TextView dateText2 = (TextView) relativeLayout.findViewById(R.id.today);
         ProgressBar proBar = (ProgressBar) relativeLayout.findViewById(R.id.sleepCircle);
+        ProgressBar proBar1 = (ProgressBar) relativeLayout.findViewById(R.id.sleepCircle1);
+        ProgressBar proBar2 = (ProgressBar) relativeLayout.findViewById(R.id.sleepCircle2);
+        ProgressBar proBar3 = (ProgressBar) relativeLayout.findViewById(R.id.sleepCircle3);
+        ProgressBar proBar4 = (ProgressBar) relativeLayout.findViewById(R.id.sleepCircle4);
+        List<ProgressBar> sProBar = Arrays.asList(proBar1,proBar2,proBar3,proBar4);
+        TextView startSleep1 = (TextView) relativeLayout.findViewById(R.id.StartBedTime1);
+        TextView startSleep2 = (TextView) relativeLayout.findViewById(R.id.StartBedTime2);
+        TextView startSleep3 = (TextView) relativeLayout.findViewById(R.id.StartBedTime3);
+        TextView startSleep4 = (TextView) relativeLayout.findViewById(R.id.StartBedTime4);
+        List<TextView> sSleep = Arrays.asList(startSleep1,startSleep2,startSleep3,startSleep4);
+        TextView endSleep1 = (TextView) relativeLayout.findViewById(R.id.EndBedTime1);
+        TextView endSleep2 = (TextView) relativeLayout.findViewById(R.id.EndBedTime2);
+        TextView endSleep3 = (TextView) relativeLayout.findViewById(R.id.EndBedTime3);
+        TextView endSleep4 = (TextView) relativeLayout.findViewById(R.id.EndBedTime4);
+        List<TextView> eSleep = Arrays.asList(endSleep1,endSleep2,endSleep3,endSleep4);
         BarChart barChart = (BarChart) relativeLayout.findViewById(R.id.barchart);
         TextView startSleep = (TextView) relativeLayout.findViewById(R.id.StartBedTime);
         TextView endSleep = (TextView) relativeLayout.findViewById(R.id.EndBedTime);
@@ -78,6 +100,16 @@ public class MoodSelectedFragment extends Fragment {
 
         String date = new SimpleDateFormat("EEE dd/MM", Locale.getDefault()).format(new Date());
         dateText.setText(date);
+
+        Map mood = new HashMap();
+        mood.put(1, R.drawable.supersad);
+        mood.put(2, R.drawable.sad);
+        mood.put(3, R.drawable.neutral);
+        mood.put(4, R.drawable.happy);
+        mood.put(5, R.drawable.superhappy);
+        //TODO change to no Data smiley
+        mood.put(999,R.drawable.edit_pen);
+
 
         if (selectedMood == 1) {
             whichMood.setImageResource(R.drawable.supersad);
@@ -161,24 +193,56 @@ public class MoodSelectedFragment extends Fragment {
         InputStream mod = getResources().openRawResource(R.raw.mooddata);
         HealthData hd = new HealthData(exp,mod);
         List<extData> sd = null;
+        List<extData> md = null;
 
         //TODO avoid casting from int to float and back
         try {
-            sd = hd.getSleepData(4);
-            long temp1 = (long)sd.get(0).getValue();
-            long temp2 = (long)sd.get(1).getValue();
-            long temp3 = (long)sd.get(2).getValue();
-            long temp4 = (long)sd.get(3).getValue();
+            int lastdays = 4;
+            //Sleep data
+            sd = hd.getSleepData(lastdays);
+            md = hd.getMoodData(lastdays);
 
-            todaySleepMins = (float)temp1;
-            yesterdaySleepMins = (float)temp2;
-            twoDaysAgoSleepMins = (float)temp3;
-            threeDaysAgoSleepMins = (float)temp4;
+            /*long stemp1 = (long)sd.get(0).getValue();
+            long stemp2 = (long)sd.get(1).getValue();
+            long stemp3 = (long)sd.get(2).getValue();
+            long stemp4 = (long)sd.get(3).getValue();
+
+            todaySleepMins = (float)stemp1;
+            yesterdaySleepMins = (float)stemp2;
+            twoDaysAgoSleepMins = (float)stemp3;
+            threeDaysAgoSleepMins = (float)stemp4;
 
             barEntriesSleep.add(new BarEntry(0, threeDaysAgoSleepMins));
             barEntriesSleep.add(new BarEntry(1, twoDaysAgoSleepMins));
             barEntriesSleep.add(new BarEntry(2, yesterdaySleepMins));
             barEntriesSleep.add(new BarEntry(3, todaySleepMins));
+            */
+            for(int i = 0;i<lastdays;i++){
+                //SleepData
+                long stemp = (long)sd.get(i).getValue();
+                barEntriesSleep.add(new BarEntry(i, (float)stemp));
+                Date temp_start = (Date)sd.get(i).getStartDate();
+                Date temp_end   = (Date)sd.get(i).getStartDate();
+                setSleepCycleView(temp_start,temp_end,sSleep.get(i),eSleep.get(i),sProBar.get(i));
+                //MoodData
+                if(i>0){
+                    int k = i-1;
+                    int mtemp = (int)md.get(i).getValue();
+                    Log.d("Mood",Integer.toString(mtemp));
+                    setMoodView(mtemp,wMood.get(k));
+                }
+            }
+            /*MoodData
+            md = hd.getMoodData(lastdays);
+
+            int mtemp2 = (int)md.get(1).getValue();
+            int mtemp3 = (int)md.get(2).getValue();
+            int mtemp4 = (int)md.get(3).getValue();
+            setMoodView(mtemp2,whichMood2);
+            setMoodView(mtemp3,whichMood3);
+            setMoodView(mtemp4,whichMood4);
+            */
+
 
         } catch (XPathExpressionException e) {
             e.printStackTrace();
@@ -279,8 +343,10 @@ public class MoodSelectedFragment extends Fragment {
         long diff = end.getTime() - start.getTime();
         /** remove the milliseconds part */
         diff = diff / 1000;
+        Log.d("Diff",String.valueOf(diff));
         long hours = diff / (60 * 60) % 24;
         long percentage = hours/12;
+        Log.d("percentage",String.valueOf(percentage));
         return (int)percentage;
     }
     private String getSleepTime(Date start,Date end){
@@ -336,5 +402,25 @@ public class MoodSelectedFragment extends Fragment {
             return diffHours + "h "+ diffMinutes +"m";
         }
     }
-
+    private void setMoodView(int mood,ImageView iv){
+        if (mood == 1) {
+        iv.setImageResource(R.drawable.supersad);
+    } else if (mood == 2) {
+        iv.setImageResource(R.drawable.sad);
+    } else if (mood == 3) {
+        iv.setImageResource(R.drawable.neutral);
+    } else if (mood == 4) {
+        iv.setImageResource(R.drawable.happy);
+    } else if (mood == 5) {
+        iv.setImageResource(R.drawable.superhappy);
+    } else if (mood ==999){
+        iv.setImageResource(R.drawable.edit_pen);
+        }
+    }
+    private void setSleepCycleView(Date start,Date end,TextView startText,TextView endText,ProgressBar probar){
+        startText.setText(getTime(start));
+        endText.setText(getTime(end));
+        probar.setSecondaryProgress(calcProgress(start,end));
+        probar.setRotation(calcStartAngleProgressBar(start));
+    }
 }
