@@ -171,16 +171,9 @@ public class MoodSelectedFragment extends Fragment {
             long temp4 = (long)sd.get(3).getValue();
 
             todaySleepMins = (float)temp1;
-            todaySleep = getSleepTime(temp1);
-
             yesterdaySleepMins = (float)temp2;
-            yesterdaySleep = getSleepTime(temp2);
-
             twoDaysAgoSleepMins = (float)temp3;
-            twoDaysAgoSleep = getSleepTime(temp3);
-
             threeDaysAgoSleepMins = (float)temp4;
-            threeDaysAgoSleep = getSleepTime(temp4);
 
             barEntriesSleep.add(new BarEntry(0, threeDaysAgoSleepMins));
             barEntriesSleep.add(new BarEntry(1, twoDaysAgoSleepMins));
@@ -299,14 +292,7 @@ public class MoodSelectedFragment extends Fragment {
         return Long.toString(diffHours)+"h "+Long.toString(diffMinutes)+"m";
 
     }
-    private String getSleepTime(long diff){
-        /** remove the milliseconds part */
-        diff = diff / 1000;
-        long diffMinutes = diff / (60 ) % 60;
-        long diffHours = diff / (60 * 60 );
-        return Long.toString(diffHours)+"h "+Long.toString(diffMinutes)+"m";
 
-    }
     private String getTime(Date in){
         String formattedDate = new SimpleDateFormat("HH:mm").format(in);
         return formattedDate;
