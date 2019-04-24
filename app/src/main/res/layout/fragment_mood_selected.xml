@@ -104,14 +104,14 @@
         android:id="@+id/textViewToday"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:srcCompat="@drawable/neutral"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginStart="27dp"
+        android:layout_marginStart="20dp"
         android:layout_marginTop="13dp"
         android:text="TODAY"
         android:textSize="24sp"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        app:srcCompat="@drawable/neutral" />
 
     <ProgressBar
         android:id="@+id/sleepCircle"
@@ -161,13 +161,14 @@
         android:layout_marginTop="112dp"
         android:layout_marginLeft="-23dp"
         android:layout_gravity="right"/>
+
     <TextView
         android:id="@+id/textViewLastDays"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginStart="26dp"
+        android:layout_marginStart="20dp"
         android:layout_marginTop="218dp"
         android:text="LAST DAYS"
         android:textSize="24sp"

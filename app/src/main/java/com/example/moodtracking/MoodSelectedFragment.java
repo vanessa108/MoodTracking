@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +23,9 @@ import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.formatter.IValueFormatter;
+import com.github.mikephil.charting.utils.ViewPortHandler;
 
 import org.w3c.dom.Node;
 
@@ -190,10 +194,14 @@ public class MoodSelectedFragment extends Fragment {
         BarDataSet barDataSetSleep = new BarDataSet(barEntriesSleep, "Sleep");
         barDataSetSleep.setColors(Color.rgb(136, 139, 221));
 
+        barDataSetSleep.setValueFormatter(new SleepValueFormatter());
+
         barDataSetExercise.setValueTextSize(14f);
         barDataSetSleep.setValueTextSize(14f);
 
         BarData data = new BarData(barDataSetExercise, barDataSetSleep);
+
+
 
         float groupSpace = 0.5f;
         float barSpace = 0.13f;
@@ -307,6 +315,26 @@ public class MoodSelectedFragment extends Fragment {
         float totalMins = hours * 60f + mins;
 
         return totalMins;
+    }
+
+    public class SleepValueFormatter implements IValueFormatter
+    {
+
+        public String sleep;
+
+        public SleepValueFormatter() {
+
+        }
+
+        @Override
+        public String getFormattedValue(float value, Entry entry, int dataSetIndex, ViewPortHandler viewPortHandler)
+        {
+            int totalMins = Math.round(value);
+            int diffHours = totalMins/ 60;
+            int diffMinutes = totalMins - (diffHours * 60);
+
+            return diffHours + "h "+ diffMinutes +"m";
+        }
     }
 
 }
