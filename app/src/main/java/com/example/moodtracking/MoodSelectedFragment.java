@@ -158,7 +158,7 @@ public class MoodSelectedFragment extends Fragment {
         endSleep.setText(getTime(end));
         proBar.setSecondaryProgress(calcProgress(start,end));
         proBar.setRotation(calcStartAngleProgressBar(start));
-        sleepText.setText(getSleepTime(start,end));
+        //TODO sleepText.setText(getSleepTime(start,end));
 
 
         editPen.setOnClickListener(new View.OnClickListener() {
@@ -224,10 +224,9 @@ public class MoodSelectedFragment extends Fragment {
             */
             for(int i = 0;i<lastdays;i++){
                 //SleepData
-                long stemp = (long)sd.get(i).getValue();
-                barEntriesSleep.add(new BarEntry(i, (float)stemp));
                 Date temp_start = (Date)sd.get(i).getStartDate();
-                Date temp_end   = (Date)sd.get(i).getStartDate();
+                Date temp_end   = (Date)sd.get(i).getEndDate();
+                barEntriesSleep.add(new BarEntry(i, getSleepTime(temp_start,temp_end)));
                 setSleepCycleView(temp_start,temp_end,sSleep.get(i),eSleep.get(i),sProBar.get(i));
                 //MoodData
                 if(i>0){
@@ -356,13 +355,20 @@ public class MoodSelectedFragment extends Fragment {
         Log.d("percentage",String.valueOf(percentage));
         return (int)percentage;
     }
-    private String getSleepTime(Date start,Date end){
+    /*private String getSleepTime(Date start,Date end){
         long diff = end.getTime() - start.getTime();
-        /** remove the milliseconds part */
         diff = diff / 1000;
         long diffMinutes = diff / (60 ) % 60;
         long diffHours = diff / (60 * 60 );
         return Long.toString(diffHours)+"h "+Long.toString(diffMinutes)+"m";
+
+    }
+    */
+    private float getSleepTime(Date start,Date end){
+        long diff = end.getTime() - start.getTime();
+        diff = diff / 1000;
+        long diffMinutes = diff / (60 );
+        return Float.valueOf(diff / 60) ;
 
     }
 
@@ -383,19 +389,6 @@ public class MoodSelectedFragment extends Fragment {
         return sw.toString();
     }
 
-    public float calcMinutes(String hoursMins){
-
-        String hourString = hoursMins.split("h")[0];
-        float hours = Float.parseFloat(hourString);
-
-        String minsString = hoursMins.split("m")[0];
-        minsString = minsString.substring(Math.max(minsString.length() - 2, 0));
-        float mins = Float.parseFloat(minsString);
-
-        float totalMins = hours * 60f + mins;
-
-        return totalMins;
-    }
 
     public class SleepValueFormatter implements IValueFormatter
     {

@@ -114,6 +114,7 @@ class SleepData extends extData<Boolean,Long>{
 
     }
     public Long getValue(){
+        Log.d("SleepAmount",String.valueOf(sleepAmount));
         return sleepAmount;
     }
 }

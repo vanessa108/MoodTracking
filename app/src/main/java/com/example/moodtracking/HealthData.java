@@ -73,8 +73,9 @@ public class HealthData {
     public List<extData> getSleepData(int lastXDays) throws XPathExpressionException, IOException, SAXException, ParserConfigurationException {
         for (int i = 0; i < lastXDays; i++) {
             String Date = getDayMinusXasString(i);
-            String expression = "/HealthData/Record[(@type = 'HKCategoryTypeIdentifierSleepAnalysis') and number(translate(substring(/HealthData/Record/@endDate, 0,11),'-',''))="+Date+"]";
+            String expression = "//*[(@type = 'HKCategoryTypeIdentifierSleepAnalysis') and (number(translate(substring(@endDate, 0,11),'-',''))="+Date+")]";
             NodeList nl = (NodeList) xPath.compile(expression).evaluate(xmlDocument_ext, XPathConstants.NODESET);
+            Log.d("len(nodelist",String.valueOf(nl.getLength()));
             if(nl.getLength()>0) {
                 if (nl.item(0).getNodeType() == Node.ELEMENT_NODE) {
                     lastDaysSleep.add(new SleepData(nodeListTOList(nl)));
@@ -125,7 +126,6 @@ public class HealthData {
             String Date = getDayMinusXasString(i);
             Log.d("Date",Date);
             String expression = "//*[number(translate(substring(@DateTime, 0,11),'-',''))="+Date+"]";
-            Log.d("exp",expression);
             NodeList nl = (NodeList) xPath.compile(expression).evaluate(xmlDocument_mod, XPathConstants.NODESET);
             if(nl.getLength()>0) {
                 if (nl.item(0).getNodeType() == Node.ELEMENT_NODE) {
