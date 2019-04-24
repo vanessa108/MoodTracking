@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -30,14 +31,26 @@
         app:srcCompat="@drawable/neutral" />
 
     <ImageView
+        android:id="@+id/selectedMoodIMG1"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="327dp"
+        android:layout_marginTop="460dp"
+        android:layout_marginEnd="22dp"
+        app:srcCompat="@drawable/neutral" />
+
+    <ImageView
         android:id="@+id/selectedMoodIMG2"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginStart="327dp"
-        android:layout_marginTop="475dp"
-        android:layout_marginEnd="-215dp"
+        android:layout_marginStart="228dp"
+        android:layout_marginTop="460dp"
+        android:layout_marginEnd="-116dp"
         android:layout_toStartOf="@+id/runningIMG"
         app:srcCompat="@drawable/neutral" />
 
@@ -47,9 +60,9 @@
         android:layout_height="50dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginStart="228dp"
-        android:layout_marginTop="475dp"
-        android:layout_marginEnd="-116dp"
+        android:layout_marginStart="122dp"
+        android:layout_marginTop="460dp"
+        android:layout_marginEnd="-14dp"
         android:layout_toStartOf="@+id/runningIMG"
         app:srcCompat="@drawable/neutral" />
 
@@ -59,20 +72,8 @@
         android:layout_height="50dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginStart="122dp"
-        android:layout_marginTop="475dp"
-        android:layout_marginEnd="-10dp"
-        android:layout_toStartOf="@+id/runningIMG"
-        app:srcCompat="@drawable/neutral" />
-
-    <ImageView
-        android:id="@+id/selectedMoodIMG5"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
         android:layout_marginStart="22dp"
-        android:layout_marginTop="475dp"
+        android:layout_marginTop="460dp"
         android:layout_marginEnd="90dp"
         android:layout_toStartOf="@+id/runningIMG"
         app:srcCompat="@drawable/neutral" />
@@ -125,6 +126,58 @@
         android:progressDrawable="@drawable/sleep_cirlce"
         android:rotation="-142.5"/>
 
+    <ProgressBar
+        android:id="@+id/sleepCircle1"
+        style="?android:progressBarStyleHorizontal"
+        android:layout_width="62dp"
+        android:layout_height="62dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="526dp"
+        android:layout_marginEnd="14dp"
+        android:progress="66"
+        android:progressDrawable="@drawable/sleep_cirlce"
+        android:rotation="-142.5" />
+
+    <ProgressBar
+        android:id="@+id/sleepCircle2"
+        style="?android:progressBarStyleHorizontal"
+        android:layout_width="62dp"
+        android:layout_height="62dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="526dp"
+        android:layout_marginEnd="112dp"
+        android:progress="66"
+        android:progressDrawable="@drawable/sleep_cirlce"
+        android:rotation="-142.5" />
+
+    <ProgressBar
+        android:id="@+id/sleepCircle3"
+        style="?android:progressBarStyleHorizontal"
+        android:layout_width="62dp"
+        android:layout_height="62dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="526dp"
+        android:layout_marginEnd="212dp"
+        android:progress="66"
+        android:progressDrawable="@drawable/sleep_cirlce"
+        android:rotation="-142.5" />
+
+    <ProgressBar
+        android:id="@+id/sleepCircle4"
+        style="?android:progressBarStyleHorizontal"
+        android:layout_width="62dp"
+        android:layout_height="62dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="526dp"
+        android:layout_marginEnd="316dp"
+        android:progress="66"
+        android:progressDrawable="@drawable/sleep_cirlce"
+        android:rotation="-142.5" />
+
     <ImageView
         android:id="@+id/moonIMG"
         android:layout_width="50dp"
@@ -135,32 +188,198 @@
         android:layout_marginTop="71dp"
         android:layout_marginEnd="39dp"
         android:src="@drawable/moon" />
+
+    <ImageView
+        android:id="@+id/moonIMG1"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="532dp"
+        android:layout_marginEnd="22dp"
+        android:src="@drawable/moon" />
+
+    <ImageView
+        android:id="@+id/moonIMG2"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="18dp"
+        android:layout_marginTop="532dp"
+        android:layout_marginEnd="120dp"
+        android:src="@drawable/moon" />
+
+    <ImageView
+        android:id="@+id/moonIMG3"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="18dp"
+        android:layout_marginTop="532dp"
+        android:layout_marginEnd="220dp"
+        android:src="@drawable/moon" />
+
+    <ImageView
+        android:id="@+id/moonIMG4"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="18dp"
+        android:layout_marginTop="532dp"
+        android:layout_marginEnd="324dp"
+        android:src="@drawable/moon" />
+
     <TextView
         android:id="@+id/StartBedTime"
         android:layout_width="20dp"
         android:layout_height="15dp"
-        android:text="22:45"
-        android:textSize="10sp"
         android:layout_alignStart="@+id/sleepCircle"
         android:layout_alignEnd="@+id/sleepCircle"
         android:layout_alignParentTop="@+id/sleepCircle"
         android:layout_alignParentBottom="@+id/sleepCircle"
-        android:layout_marginTop="72dp"
+        android:layout_gravity="right"
         android:layout_marginLeft="-23dp"
-        android:layout_gravity="right"/>
+        android:layout_marginTop="72dp"
+        android:text="22:45"
+        android:textSize="12sp" />
+
+    <TextView
+        android:id="@+id/StartBedTime1"
+        android:layout_width="20dp"
+        android:layout_height="15dp"
+        android:layout_alignStart="@+id/sleepCircle1"
+        android:layout_alignEnd="@+id/sleepCircle1"
+        android:layout_alignParentTop="@+id/sleepCircle1"
+        android:layout_alignParentBottom="@+id/sleepCircle1"
+        android:layout_gravity="right"
+        android:layout_marginStart="-24dp"
+        android:layout_marginLeft="-23dp"
+        android:layout_marginTop="534dp"
+        android:layout_marginEnd="1dp"
+        android:text="22:45"
+        android:textSize="12sp" />
+
+    <TextView
+        android:id="@+id/StartBedTime2"
+        android:layout_width="20dp"
+        android:layout_height="15dp"
+        android:layout_alignStart="@+id/sleepCircle2"
+        android:layout_alignEnd="@+id/sleepCircle2"
+        android:layout_alignParentTop="@+id/sleepCircle2"
+        android:layout_alignParentBottom="@+id/sleepCircle2"
+        android:layout_gravity="right"
+        android:layout_marginStart="-24dp"
+        android:layout_marginLeft="-23dp"
+        android:layout_marginTop="534dp"
+        android:layout_marginEnd="1dp"
+        android:text="22:45"
+        android:textSize="12sp" />
+
+    <TextView
+        android:id="@+id/StartBedTime3"
+        android:layout_width="20dp"
+        android:layout_height="15dp"
+        android:layout_alignStart="@+id/sleepCircle3"
+        android:layout_alignEnd="@+id/sleepCircle3"
+        android:layout_alignParentTop="@+id/sleepCircle3"
+        android:layout_alignParentBottom="@+id/sleepCircle3"
+        android:layout_gravity="right"
+        android:layout_marginStart="-24dp"
+        android:layout_marginLeft="-23dp"
+        android:layout_marginTop="534dp"
+        android:layout_marginEnd="1dp"
+        android:text="22:45"
+        android:textSize="12sp" />
+
+    <TextView
+        android:id="@+id/StartBedTime4"
+        android:layout_width="20dp"
+        android:layout_height="15dp"
+        android:layout_alignStart="@+id/sleepCircle4"
+        android:layout_alignEnd="@+id/sleepCircle4"
+        android:layout_alignParentTop="@+id/sleepCircle4"
+        android:layout_alignParentBottom="@+id/sleepCircle4"
+        android:layout_gravity="right"
+        android:layout_marginStart="-24dp"
+        android:layout_marginLeft="-23dp"
+        android:layout_marginTop="534dp"
+        android:layout_marginEnd="1dp"
+        android:text="22:45"
+        android:textSize="12sp" />
+
     <TextView
         android:id="@+id/EndBedTime"
         android:layout_width="26dp"
         android:layout_height="15dp"
-        android:text="06:00"
-        android:textSize="10sp"
         android:layout_alignStart="@+id/sleepCircle"
         android:layout_alignEnd="@+id/sleepCircle"
         android:layout_alignParentTop="@+id/sleepCircle"
         android:layout_alignParentBottom="@+id/sleepCircle"
-        android:layout_marginTop="112dp"
+        android:layout_gravity="right"
         android:layout_marginLeft="-23dp"
-        android:layout_gravity="right"/>
+        android:layout_marginTop="112dp"
+        android:text="06:00"
+        android:textSize="12sp" />
+
+    <TextView
+        android:id="@+id/EndBedTime1"
+        android:layout_width="26dp"
+        android:layout_height="15dp"
+        android:layout_alignStart="@+id/sleepCircle1"
+        android:layout_alignEnd="@+id/sleepCircle1"
+        android:layout_alignParentTop="@+id/sleepCircle1"
+        android:layout_alignParentBottom="@+id/sleepCircle1"
+        android:layout_gravity="right"
+        android:layout_marginLeft="-23dp"
+        android:layout_marginTop="572dp"
+        android:text="06:00"
+        android:textSize="12sp" />
+
+    <TextView
+        android:id="@+id/EndBedTime2"
+        android:layout_width="26dp"
+        android:layout_height="15dp"
+        android:layout_alignStart="@+id/sleepCircle2"
+        android:layout_alignEnd="@+id/sleepCircle2"
+        android:layout_alignParentTop="@+id/sleepCircle2"
+        android:layout_alignParentBottom="@+id/sleepCircle2"
+        android:layout_gravity="right"
+        android:layout_marginLeft="-23dp"
+        android:layout_marginTop="572dp"
+        android:text="06:00"
+        android:textSize="12sp" />
+
+    <TextView
+        android:id="@+id/EndBedTime3"
+        android:layout_width="26dp"
+        android:layout_height="15dp"
+        android:layout_alignStart="@+id/sleepCircle3"
+        android:layout_alignEnd="@+id/sleepCircle3"
+        android:layout_alignParentTop="@+id/sleepCircle3"
+        android:layout_alignParentBottom="@+id/sleepCircle3"
+        android:layout_gravity="right"
+        android:layout_marginLeft="-23dp"
+        android:layout_marginTop="572dp"
+        android:text="06:00"
+        android:textSize="12sp" />
+
+    <TextView
+        android:id="@+id/EndBedTime4"
+        android:layout_width="26dp"
+        android:layout_height="15dp"
+        android:layout_alignStart="@+id/sleepCircle4"
+        android:layout_alignEnd="@+id/sleepCircle4"
+        android:layout_alignParentTop="@+id/sleepCircle4"
+        android:layout_alignParentBottom="@+id/sleepCircle4"
+        android:layout_gravity="right"
+        android:layout_marginLeft="-23dp"
+        android:layout_marginTop="572dp"
+        android:text="06:00"
+        android:textSize="12sp" />
 
     <TextView
         android:id="@+id/textViewLastDays"
@@ -169,7 +388,7 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="218dp"
+        android:layout_marginTop="212dp"
         android:text="LAST DAYS"
         android:textSize="24sp"
         android:textStyle="bold" />
@@ -268,6 +487,14 @@
         android:background="?android:attr/listDivider" />
 
     <View
+        android:id="@+id/divider8"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_below="@+id/textViewExerciseDescription"
+        android:layout_marginTop="228dp"
+        android:background="?android:attr/listDivider" />
+
+    <View
         android:id="@+id/divider4"
         android:layout_width="match_parent"
         android:layout_height="6dp"
@@ -280,7 +507,7 @@
         android:layout_width="match_parent"
         android:layout_height="200sp"
         android:layout_below="@+id/textViewLastDays"
-        android:layout_marginTop="2dp">
+        android:layout_marginTop="-3dp">
 
     </com.github.mikephil.charting.charts.BarChart>
 
@@ -291,9 +518,10 @@
         android:layout_below="@+id/barchart"
         android:layout_alignParentStart="true"
         android:layout_marginStart="120dp"
-        android:layout_marginTop="-15dp"
+        android:layout_marginTop="-20dp"
         android:text="TextView"
-        android:textSize="16sp" />
+        android:textSize="16sp"
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/textViewThreeDaysAgo"
@@ -301,10 +529,11 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/barchart"
         android:layout_alignParentStart="true"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="-15dp"
+        android:layout_marginStart="14dp"
+        android:layout_marginTop="-20dp"
         android:text="TextView"
-        android:textSize="16sp" />
+        android:textSize="16sp"
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/textViewYesterday"
@@ -312,20 +541,52 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/barchart"
         android:layout_alignParentEnd="true"
-        android:layout_marginTop="-15dp"
+        android:layout_marginTop="-20dp"
         android:layout_marginEnd="120dp"
         android:text="TextView"
-        android:textSize="16sp" />
+        android:textSize="16sp"
+        android:textStyle="bold" />
 
     <TextView
-        android:id="@+id/date2"
+        android:id="@+id/today"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/barchart"
         android:layout_alignParentEnd="true"
-        android:layout_marginTop="-15dp"
-        android:layout_marginEnd="20dp"
+        android:layout_marginTop="-20dp"
+        android:layout_marginEnd="10dp"
         android:text="TextView"
-        android:textSize="16sp" />
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+    <View
+        android:id="@+id/divider5"
+        android:layout_width="1dp"
+        android:layout_height="150dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="448dp"
+        android:layout_marginEnd="304dp"
+        android:background="?android:attr/listDivider" />
+
+    <View
+        android:id="@+id/divider6"
+        android:layout_width="1dp"
+        android:layout_height="150dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="448dp"
+        android:layout_marginEnd="203dp"
+        android:background="?android:attr/listDivider" />
+
+    <View
+        android:id="@+id/divider7"
+        android:layout_width="1dp"
+        android:layout_height="150dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="448dp"
+        android:layout_marginEnd="103dp"
+        android:background="?android:attr/listDivider" />
 
 </RelativeLayout>
