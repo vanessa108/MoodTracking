@@ -82,22 +82,27 @@ public class MoodSelectedFragment extends Fragment {
         if (selectedMood == 1) {
             whichMood.setImageResource(R.drawable.supersad);
             whichMoodText.setText("Awful");
+            moodSelected = true;
             whichMood1.setImageResource(R.drawable.supersad);
         } else if (selectedMood == 2) {
             whichMood.setImageResource(R.drawable.sad);
             whichMood1.setImageResource(R.drawable.sad);
+            moodSelected = true;
             whichMoodText.setText("Rough");
         } else if (selectedMood == 3) {
             whichMood.setImageResource(R.drawable.neutral);
+            moodSelected = true;
             whichMood1.setImageResource(R.drawable.neutral);
             whichMoodText.setText("Ok");
         } else if (selectedMood == 4) {
             whichMood.setImageResource(R.drawable.happy);
+            moodSelected = true;
             whichMood1.setImageResource(R.drawable.happy);
             whichMoodText.setText("Good");
         } else if (selectedMood == 5) {
             whichMood.setImageResource(R.drawable.superhappy);
             whichMood1.setImageResource(R.drawable.superhappy);
+            moodSelected = true;
             whichMoodText.setText("Awesome");
         }
 
@@ -256,6 +261,8 @@ public class MoodSelectedFragment extends Fragment {
     public static void setParameters(int mood) {
         MoodSelectedFragment.selectedMood = mood;
     }
+
+    public static Boolean moodSelected = false;
 
     private void replaceFragment (Fragment fragment) {
         if (fragment != null) {
