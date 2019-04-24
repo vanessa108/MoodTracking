@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.TextView;
 
@@ -20,7 +21,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
         BottomNavigationView navigation = findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(this);
-
     }
 
     @Override
@@ -29,8 +29,14 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
         switch (item.getItemId()) {
             case R.id.navigation_home:
-                fragment = new HomeFragment();
-                break;
+                if(!MoodSelectedFragment.moodSelected) {
+
+                    fragment = new HomeFragment();
+                    break;
+                }else if (MoodSelectedFragment.moodSelected){
+                    fragment = new MoodSelectedFragment();
+                    break;
+                }
 
             case R.id.navigation_calendar:
                 fragment = new CalendarFragment();
