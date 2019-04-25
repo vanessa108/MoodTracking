@@ -9,8 +9,8 @@
         android:layout_width="290dp"
         android:layout_height="220dp"
         android:layout_below="@+id/stats_90days"
+        android:layout_marginTop="36dp"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="60dp"
         app:srcCompat="@drawable/activity_semicircle" />
 
     <ImageView
@@ -159,6 +159,12 @@
         android:layout_marginBottom="36dp"
         app:srcCompat="@drawable/supsad_arrow" />
 
+    <TextView
+        android:id="@+id/maxExercise"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/activity_semicircle"
+        android:text="TextView" />
 
 
 </RelativeLayout>

@@ -183,7 +183,6 @@ class StepActivityData extends extData<Long,String>{
         long diffMinutes = activityTime / (60 ) % 60;
         long diffHours = activityTime / (60 * 60 );
         return Long.toString(diffHours)+"h "+Long.toString(diffMinutes)+"m";
-
     }
     public void calcValue() throws ParserConfigurationException, SAXException, XPathExpressionException, IOException {
         if(nodes!=null) {
