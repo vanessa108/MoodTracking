@@ -108,7 +108,7 @@ public class HealthData {
     public List<extData> getStepData(int lastXDays) throws XPathExpressionException, IOException, SAXException, ParserConfigurationException {
         for (int i = 0; i < lastXDays; i++) {
             String Date = getDayMinusXasString(i);
-            String expression = "/HealthData/Record[(@type = 'HKQuantityTypeIdentifierStepCount') and number(translate(substring(/HealthData/Record/@startDate, 0,11),'-',''))="+Date+"]";
+            String expression = "//*[(@type = 'HKQuantityTypeIdentifierStepCount') and (number(translate(substring(@endDate, 0,11),'-',''))="+Date+")]";
             NodeList nl = (NodeList) xPath.compile(expression).evaluate(xmlDocument_ext, XPathConstants.NODESET);
             if(nl.getLength()>0) {
                 if (nl.item(0).getNodeType() == Node.ELEMENT_NODE) {

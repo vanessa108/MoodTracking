@@ -104,15 +104,18 @@ class SleepData extends extData<Boolean,Long>{
     }
 
     public void calcValue(){
-        sleepAmount = endDate.getTime() - startDate.getTime();
+            long diff = endDate.getTime() - startDate.getTime();
+            diff = diff / 1000;
+            long diffMinutes = diff / (60 );
+            sleepAmount = diffMinutes;
+
+        }
 
         /** remove the milliseconds part */
         //diff = diff / 1000;
         //long diffMinutes = diff / (60 ) % 60;
         //ong diffHours = diff / (60 * 60 );
         //sleepAmount = Long.toString(diffHours)+"h "+Long.toString(diffMinutes)+"m";
-
-    }
     public Long getValue(){
         Log.d("SleepAmount",String.valueOf(sleepAmount));
         return sleepAmount;
@@ -174,7 +177,7 @@ class StepActivityData extends extData<Long,String>{
     private long calcDiff(Date start,Date end){
         long diff = end.getTime() - start.getTime();
         /** remove the milliseconds part */
-        return diff / 1000;
+        return diff;
     }
     public String getValue(){
         long diffMinutes = activityTime / (60 ) % 60;
@@ -183,8 +186,10 @@ class StepActivityData extends extData<Long,String>{
 
     }
     public void calcValue() throws ParserConfigurationException, SAXException, XPathExpressionException, IOException {
-        for (int i = 0; i < nodes.size(); i++) {
-            activityTime+=parseXML(super.nodeToString(nodes.get(i)));
+        if(nodes!=null) {
+            for (int i = 0; i < nodes.size(); i++) {
+                activityTime += parseXML(super.nodeToString(nodes.get(i)));
+            }
         }
         Log.d("MIN",Long.toString(activityTime));
         Log.d("Count",Integer.toString(stepamount));

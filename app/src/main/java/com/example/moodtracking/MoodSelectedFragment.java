@@ -177,13 +177,13 @@ public class MoodSelectedFragment extends Fragment {
         barChart.getDescription().setEnabled(false);
         barChart.getLegend().setEnabled(false);
 
-        ArrayList<BarEntry> barEntriesExercise = new ArrayList<>();
-        barEntriesExercise.add(new BarEntry(0, 40f));
+        /*barEntriesExercise.add(new BarEntry(0, 40f));
         barEntriesExercise.add(new BarEntry(1, 30f));
         barEntriesExercise.add(new BarEntry(2, 20f));
         barEntriesExercise.add(new BarEntry(3, 46f));
-
+        */
         ArrayList<BarEntry> barEntriesSleep = new ArrayList<>();
+        ArrayList<BarEntry> barEntriesExercise = new ArrayList<>();
 
         String todaySleep;
         String yesterdaySleep;
@@ -199,6 +199,7 @@ public class MoodSelectedFragment extends Fragment {
         HealthData hd = new HealthData(exp,mod);
         List<extData> sd = null;
         List<extData> md = null;
+        List<extData> ad = null;
 
         //TODO avoid casting from int to float and back
         try {
@@ -206,6 +207,7 @@ public class MoodSelectedFragment extends Fragment {
             //Sleep data
             sd = hd.getSleepData(lastdays);
             md = hd.getMoodData(lastdays);
+            ad = hd.getStepData(lastdays);
 
             /*long stemp1 = (long)sd.get(0).getValue();
             long stemp2 = (long)sd.get(1).getValue();
@@ -227,6 +229,7 @@ public class MoodSelectedFragment extends Fragment {
                 Date temp_start = (Date)sd.get(i).getStartDate();
                 Date temp_end   = (Date)sd.get(i).getEndDate();
                 barEntriesSleep.add(new BarEntry(i, getSleepTime(temp_start,temp_end)));
+                long test = (long)sd.get(i).getValue();
                 setSleepCycleView(temp_start,temp_end,sSleep.get(i),eSleep.get(i),sProBar.get(i));
                 //MoodData
                 if(i>0){
@@ -235,6 +238,10 @@ public class MoodSelectedFragment extends Fragment {
                     Log.d("Mood",Integer.toString(mtemp));
                     setMoodView(mtemp,wMood.get(k));
                 }
+                //activityData
+                //long actMin = (long)ad.get(i).getValue();
+                //barEntriesExercise.add(new BarEntry(i, getSleepTime(actMin)));
+
             }
             /*MoodData
             md = hd.getMoodData(lastdays);
@@ -370,6 +377,11 @@ public class MoodSelectedFragment extends Fragment {
         long diffMinutes = diff / (60 );
         return Float.valueOf(diff / 60) ;
 
+    }
+    private float getSleepTime(long diff){
+        diff = diff / 1000;
+        long diffMinutes = diff / (60 );
+        return Float.valueOf(diff / 60) ;
     }
 
     private String getTime(Date in){
