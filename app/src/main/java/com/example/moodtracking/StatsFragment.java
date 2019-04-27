@@ -38,6 +38,9 @@ import java.util.List;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.XPathExpressionException;
 
+import static java.lang.Math.floor;
+import static java.lang.Math.max;
+
 public class StatsFragment extends Fragment {
 
     private float rotation = 45F;
@@ -45,7 +48,7 @@ public class StatsFragment extends Fragment {
     ImageView supsadExercise, sadExercise, neutralExercise, happyExercise,suphappyExercise;
     ImageView supsadSleep, sadSleep, neutralSleep, happySleep, suphappySleep;
 
-    TextView maxExercise;
+    TextView maxExercise, maxSleep;
 
     @Nullable
     @Override
@@ -65,6 +68,7 @@ public class StatsFragment extends Fragment {
         suphappySleep = (ImageView) relativeLayout.findViewById(R.id.suphappySleep);
 
         maxExercise = (TextView) relativeLayout.findViewById(R.id.maxExercise);
+        maxSleep = (TextView) relativeLayout.findViewById(R.id.maxSleep);
 
         InputStream exp = getResources().openRawResource(R.raw.export);
         InputStream mod = getResources().openRawResource(R.raw.mooddata);
@@ -93,12 +97,18 @@ public class StatsFragment extends Fragment {
 
 
 
-        int mood_day = 0;
+//        int mood_day = 0;
         long s_supsad = 0;
         long s_sad = 0;
         long s_neutral = 0;
         long s_happy = 0;
         long s_suphappy = 0;
+
+        long e_supsad = 0;
+        long e_sad = 0;
+        long e_neutral = 0;
+        long e_happy = 0;
+        long e_suphappy = 0;
 
         int ctr_supsad = 0;
         int ctr_sad = 0;
@@ -106,37 +116,52 @@ public class StatsFragment extends Fragment {
         int ctr_happy = 0;
         int ctr_suphappy = 0;
         long max_sleep = 0;
+        long max_exercise = 0;
 
 
 
         for (int i = 0; i < md.size(); i++) {
           int mood = (int) md.get(i).getValue();
           long stemp = (long) sd.get(i).getValue();
+          long etemp = (long) sd.get(i).getValue();
 
           if (stemp > max_sleep) {
               max_sleep = stemp;
+
+          }
+
+          if (etemp > max_exercise) {
+              max_exercise = etemp;
           }
 
           if (mood == 1) {
               s_supsad += stemp;
+              e_supsad += etemp;
               ctr_supsad++;
 
           }
           else if (mood == 2) {
               s_sad += stemp;
+              e_sad += etemp;
               ctr_sad++;
           } else if (mood == 3) {
               s_neutral += stemp;
+              e_neutral += etemp;
               ctr_neutral++;
           } else if (mood == 4) {
               s_happy += stemp;
+              e_happy += etemp;
               ctr_happy++;
           } else if (mood == 5) {
               s_suphappy += stemp;
+              e_suphappy += etemp;
               ctr_suphappy++;
           }
 
         }
+
+
+
 
 
         float s_supsadP = (float) (s_supsad/ctr_supsad) / max_sleep * 180 - 90;
@@ -145,40 +170,63 @@ public class StatsFragment extends Fragment {
         float s_happyP = (float) (s_happy/ctr_happy) / max_sleep * 180 - 90;
         float s_suphappyP = (float) (s_suphappy/ctr_suphappy) / max_sleep * 180 - 90;
 
+        float e_supsadP = (float) (e_supsad/ctr_supsad) / max_exercise * 180 - 90;
+        float e_sadP = (float) (e_sad/ctr_sad) / max_exercise * 180 - 90;
+        float e_neutralP = (float) (e_neutral/ctr_neutral) / max_exercise * 180 - 90;
+        float e_happyP = (float) (e_happy/ctr_happy) / max_exercise * 180 - 90;
+        float e_suphappyP = (float) (e_suphappy/ ctr_suphappy) / max_exercise * 180 - 90;
+
         if (s_supsad <= 0) {
             supsadSleep.setVisibility(View.GONE);
-        } else if (s_sad <= 0) {
+        }
+        if (s_sad <= 0) {
             sadSleep.setVisibility(View.GONE);
-        } else if (s_neutral <= 0) {
+        }
+        if (s_neutral <= 0) {
             neutralSleep.setVisibility(View.GONE);
-        } else if (s_happy <= 0) {
+        }
+        if (s_happy <= 0) {
             happySleep.setVisibility(View.GONE);
-        } else if (s_suphappy <= 0) {
+        }
+        if (s_suphappy <= 0) {
             supsadSleep.setVisibility(View.GONE);
+        }
+
+        if (e_supsad <= 0) {
+            supsadExercise.setVisibility(View.GONE);
+        }
+        if (e_sad <= 0) {
+            sadExercise.setVisibility(View.GONE);
+        }
+        if (e_neutral <= 0) {
+            neutralExercise.setVisibility(View.GONE);
+        }
+        if (e_happy <= 0) {
+            happyExercise.setVisibility(View.GONE);
+        }
+        if (e_suphappy <= 0) {
+            suphappyExercise.setVisibility(View.GONE);
         }
 
         maxExercise.setText(Long.toString(s_supsad));
 
+        int maxSleepH = (int) max_sleep / 60;
+        int maxSleepM = (int)((max_sleep / 60 )- maxSleepH )* 60;
+
+        maxSleep.setText(Integer.toString(maxSleepH) + "h" + Integer.toString(maxSleepM) + "m");
 
 
-
-
-
-
-
-        rotateArrow(-42f, supsadExercise);
-        rotateArrow(28, sadExercise);
-        rotateArrow(-19, neutralExercise);
-        rotateArrow(-35, happyExercise);
-        rotateArrow(85, suphappyExercise);
+        rotateArrow(e_supsadP, supsadExercise);
+        rotateArrow(e_sadP, sadExercise);
+        rotateArrow(e_neutralP, neutralExercise);
+        rotateArrow(e_happyP, happyExercise);
+        rotateArrow(e_suphappyP, suphappyExercise);
 
         rotateArrow(s_supsadP, supsadSleep);
         rotateArrow(s_sadP, sadSleep);
         rotateArrow(s_neutralP, neutralSleep);
         rotateArrow(s_happyP, happySleep);
         rotateArrow(s_suphappyP, suphappySleep);
-
-
 
 
         return relativeLayout;
@@ -193,15 +241,11 @@ public class StatsFragment extends Fragment {
         rotate.setFillAfter(true);
         emoji.startAnimation(rotate);
 
-
-
-
     }
 
-
-
-
-
+    private float calculatePercentage(long mood, int ctr, long max_val) {
+        return (float) (mood/ctr) / max_val * 180 - 90;
+     }
 
 
 }
