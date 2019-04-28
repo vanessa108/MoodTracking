@@ -140,7 +140,7 @@ public class StatsBarChartFragment extends Fragment {
         barChart_2.getXAxis().setGranularityEnabled(true);
         xAxis.setDrawGridLines(false);
         xAxis.setAxisMinimum(1f);
-        xAxis.setAxisMaximum(31); //TODO set to max of that month
+        xAxis.setAxisMaximum(31); //TODO set to max days until today
 
 
         //Y-axis
@@ -153,7 +153,7 @@ public class StatsBarChartFragment extends Fragment {
         //Scrolling
         barChart_2.setDragEnabled(true);
         barChart_2.setVisibleXRangeMaximum(5);
-        barChart_2.moveViewToX(10f); //TODO set to same as end of month
+        barChart_2.moveViewToX(10f); //TODO set to today
         barChart_2.invalidate();
     return relativeLayout;
     }

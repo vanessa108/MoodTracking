@@ -197,7 +197,7 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_marginStart="33dp"
-        android:layout_marginTop="120dp"
+        android:layout_marginTop="72dp"
         android:text="TextView"
         android:textSize="24sp"
         android:textStyle="bold" />
@@ -220,8 +220,8 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_marginStart="314dp"
+        android:layout_marginTop="63dp"
         android:background="@android:color/transparent"
-        android:layout_marginTop="61dp"
         android:text="Yearly" />
 
     <Button

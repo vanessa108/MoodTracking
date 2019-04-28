@@ -28,7 +28,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginTop="48dp"
+        android:layout_marginTop="45dp"
         android:layout_marginEnd="0dp"
         android:background="@android:color/transparent"
         android:text="All Time" />
@@ -38,10 +38,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="48dp"
-        android:background="@android:color/transparent"
+        android:layout_marginTop="45dp"
         android:layout_marginRight="0dp"
         android:layout_toLeftOf="@id/stats_90days"
+        android:background="@android:color/transparent"
         android:text="30 Days" />
 
     <Button
@@ -49,10 +49,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="48dp"
+        android:layout_marginTop="45dp"
         android:layout_marginRight="0dp"
-        android:background="@android:color/transparent"
         android:layout_toLeftOf="@id/stats_alltime"
+        android:background="@android:color/transparent"
         android:text="Button" />
 
     <ImageView
