@@ -13,6 +13,8 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
@@ -22,6 +24,7 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.RotateAnimation;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -47,7 +50,7 @@ public class StatsFragment extends Fragment {
     int numDays = 30;
     ImageView supsadExercise, sadExercise, neutralExercise, happyExercise,suphappyExercise;
     ImageView supsadSleep, sadSleep, neutralSleep, happySleep, suphappySleep;
-
+    Button barChartButton;
     TextView maxExercise, maxSleep;
 
     @Nullable
@@ -69,6 +72,15 @@ public class StatsFragment extends Fragment {
 
         maxExercise = (TextView) relativeLayout.findViewById(R.id.maxExercise);
         maxSleep = (TextView) relativeLayout.findViewById(R.id.maxSleep);
+        barChartButton = (Button) relativeLayout.findViewById(R.id.barChartButton);
+
+        barChartButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Fragment newFragment = new StatsBarChartFragment();
+                replaceFragment(newFragment);
+            }
+        });
 
         InputStream exp = getResources().openRawResource(R.raw.export);
         InputStream mod = getResources().openRawResource(R.raw.mooddata);
@@ -247,5 +259,14 @@ public class StatsFragment extends Fragment {
         return (float) (mood/ctr) / max_val * 180 - 90;
      }
 
+    public void replaceFragment (Fragment fragment) {
+        if (fragment != null) {
+            FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.replace(R.id.fragment_container, fragment);
+            fragmentTransaction.addToBackStack(null);
+            fragmentTransaction.commit();
+        }
+    }
 
 }

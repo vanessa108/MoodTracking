@@ -94,7 +94,7 @@ public class HomeFragment extends Fragment {
     }
 
 
-    private void replaceFragment (Fragment fragment) {
+    public void replaceFragment (Fragment fragment) {
         if (fragment != null) {
             FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();

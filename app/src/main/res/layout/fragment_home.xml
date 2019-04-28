@@ -72,8 +72,8 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="80dp"
         android:text="How did you feel today?"
-        android:textSize="28sp"
-        android:textStyle="bold" />
+        android:textSize="30sp"
+        android:textStyle="normal" />
 
     <ImageButton
         android:id="@+id/infoButton"

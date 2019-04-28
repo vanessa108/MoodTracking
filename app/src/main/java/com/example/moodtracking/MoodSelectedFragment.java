@@ -292,7 +292,6 @@ public class MoodSelectedFragment extends Fragment {
         //X-axis
         XAxis xAxis = barChart.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-        //TODO fix axis spacing & values above bars to 4 h 30 m..
         xAxis.setGranularity(1);
         barChart.getXAxis().setGranularityEnabled(true);
         xAxis.setEnabled(false);
@@ -334,7 +333,7 @@ public class MoodSelectedFragment extends Fragment {
 
     public static Boolean moodSelected = false;
 
-    private void replaceFragment (Fragment fragment) {
+    public void replaceFragment (Fragment fragment) {
         if (fragment != null) {
             FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -426,7 +425,7 @@ public class MoodSelectedFragment extends Fragment {
     } else if (mood == 5) {
         iv.setImageResource(R.drawable.superhappy);
     } else if (mood ==999){
-        iv.setImageResource(R.drawable.edit_pen);
+        iv.setImageResource(R.drawable.no_data);
         }
     }
     private void setSleepCycleView(Date start,Date end,TextView startText,TextView endText,ProgressBar probar){
