@@ -91,10 +91,10 @@ public class HealthData {
         for (int i = 0; i < lastXDays; i++) {
             String Date = getDayMinusXasString(i);
             String expression = "//*[(@type = 'HKQuantityTypeIdentifierStepCount') and (number(translate(substring(@endDate, 0,11),'-',''))="+Date+")]";
-            Log.d("expre",expression);
+            //Log.d("expre",expression);
 
             NodeList nl = (NodeList) xPath.compile(expression).evaluate(xmlDocument_ext, XPathConstants.NODESET);
-            Log.d("len(nodelist_sleep)",String.valueOf(nl.getLength()));
+            //Log.d("len(nodelist_sleep)",String.valueOf(nl.getLength()));
 
             if(nl.getLength()>0) {
                 lastDaysStepActivity.add(new StepActivityData(nodeListTOList(nl)));
@@ -109,7 +109,7 @@ public class HealthData {
     public List<extData> getMoodData(int lastXDays) throws XPathExpressionException, IOException, SAXException, ParserConfigurationException {
         for (int i = 0; i < lastXDays; i++) {
             String Date = getDayMinusXasString(i);
-            Log.d("Date",Date);
+            //Log.d("Date",Date);
             String expression = "//*[number(translate(substring(@DateTime, 0,11),'-',''))="+Date+"]";
             NodeList nl = (NodeList) xPath.compile(expression).evaluate(xmlDocument_mod, XPathConstants.NODESET);
             if(nl.getLength()>0) {

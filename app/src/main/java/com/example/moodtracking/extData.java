@@ -133,7 +133,7 @@ class SleepData extends extData<Long,Long>{
         return diff;
     }
     public Long getValue(){
-        Log.d("SleepAmount",String.valueOf(sleepAmount));
+        //Log.d("SleepAmount",String.valueOf(sleepAmount));
         return sleepAmount;
     }
 }
@@ -186,13 +186,13 @@ class StepActivityData extends extData<Long,Long>{
             e.printStackTrace();
 
         }
-        Log.d("tempDiff",String.valueOf(diff));
+        //Log.d("tempDiff",String.valueOf(diff));
 
         return diff;
     }
 
     public Long getValue(){
-        Log.d("activityTime",String.valueOf(activityTime));
+        //Log.d("activityTime",String.valueOf(activityTime));
         return activityTime;
     }
     public void calcValue() throws ParserConfigurationException, SAXException, XPathExpressionException, IOException {
