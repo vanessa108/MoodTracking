@@ -154,11 +154,6 @@ public class MoodSelectedFragment extends Fragment {
         /*
         Set sleep progress bar values
         */
-        startSleep.setText(getTime(start));
-        endSleep.setText(getTime(end));
-        proBar.setSecondaryProgress(calcProgress(start,end));
-        proBar.setRotation(calcStartAngleProgressBar(start));
-        //TODO sleepText.setText(getSleepTime(start,end));
 
 
         editPen.setOnClickListener(new View.OnClickListener() {
@@ -177,22 +172,10 @@ public class MoodSelectedFragment extends Fragment {
         barChart.getDescription().setEnabled(false);
         barChart.getLegend().setEnabled(false);
 
-        /*barEntriesExercise.add(new BarEntry(0, 40f));
-        barEntriesExercise.add(new BarEntry(1, 30f));
-        barEntriesExercise.add(new BarEntry(2, 20f));
-        barEntriesExercise.add(new BarEntry(3, 46f));
-        */
+
         ArrayList<BarEntry> barEntriesSleep = new ArrayList<>();
         ArrayList<BarEntry> barEntriesExercise = new ArrayList<>();
 
-        String todaySleep;
-        String yesterdaySleep;
-        String twoDaysAgoSleep;
-        String threeDaysAgoSleep;
-        float todaySleepMins;
-        float yesterdaySleepMins;
-        float twoDaysAgoSleepMins;
-        float threeDaysAgoSleepMins;
 
         InputStream exp = getResources().openRawResource(R.raw.export);
         InputStream mod = getResources().openRawResource(R.raw.mooddata);
@@ -209,50 +192,30 @@ public class MoodSelectedFragment extends Fragment {
             md = hd.getMoodData(lastdays);
             ad = hd.getStepData(lastdays);
 
-            /*long stemp1 = (long)sd.get(0).getValue();
-            long stemp2 = (long)sd.get(1).getValue();
-            long stemp3 = (long)sd.get(2).getValue();
-            long stemp4 = (long)sd.get(3).getValue();
-
-            todaySleepMins = (float)stemp1;
-            yesterdaySleepMins = (float)stemp2;
-            twoDaysAgoSleepMins = (float)stemp3;
-            threeDaysAgoSleepMins = (float)stemp4;
-
-            barEntriesSleep.add(new BarEntry(0, threeDaysAgoSleepMins));
-            barEntriesSleep.add(new BarEntry(1, twoDaysAgoSleepMins));
-            barEntriesSleep.add(new BarEntry(2, yesterdaySleepMins));
-            barEntriesSleep.add(new BarEntry(3, todaySleepMins));
-            */
             for(int i = 0;i<lastdays;i++){
                 //SleepData
                 Date temp_start = (Date)sd.get(i).getStartDate();
                 Date temp_end   = (Date)sd.get(i).getEndDate();
-                barEntriesSleep.add(new BarEntry(i, getSleepTime(temp_start,temp_end)));
-                long test = (long)sd.get(i).getValue();
+                long sleep_min = (long)sd.get(i).getValue();
+                barEntriesSleep.add(new BarEntry(i, Float.valueOf(sleep_min)));
                 setSleepCycleView(temp_start,temp_end,sSleep.get(i),eSleep.get(i),sProBar.get(i));
+                if( i==0){
+                    setSleepCycleView(temp_start,temp_end,startSleep,endSleep,proBar);
+                    sleepText.setText(getTimeFromMin(sleep_min));
+                }
                 //MoodData
                 if(i>0){
                     int k = i-1;
                     int mtemp = (int)md.get(i).getValue();
-                    Log.d("Mood",Integer.toString(mtemp));
                     setMoodView(mtemp,wMood.get(k));
                 }
                 //activityData
-                //long actMin = (long)ad.get(i).getValue();
-                //barEntriesExercise.add(new BarEntry(i, getSleepTime(actMin)));
+                long actMin = (long)ad.get(i).getValue();
+                barEntriesExercise.add(new BarEntry(i, Float.valueOf(actMin)));
 
             }
-            /*MoodData
-            md = hd.getMoodData(lastdays);
 
-            int mtemp2 = (int)md.get(1).getValue();
-            int mtemp3 = (int)md.get(2).getValue();
-            int mtemp4 = (int)md.get(3).getValue();
-            setMoodView(mtemp2,whichMood2);
-            setMoodView(mtemp3,whichMood3);
-            setMoodView(mtemp4,whichMood4);
-            */
+
 
 
         } catch (XPathExpressionException e) {
@@ -273,6 +236,7 @@ public class MoodSelectedFragment extends Fragment {
         barDataSetSleep.setColors(Color.rgb(136, 139, 221));
 
         barDataSetSleep.setValueFormatter(new SleepValueFormatter());
+        barDataSetExercise.setValueFormatter(new SleepValueFormatter());
 
         barDataSetExercise.setValueTextSize(14f);
         barDataSetSleep.setValueTextSize(14f);
@@ -347,29 +311,15 @@ public class MoodSelectedFragment extends Fragment {
         calendar.setTime(start);
         int hours = calendar.get(Calendar.HOUR_OF_DAY);
         int minutes = calendar.get(Calendar.MINUTE);
-        int startOfProgressBar = 90;
-        int angle = ((60*hours+minutes)/2)-startOfProgressBar;
+        int startOfProgressBar = -90;
+        int angle = ((60*hours+minutes)/2)+startOfProgressBar;
         return angle;
     }
     private int calcProgress(Date start,Date end){
         long diff = end.getTime() - start.getTime();
-        /** remove the milliseconds part */
-        diff = diff / 1000;
-        Log.d("Diff",String.valueOf(diff));
-        long hours = diff / (60 * 60) % 24;
-        long percentage = hours/12;
-        Log.d("percentage",String.valueOf(percentage));
-        return (int)percentage;
+        return (int)diff/(12*60*60*10);
     }
-    /*private String getSleepTime(Date start,Date end){
-        long diff = end.getTime() - start.getTime();
-        diff = diff / 1000;
-        long diffMinutes = diff / (60 ) % 60;
-        long diffHours = diff / (60 * 60 );
-        return Long.toString(diffHours)+"h "+Long.toString(diffMinutes)+"m";
 
-    }
-    */
     private float getSleepTime(Date start,Date end){
         long diff = end.getTime() - start.getTime();
         diff = diff / 1000;
@@ -427,6 +377,12 @@ public class MoodSelectedFragment extends Fragment {
     } else if (mood ==999){
         iv.setImageResource(R.drawable.no_data);
         }
+    }
+    private String getTimeFromMin(long min){
+        long diffHours =min/ 60;
+        long diffMinutes = min%60;
+
+        return diffHours + "h "+ diffMinutes +"m";
     }
     private void setSleepCycleView(Date start,Date end,TextView startText,TextView endText,ProgressBar probar){
         startText.setText(getTime(start));

@@ -1,10 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0"?>
 <root>
-    <row DateTime="2019-02-24 23:56:00" Mood=""></row>
-    <row DateTime="2019-02-25 23:19:04" Mood=""></row>
-    <row DateTime="2019-02-26 22:51:31" Mood=""></row>
-    <row DateTime="2019-02-27 23:02:28" Mood=""></row>
-    <row DateTime="2019-02-28 23:11:58" Mood=""></row>
     <row DateTime="2019-03-01 23:13:37" Mood=""></row>
     <row DateTime="2019-03-02 22:11:13" Mood=""></row>
     <row DateTime="2019-03-03 23:27:19" Mood=""></row>
@@ -59,4 +54,9 @@
     <row DateTime="2019-04-21 20:58:56" Mood="1"></row>
     <row DateTime="2019-04-22 20:58:56" Mood="3"></row>
     <row DateTime="2019-04-23 20:58:56" Mood="5"></row>
+    <row DateTime="2019-04-24 20:58:56" Mood="3"></row>
+    <row DateTime="2019-04-25 20:58:56" Mood="3"></row>
+    <row DateTime="2019-04-26 20:58:56" Mood="3"></row>
+    <row DateTime="2019-04-27 20:58:56" Mood="2"></row>
+    <row DateTime="2019-04-28 20:58:56" Mood="4"></row>
 </root>

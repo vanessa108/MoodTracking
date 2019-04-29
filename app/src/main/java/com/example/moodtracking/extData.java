@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -30,13 +31,13 @@ import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
 public abstract class extData<T,K> {
-    List<Node> nodes;
+    List<Node> nodes = new ArrayList<>();
     String xml;
-    Date startDate = new Date();
-    Date endDate = new Date();
+    Date startDate = null;
+    Date endDate = null;
     Document document;
     public extData(List<Node> nodes) throws ParserConfigurationException, SAXException, XPathExpressionException, IOException {
-        nodes = nodes;
+        this.nodes = nodes;
     }
     public abstract T parseXML(String xml) throws ParserConfigurationException, IOException, SAXException, XPathExpressionException;
 
@@ -62,22 +63,38 @@ public abstract class extData<T,K> {
         //String formattedDate = new SimpleDateFormat("dd-MM-yy").format(endDate);
         return endDate;
     }
+    public long calcDiff(Date start,Date end){
+        long diff = end.getTime() - start.getTime();
+        diff = diff / 1000;
+        long diffMinutes = diff/60;
+        return diffMinutes;
+    }
 }
-
-
-
-
-class SleepData extends extData<Boolean,Long>{
+class SleepData extends extData<Long,Long>{
     private long sleepAmount = 0;
     public SleepData(List<Node> nodes) throws ParserConfigurationException, SAXException, XPathExpressionException, IOException {
         super(nodes);
-        if (nodes != null) {
-            xml = super.nodeToString(nodes.get(0));
-            parseXML(xml);
-            calcValue();
+        this.nodes = nodes;
+
+        calcValue();
+    }
+    public void calcValue() throws ParserConfigurationException, SAXException, XPathExpressionException, IOException {
+        //long diff = endDate.getTime() - startDate.getTime();
+        //diff = diff / 1000;
+        //long diffMinutes = diff / (60 );
+        //sleepAmount = diffMinutes;
+        for (int i = 0; i < nodes.size(); i++) {
+            String temp = super.nodeToString(nodes.get(i));
+            //Log.d("Node:",String.valueOf(temp));
+
+            sleepAmount += parseXML(temp);
         }
     }
-    public Boolean parseXML(String xml) throws ParserConfigurationException, IOException, SAXException, XPathExpressionException {
+    public Long parseXML(String xml) throws ParserConfigurationException, IOException, SAXException, XPathExpressionException {
+        Date start = null;
+        Date end = null;
+        long diff = 0;
+
         InputSource source = new InputSource(new StringReader(xml));
 
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
@@ -93,37 +110,34 @@ class SleepData extends extData<Boolean,Long>{
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss Z");
 
         try {
-            startDate = format.parse(date1);
-            endDate = format.parse(date2);
+            start = format.parse(date1);
+            end = format.parse(date2);
+            diff =super.calcDiff(start,end);
+            if(super.startDate!=null){
+                if(start.compareTo(super.startDate) < 0){
+                    super.startDate=start;
+                }
+            }
+            else{super.startDate=start;}
+            if(super.endDate!=null){
+                if(end.compareTo(super.endDate) > 0){
+                    super.endDate=end;
+                }
+            }
+            else{super.endDate=end;}
 
         } catch (Exception e) {
             e.printStackTrace();
 
         }
-        return Boolean.TRUE;
+        return diff;
     }
-
-    public void calcValue(){
-            long diff = endDate.getTime() - startDate.getTime();
-            diff = diff / 1000;
-            long diffMinutes = diff / (60 );
-            sleepAmount = diffMinutes;
-
-        }
-
-        /** remove the milliseconds part */
-        //diff = diff / 1000;
-        //long diffMinutes = diff / (60 ) % 60;
-        //ong diffHours = diff / (60 * 60 );
-        //sleepAmount = Long.toString(diffHours)+"h "+Long.toString(diffMinutes)+"m";
     public Long getValue(){
         Log.d("SleepAmount",String.valueOf(sleepAmount));
         return sleepAmount;
     }
 }
-
-
-class StepActivityData extends extData<Long,String>{
+class StepActivityData extends extData<Long,Long>{
     private String stepAmount;
     private String stepActivityMin;
     private int stepamount=0;
@@ -132,9 +146,9 @@ class StepActivityData extends extData<Long,String>{
 
     public StepActivityData(List<Node> nodes) throws ParserConfigurationException, SAXException, XPathExpressionException, IOException {
         super(nodes);
-        if(nodes!=null){
-            calcValue();
-        }
+        this.nodes = nodes;
+        calcValue();
+
     }
     public Long parseXML(String xml) throws ParserConfigurationException, IOException, SAXException, XPathExpressionException {
         Date start = null;
@@ -166,38 +180,38 @@ class StepActivityData extends extData<Long,String>{
         try {
             start = format.parse(date1);
             end = format.parse(date2);
-            diff =calcDiff(start,end);
+            diff = super.calcDiff(start,end);
 
         } catch (Exception e) {
             e.printStackTrace();
 
         }
+        Log.d("tempDiff",String.valueOf(diff));
+
         return diff;
     }
-    private long calcDiff(Date start,Date end){
-        long diff = end.getTime() - start.getTime();
-        /** remove the milliseconds part */
-        return diff;
-    }
-    public String getValue(){
-        long diffMinutes = activityTime / (60 ) % 60;
-        long diffHours = activityTime / (60 * 60 );
-        return Long.toString(diffHours)+"h "+Long.toString(diffMinutes)+"m";
+
+    public Long getValue(){
+        Log.d("activityTime",String.valueOf(activityTime));
+        return activityTime;
     }
     public void calcValue() throws ParserConfigurationException, SAXException, XPathExpressionException, IOException {
-        if(nodes!=null) {
-            for (int i = 0; i < nodes.size(); i++) {
-                activityTime += parseXML(super.nodeToString(nodes.get(i)));
-            }
+
+
+        for (int i = 0; i < nodes.size(); i++) {
+            String temp = super.nodeToString(nodes.get(i));
+           // Log.d("Node:",String.valueOf(temp));
+
+            activityTime += parseXML(temp);
         }
-        Log.d("MIN",Long.toString(activityTime));
-        Log.d("Count",Integer.toString(stepamount));
+
     }
 }
 class MoodData extends extData<String,Integer>{
     int mood = 999;
     public MoodData(List<Node> nodes) throws ParserConfigurationException, SAXException, XPathExpressionException, IOException {
         super(nodes);
+        this.nodes = nodes;
         if(nodes!=null){
             parseXML(super.nodeToString(nodes.get(0)));
         }

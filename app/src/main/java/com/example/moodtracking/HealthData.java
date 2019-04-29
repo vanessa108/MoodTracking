@@ -40,7 +40,6 @@ public class HealthData {
     Document xmlDocument_mod = null;
     XPath xPath = XPathFactory.newInstance().newXPath();
     List<extData> lastDaysSleep = new ArrayList<extData>();
-    List<extData> lastDaysActivity = new ArrayList<extData>();
     List<extData> lastDaysStepActivity = new ArrayList<extData>();
     List<extData> lastDaysMood = new ArrayList<extData>();
 
@@ -72,54 +71,40 @@ public class HealthData {
     //function to get sleep data of the last x days
     public List<extData> getSleepData(int lastXDays) throws XPathExpressionException, IOException, SAXException, ParserConfigurationException {
         for (int i = 0; i < lastXDays; i++) {
-            String Date = getDayMinusXasString(i);
-            String expression = "//*[(@type = 'HKCategoryTypeIdentifierSleepAnalysis') and (number(translate(substring(@endDate, 0,11),'-',''))="+Date+")]";
+            String startDate = getDayMinusXasString(i+1);
+            String endDate = getDayMinusXasString(i);
+            String expression = "//*[(@type = 'HKCategoryTypeIdentifierSleepAnalysis') and (@value='HKCategoryValueSleepAnalysisAsleep')and (((number(translate(substring(@endDate, 0,11),'-',''))="+endDate+") and (number(substring(@endDate, 12,2))<12)) or ((number(translate(substring(@startDate, 0,11),'-',''))="+startDate+") and (number(substring(@startDate, 12,2))>12)))]";
             NodeList nl = (NodeList) xPath.compile(expression).evaluate(xmlDocument_ext, XPathConstants.NODESET);
-            Log.d("len(nodelist",String.valueOf(nl.getLength()));
             if(nl.getLength()>0) {
-                if (nl.item(0).getNodeType() == Node.ELEMENT_NODE) {
-                    lastDaysSleep.add(new SleepData(nodeListTOList(nl)));
-                }
+                List<Node> temp = nodeListTOList((nl));
+                lastDaysSleep.add(new SleepData(temp));
             }
             else{
-                lastDaysSleep.add(new SleepData(null));
+                lastDaysSleep.add(new SleepData(new ArrayList<Node>()));
             }
         }
         return lastDaysSleep;
     }
 
 
-     /*
-
-        //TODO working with date comparison instead of using the last x days
-        // xpath expresstion /Record[number(translate(substring(/Record/@startDate, 0,11),'-',''))>20160520]
-        String expression = "/HealthData/Record[(@type = 'HKCategoryTypeIdentifierSleepAnalysis') and position()>last()-" + lastXDays + "]";
-        NodeList nl = (NodeList) xPath.compile(expression).evaluate(xmlDocument_ext, XPathConstants.NODESET);
-        //return Integer.toString(nodeList.getLength());
-        int length = nl.getLength();
-        for (int i = 0; i < length; i++) {
-            if (nl.item(i).getNodeType() == Node.ELEMENT_NODE) {
-                lastDaysSleep.add(nodeToSleepDataObj(nl.item(i)));
-            }
-        }
-        */
-
-
     public List<extData> getStepData(int lastXDays) throws XPathExpressionException, IOException, SAXException, ParserConfigurationException {
         for (int i = 0; i < lastXDays; i++) {
             String Date = getDayMinusXasString(i);
             String expression = "//*[(@type = 'HKQuantityTypeIdentifierStepCount') and (number(translate(substring(@endDate, 0,11),'-',''))="+Date+")]";
+            Log.d("expre",expression);
+
             NodeList nl = (NodeList) xPath.compile(expression).evaluate(xmlDocument_ext, XPathConstants.NODESET);
+            Log.d("len(nodelist_sleep)",String.valueOf(nl.getLength()));
+
             if(nl.getLength()>0) {
-                if (nl.item(0).getNodeType() == Node.ELEMENT_NODE) {
-                    lastDaysStepActivity.add(new StepActivityData(nodeListTOList(nl)));
-                }
+                lastDaysStepActivity.add(new StepActivityData(nodeListTOList(nl)));
             }
             else{
-                lastDaysStepActivity.add(new StepActivityData(null));
+                lastDaysStepActivity.add(new StepActivityData(new ArrayList<Node>()));
+
             }
         }
-        return lastDaysActivity;                                                                                                                   }
+        return lastDaysStepActivity;                                                                                                                   }
      
     public List<extData> getMoodData(int lastXDays) throws XPathExpressionException, IOException, SAXException, ParserConfigurationException {
         for (int i = 0; i < lastXDays; i++) {
@@ -139,6 +124,7 @@ public class HealthData {
         return lastDaysMood;
     }
 
+    /*Help functions*/
 
     private List<Node> nodeListTOList(NodeList nl){
         List<Node> nodes = new ArrayList<>();
@@ -148,10 +134,10 @@ public class HealthData {
                 nodes.add(nl.item(i));
             }
         }
+        //Log.d("Length of nodes",String.valueOf(nodes.size())+" "+String.valueOf(nl.getLength()));
         return nodes;
     }
 
-    /*Help functions*/
     private Date dayMinusX(int x) {
         final Calendar cal = Calendar.getInstance();
         cal.add(Calendar.DATE, -x);
