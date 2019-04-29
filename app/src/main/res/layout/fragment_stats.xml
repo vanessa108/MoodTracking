@@ -9,8 +9,8 @@
         android:layout_width="290dp"
         android:layout_height="220dp"
         android:layout_below="@+id/stats_90days"
-        android:layout_marginTop="36dp"
         android:layout_centerHorizontal="true"
+        android:layout_marginTop="60dp"
         app:srcCompat="@drawable/activity_semicircle" />
 
     <ImageView
@@ -19,41 +19,44 @@
         android:layout_height="220dp"
         android:layout_below="@+id/activity_semicircle"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="73dp"
+        android:layout_marginTop="60dp"
         app:srcCompat="@drawable/sleep_semicircle" />
 
     <Button
         android:id="@+id/stats_alltime"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginTop="45dp"
+        android:layout_marginTop="70dp"
         android:layout_marginEnd="0dp"
-        android:background="@android:color/transparent"
-        android:text="All Time" />
+        android:background="@drawable/clickable_button"
+        android:text="All Time"
+        android:textColor="@color/colorPrimary" />
 
     <Button
         android:id="@+id/stats_30days"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="45dp"
-        android:layout_marginRight="0dp"
+        android:layout_marginTop="70dp"
+        android:layout_marginRight="10dp"
         android:layout_toLeftOf="@id/stats_90days"
-        android:background="@android:color/transparent"
-        android:text="30 Days" />
+        android:background="@drawable/clicked_button"
+        android:text="30 Days"
+        android:textColor="@color/white" />
 
     <Button
         android:id="@+id/stats_90days"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="45dp"
-        android:layout_marginRight="0dp"
+        android:layout_marginTop="70dp"
+        android:layout_marginRight="10dp"
         android:layout_toLeftOf="@id/stats_alltime"
-        android:background="@android:color/transparent"
-        android:text="Button" />
+        android:background="@drawable/clickable_button"
+        android:text="90 Days"
+        android:textColor="@color/colorPrimary" />
 
     <ImageView
         android:id="@+id/supsadExercise"
@@ -213,24 +216,26 @@
 
     <Button
         android:id="@+id/barChartButton"
-        android:layout_width="187dp"
+        android:layout_width="208dp"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="5dp"
-        android:background="@android:color/transparent"
+        android:layout_marginTop="0dp"
+        android:background="@drawable/clickable_tab"
+        android:textColor="@color/colorPrimary"
+        android:textSize="18dp"
         android:text="Detailed" />
 
     <Button
-        android:id="@+id/barChartButtonDisabled"
-        android:layout_width="187dp"
+        android:id="@+id/PieChartButtonDisabled"
+        android:layout_width="208dp"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
-        android:layout_marginTop="5dp"
-        android:layout_marginEnd="20dp"
-        android:background="@android:color/transparent"
-        android:text="Overview" />
+        android:layout_marginTop="0dp"
+        android:layout_marginEnd="0dp"
+        android:background="@drawable/clicked_tab"
+        android:text="Overview"
+        android:textColor="@color/white"
+        android:textSize="18dp" />
 
 
 </RelativeLayout>
