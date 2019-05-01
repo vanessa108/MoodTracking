@@ -322,7 +322,7 @@ public class MoodSelectedFragment extends Fragment {
             return formattedDate;
         }
         else{
-        return "00:00";
+            return "00:00";
         }
     }
 
