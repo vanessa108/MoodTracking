@@ -185,6 +185,7 @@ public class MoodSelectedFragment extends Fragment {
                     int mtemp = (int)md.get(i).getValue();
                     setMoodView(mtemp,wMood.get(k));
                 }
+
                 //activityData
                 long actMin = (long)ad.get(i).getValue();
                 barEntriesExercise.add(new BarEntry(i, Float.valueOf(actMin)));

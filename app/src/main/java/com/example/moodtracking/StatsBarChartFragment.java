@@ -74,17 +74,17 @@ public class StatsBarChartFragment extends Fragment {
         final RelativeLayout relativeLayout = (RelativeLayout) inflater.inflate(R.layout.fragment_stats_bar_chart, container, false);
 
         final TextView date_2 = (TextView) relativeLayout.findViewById(R.id.date_2);
-        TextView textViewSleep_2 = (TextView) relativeLayout.findViewById(R.id.textViewSleep_2);
+        final TextView textViewSleep_2 = (TextView) relativeLayout.findViewById(R.id.textViewSleep_2);
         TextView tv_month = (TextView) relativeLayout.findViewById(R.id.textViewMonth);
         final BarChart barChart_2 = (BarChart) relativeLayout.findViewById(R.id.barchart_2);
-
-        TextView textViewExercise_2 = (TextView) relativeLayout.findViewById(R.id.textViewExercise_2);
+        final ImageView mood = (ImageView) relativeLayout.findViewById(R.id.selectedMoodIMG_2);
+        final TextView mood_text = (TextView) relativeLayout.findViewById(R.id.textViewMood_2);
+        final TextView textViewExercise_2 = (TextView) relativeLayout.findViewById(R.id.textViewExercise_2);
         Button pie_chart_button = (Button) relativeLayout.findViewById(R.id.pieChartButton);
 
-        TextView startSleep_2 = (TextView) relativeLayout.findViewById(R.id.StartBedTime_2);
-        List<TextView> sSleep_2 = Arrays.asList(startSleep_2);
-        TextView endSleep_2 = (TextView) relativeLayout.findViewById(R.id.EndBedTime_2);
-        ProgressBar proBar_2 = (ProgressBar) relativeLayout.findViewById(R.id.sleepCircle_2);
+        final TextView startSleep_2 = (TextView) relativeLayout.findViewById(R.id.StartBedTime_2);
+        final TextView endSleep_2 = (TextView) relativeLayout.findViewById(R.id.EndBedTime_2);
+        final ProgressBar proBar_2 = (ProgressBar) relativeLayout.findViewById(R.id.sleepCircle_2);
 
         String date = new SimpleDateFormat("EEE d MMM yyyy", Locale.getDefault()).format(new Date());
         date_2.setText("" + date);
@@ -112,8 +112,8 @@ public class StatsBarChartFragment extends Fragment {
 
 
 
-        ArrayList<BarEntry> barEntriesSleep = new ArrayList<>();
-        ArrayList<BarEntry> barEntriesExercise = new ArrayList<>();
+        final ArrayList<BarEntry> barEntriesSleep = new ArrayList<>();
+        final ArrayList<BarEntry> barEntriesExercise = new ArrayList<>();
 
 
         /*Read data*/
@@ -123,6 +123,7 @@ public class StatsBarChartFragment extends Fragment {
         List<extData> sd = null;
         List<extData> md = null;
         List<extData> ad = null;
+        final List<Date> Dates = new ArrayList<>();
 
         try {
             int lastdays = 31;
@@ -139,10 +140,11 @@ public class StatsBarChartFragment extends Fragment {
 
 
                 //SleepData
-                Date temp_start = (Date)sd.get(i).getStartDate();
-                Date temp_end   = (Date)sd.get(i).getEndDate();
+                Date temp_start = sd.get(i).getStartDate();
+                Date temp_end   = sd.get(i).getEndDate();
                 long sleep_min = (long)sd.get(i).getValue();
                 barEntriesSleep.add(new BarEntry(i, Float.valueOf(sleep_min)));
+                Dates.add(temp_end);
 
                 //Sleep circle moon
                 setSleepCycleView(temp_start, temp_end, startSleep_2, endSleep_2, proBar_2);
@@ -163,7 +165,7 @@ public class StatsBarChartFragment extends Fragment {
 
             Collections.reverse(barEntriesSleep);
             Collections.reverse(barEntriesExercise);
-
+            Collections.reverse(Dates);
 
 
         } catch (XPathExpressionException e) {
@@ -178,25 +180,9 @@ public class StatsBarChartFragment extends Fragment {
 
 
         //BarDataSets
-        BarDataSet barDataSetExercise = new BarDataSet(barEntriesExercise, "Exercise");
+        final BarDataSet barDataSetExercise = new BarDataSet(barEntriesExercise, "Exercise");
 
-        barEntriesExercise.add(new BarEntry(0, 40f));
-        barEntriesExercise.add(new BarEntry(1, 30f));
-        barEntriesExercise.add(new BarEntry(2, 20f));
-        barEntriesExercise.add(new BarEntry(3, 46f));
-        barEntriesExercise.add(new BarEntry(4, 40f));
-        barEntriesExercise.add(new BarEntry(5, 30f));
-        barEntriesExercise.add(new BarEntry(6, 20f));
-        barEntriesExercise.add(new BarEntry(7, 46f));
 
-        barEntriesSleep.add(new BarEntry(0, 600f));
-        barEntriesSleep.add(new BarEntry(1, 500f));
-        barEntriesSleep.add(new BarEntry(2, 400f));
-        barEntriesSleep.add(new BarEntry(3, 450f));
-        barEntriesSleep.add(new BarEntry(4, 600f));
-        barEntriesSleep.add(new BarEntry(5, 500f));
-        barEntriesSleep.add(new BarEntry(6, 400f));
-        barEntriesSleep.add(new BarEntry(7, 450f));
 
         barDataSetExercise.setColors(Color.rgb(242, 162, 162));
 
@@ -283,14 +269,20 @@ public class StatsBarChartFragment extends Fragment {
                 int moveToVal = (int)(bottomLeft.x);
                 Log.d("moveToVal",String.valueOf(moveToVal));
                 barChart_2.moveViewToX((float)(moveToVal));
-                date_2.setText(String.valueOf(moveToVal));
-
+                //Date
+                date_2.setText(String.valueOf(setDateString(Dates.get(moveToVal+1))));
+                //Exercise
+                textViewExercise_2.setText(getTimeFromMin((long)barEntriesExercise.get(moveToVal+1).getY()));
+                //Sleep
+                textViewSleep_2.setText(getTimeFromMin((long)barEntriesSleep.get(moveToVal+1).getY()));
+                //TODO sleep progress
+                //Mood
+                setMoodView(moveToVal%5,mood,mood_text);
             }
 
             @Override
             public void onChartLongPressed(MotionEvent me) {
             }
-
             @Override
             public void onChartDoubleTapped(MotionEvent me) {
 
@@ -300,17 +292,14 @@ public class StatsBarChartFragment extends Fragment {
             public void onChartSingleTapped(MotionEvent me) {
 
             }
-
             @Override
             public void onChartFling(MotionEvent me1, MotionEvent me2, float velocityX, float velocityY) {
 
             }
-
             @Override
             public void onChartScale(MotionEvent me, float scaleX, float scaleY) {
 
             }
-
             @Override
             public void onChartTranslate(MotionEvent me, float dX, float dY) {
             }
@@ -411,6 +400,36 @@ public class StatsBarChartFragment extends Fragment {
 
         return groupSpace;
     }
+    private String setDateString(Date in){
+        if(in!= null){
+            String formattedDate = new SimpleDateFormat("EEE d MMM yyyy").format(in);
+            return formattedDate;
+        }
+        else{
+            return "no Data";
+        }
+    }
+    private void setMoodView(int mood,ImageView iv,TextView tv){
+        if (mood == 1) {
+            iv.setImageResource(R.drawable.supersad);
+            tv.setText("Supersad");
+        } else if (mood == 2) {
+            iv.setImageResource(R.drawable.sad);
+            tv.setText("sad");
+        } else if (mood == 3) {
+            iv.setImageResource(R.drawable.neutral);
+            tv.setText("neutral");
+        } else if (mood == 4) {
+            iv.setImageResource(R.drawable.happy);
+            tv.setText("happy");
+        } else if (mood == 5) {
+            iv.setImageResource(R.drawable.superhappy);
+            tv.setText("superhappy");
+        } else if (mood ==999){
+            iv.setImageResource(R.drawable.no_data);
+            tv.setText("");
 
+        }
+    }
 
 }

@@ -82,6 +82,10 @@ public class HealthData {
             else{
                 lastDaysSleep.add(new SleepData(new ArrayList<Node>()));
             }
+
+            if(lastDaysSleep.get(i).getEndDate()==null){
+                lastDaysSleep.get(i).endDate=dayMinusX(i);
+            }
         }
         return lastDaysSleep;
     }
@@ -103,6 +107,9 @@ public class HealthData {
                 lastDaysStepActivity.add(new StepActivityData(new ArrayList<Node>()));
 
             }
+            if(lastDaysStepActivity.get(i).getEndDate()==null){
+                lastDaysStepActivity.get(i).endDate=dayMinusX(i);
+            }
         }
         return lastDaysStepActivity;                                                                                                                   }
      
@@ -120,6 +127,10 @@ public class HealthData {
             else{
                 lastDaysMood.add(new MoodData(null));
             }
+            if(lastDaysMood.get(i).getEndDate()==null){
+                lastDaysMood.get(i).endDate=dayMinusX(i);
+            }
+
         }
         return lastDaysMood;
     }
