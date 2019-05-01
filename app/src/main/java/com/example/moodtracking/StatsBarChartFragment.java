@@ -19,12 +19,14 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.mikephil.charting.formatter.IValueFormatter;
 import com.github.mikephil.charting.utils.ViewPortHandler;
 
@@ -140,7 +142,10 @@ public class StatsBarChartFragment extends Fragment {
         barChart_2.getXAxis().setGranularityEnabled(true);
         xAxis.setDrawGridLines(false);
         xAxis.setAxisMinimum(1f);
-        xAxis.setAxisMaximum(31); //TODO set to max days until today
+        xAxis.setAxisMaximum(31);
+        xAxis.setValueFormatter(new dateFormatter());
+        xAxis.setTextSize(16f);
+        barChart_2.setExtraOffsets(0,0,20,12);
 
 
         //Y-axis
@@ -153,7 +158,7 @@ public class StatsBarChartFragment extends Fragment {
         //Scrolling
         barChart_2.setDragEnabled(true);
         barChart_2.setVisibleXRangeMaximum(5);
-        barChart_2.moveViewToX(10f); //TODO set to today
+        barChart_2.moveViewToX(31); //TODO set to today
         barChart_2.invalidate();
         //barChart_2.get
     return relativeLayout;
@@ -179,6 +184,20 @@ public class StatsBarChartFragment extends Fragment {
             fragmentTransaction.replace(R.id.fragment_container, fragment);
             fragmentTransaction.addToBackStack(null);
             fragmentTransaction.commit();
+        }
+    }
+
+    public class dateFormatter implements IAxisValueFormatter {
+        @Override
+        public String getFormattedValue(float value, AxisBase axis) {
+            Calendar cal = Calendar.getInstance();
+            DateFormat dateFormat = new SimpleDateFormat("d");
+            int val;
+            val = Math.round(value);
+            cal.add(Calendar.DATE, val);
+            String date = dateFormat.format(cal.getTime());
+
+            return date;
         }
     }
 }
