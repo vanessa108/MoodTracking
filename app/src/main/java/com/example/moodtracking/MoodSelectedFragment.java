@@ -98,8 +98,9 @@ public class MoodSelectedFragment extends Fragment {
         TextView threeDaysAgoText = (TextView) relativeLayout.findViewById(R.id.textViewThreeDaysAgo);
         TextView twoDaysAgoText = (TextView) relativeLayout.findViewById(R.id.textViewTwoDaysAgo);
         TextView yesterdayText = (TextView) relativeLayout.findViewById(R.id.textViewYesterday);
+        TextView textViewExercise = (TextView) relativeLayout.findViewById(R.id.textViewExercise);
 
-        String date = new SimpleDateFormat("EEE dd/MM", Locale.getDefault()).format(new Date());
+        String date = new SimpleDateFormat("EEE d MMMM", Locale.getDefault()).format(new Date());
         dateText.setText(date);
 
 
@@ -189,6 +190,11 @@ public class MoodSelectedFragment extends Fragment {
                 barEntriesExercise.add(new BarEntry(i, Float.valueOf(actMin)));
 
             }
+
+            long actMin2 = (long)ad.get(0).getValue();
+            String actMinStr = Long.toString(actMin2);
+            textViewExercise.setText(actMinStr + " min");
+
             Collections.reverse(barEntriesSleep);
             Collections.reverse(barEntriesExercise);
 
@@ -263,6 +269,7 @@ public class MoodSelectedFragment extends Fragment {
         Calendar cal3 = Calendar.getInstance();
         cal3.add(Calendar.DATE, - 3);
         threeDaysAgoText.setText(dateFormat.format(cal3.getTime()));
+
 
         return relativeLayout;
     }
