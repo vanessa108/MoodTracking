@@ -51,6 +51,7 @@ public class StatsFragment extends Fragment {
     ImageView supsadExercise, sadExercise, neutralExercise, happyExercise,suphappyExercise;
     ImageView supsadSleep, sadSleep, neutralSleep, happySleep, suphappySleep;
     Button barChartButton;
+    Button allTimeData, ThirtyDaysData;
     TextView maxExercise, maxSleep;
 
     @Nullable
@@ -73,12 +74,27 @@ public class StatsFragment extends Fragment {
         maxExercise = (TextView) relativeLayout.findViewById(R.id.maxExercise);
         maxSleep = (TextView) relativeLayout.findViewById(R.id.maxSleep);
         barChartButton = (Button) relativeLayout.findViewById(R.id.barChartButton);
+        allTimeData = (Button) relativeLayout.findViewById(R.id.stats_alltime);
+        ThirtyDaysData = (Button) relativeLayout.findViewById(R.id.stats_30days);
 
         barChartButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Fragment newFragment = new StatsBarChartFragment();
                 replaceFragment(newFragment);
+            }
+        });
+
+        allTimeData.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                numDays = 100;
+                allTimeData.setBackgroundResource(R.drawable.clicked_button);
+                allTimeData.setTextColor(Color.WHITE);
+                ThirtyDaysData.setBackgroundResource(R.drawable.clickable_button);
+                ThirtyDaysData.setTextColor(Color.parseColor("#008577"));
+
+
             }
         });
 
@@ -212,12 +228,12 @@ public class StatsFragment extends Fragment {
         }
 
         int maxExerciseH = (int) max_exercise / 60;
-        int maxExerciseM = (int) ((max_exercise / 60) - maxExerciseH) * 60;
+        int maxExerciseM = (int) (max_exercise % 60);
 
         maxExercise.setText(Integer.toString(maxExerciseH) + "h" + Integer.toString(maxExerciseM) + "m");
 
         int maxSleepH = (int) max_sleep / 60;
-        int maxSleepM = (int)((max_sleep / 60 )- maxSleepH )* 60;
+        int maxSleepM = (int) (max_sleep % 60 );
 
         maxSleep.setText(Integer.toString(maxSleepH) + "h" + Integer.toString(maxSleepM) + "m");
 
