@@ -155,6 +155,7 @@ public class StatsBarChartFragment extends Fragment {
         barChart_2.setVisibleXRangeMaximum(5);
         barChart_2.moveViewToX(10f); //TODO set to today
         barChart_2.invalidate();
+        //barChart_2.get
     return relativeLayout;
     }
 

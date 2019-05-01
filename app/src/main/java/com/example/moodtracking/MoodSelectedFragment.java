@@ -39,6 +39,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -69,7 +70,7 @@ public class MoodSelectedFragment extends Fragment {
         ImageView whichMood2 = (ImageView) relativeLayout.findViewById(R.id.selectedMoodIMG2);
         ImageView whichMood3 = (ImageView) relativeLayout.findViewById(R.id.selectedMoodIMG3);
         ImageView whichMood4 = (ImageView) relativeLayout.findViewById(R.id.selectedMoodIMG4);
-        List<ImageView> wMood = Arrays.asList(whichMood4,whichMood3,whichMood2);
+        List<ImageView> wMood = Arrays.asList(whichMood2,whichMood3,whichMood4);
         ImageButton editPen = (ImageButton) relativeLayout.findViewById(R.id.editPenButton);
         TextView whichMoodText = (TextView) relativeLayout.findViewById(R.id.textViewMood);
         TextView dateText = (TextView) relativeLayout.findViewById(R.id.date);
@@ -79,17 +80,17 @@ public class MoodSelectedFragment extends Fragment {
         ProgressBar proBar2 = (ProgressBar) relativeLayout.findViewById(R.id.sleepCircle2);
         ProgressBar proBar3 = (ProgressBar) relativeLayout.findViewById(R.id.sleepCircle3);
         ProgressBar proBar4 = (ProgressBar) relativeLayout.findViewById(R.id.sleepCircle4);
-        List<ProgressBar> sProBar = Arrays.asList(proBar4,proBar3,proBar2,proBar1);
+        List<ProgressBar> sProBar = Arrays.asList(proBar1,proBar2,proBar3,proBar4);
         TextView startSleep1 = (TextView) relativeLayout.findViewById(R.id.StartBedTime1);
         TextView startSleep2 = (TextView) relativeLayout.findViewById(R.id.StartBedTime2);
         TextView startSleep3 = (TextView) relativeLayout.findViewById(R.id.StartBedTime3);
         TextView startSleep4 = (TextView) relativeLayout.findViewById(R.id.StartBedTime4);
-        List<TextView> sSleep = Arrays.asList(startSleep4,startSleep3,startSleep2,startSleep1);
+        List<TextView> sSleep = Arrays.asList(startSleep1,startSleep2,startSleep3,startSleep4);
         TextView endSleep1 = (TextView) relativeLayout.findViewById(R.id.EndBedTime1);
         TextView endSleep2 = (TextView) relativeLayout.findViewById(R.id.EndBedTime2);
         TextView endSleep3 = (TextView) relativeLayout.findViewById(R.id.EndBedTime3);
         TextView endSleep4 = (TextView) relativeLayout.findViewById(R.id.EndBedTime4);
-        List<TextView> eSleep = Arrays.asList(endSleep4,endSleep3,endSleep2,endSleep1);
+        List<TextView> eSleep = Arrays.asList(endSleep1,endSleep2,endSleep3,endSleep4);
         BarChart barChart = (BarChart) relativeLayout.findViewById(R.id.barchart);
         TextView startSleep = (TextView) relativeLayout.findViewById(R.id.StartBedTime);
         TextView endSleep = (TextView) relativeLayout.findViewById(R.id.EndBedTime);
@@ -101,14 +102,6 @@ public class MoodSelectedFragment extends Fragment {
         String date = new SimpleDateFormat("EEE dd/MM", Locale.getDefault()).format(new Date());
         dateText.setText(date);
 
-        Map mood = new HashMap();
-        mood.put(1, R.drawable.supersad);
-        mood.put(2, R.drawable.sad);
-        mood.put(3, R.drawable.neutral);
-        mood.put(4, R.drawable.happy);
-        mood.put(5, R.drawable.superhappy);
-        //TODO change to no Data smiley
-        mood.put(999,R.drawable.edit_pen);
 
 
         if (selectedMood == 1) {
@@ -138,23 +131,6 @@ public class MoodSelectedFragment extends Fragment {
             whichMoodText.setText("Awesome");
         }
 
-        //Create function to calculate the start angle and the progress based on the time
-        SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-        String date1 = "2019/04/09 24:00:00";
-        String date2 = "2019/04/10 8:00:00";
-        Date start = null;
-        Date end = null;
-        try {
-            start = format.parse(date1);
-            end = format.parse(date2);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        /*
-        Set sleep progress bar values
-        */
-
 
         editPen.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -176,7 +152,7 @@ public class MoodSelectedFragment extends Fragment {
         ArrayList<BarEntry> barEntriesSleep = new ArrayList<>();
         ArrayList<BarEntry> barEntriesExercise = new ArrayList<>();
 
-
+        /*Read data*/
         InputStream exp = getResources().openRawResource(R.raw.export);
         InputStream mod = getResources().openRawResource(R.raw.mooddata);
         HealthData hd = new HealthData(exp,mod);
@@ -184,10 +160,9 @@ public class MoodSelectedFragment extends Fragment {
         List<extData> md = null;
         List<extData> ad = null;
 
-        //TODO avoid casting from int to float and back
         try {
             int lastdays = 4;
-            //Sleep data
+            //get the data from the "lasdays" Order of data is today-n -> reverse data for bars after adding it to the barchart
             sd = hd.getSleepData(lastdays);
             md = hd.getMoodData(lastdays);
             ad = hd.getStepData(lastdays);
@@ -214,7 +189,8 @@ public class MoodSelectedFragment extends Fragment {
                 barEntriesExercise.add(new BarEntry(i, Float.valueOf(actMin)));
 
             }
-
+            Collections.reverse(barEntriesSleep);
+            Collections.reverse(barEntriesExercise);
 
 
 
@@ -334,8 +310,13 @@ public class MoodSelectedFragment extends Fragment {
     }
 
     private String getTime(Date in){
-        String formattedDate = new SimpleDateFormat("HH:mm").format(in);
-        return formattedDate;
+        if(in!= null){
+            String formattedDate = new SimpleDateFormat("HH:mm").format(in);
+            return formattedDate;
+        }
+        else{
+        return "00:00";
+        }
     }
 
     private String nodeToString(Node node) {
@@ -384,10 +365,17 @@ public class MoodSelectedFragment extends Fragment {
 
         return diffHours + "h "+ diffMinutes +"m";
     }
-    private void setSleepCycleView(Date start,Date end,TextView startText,TextView endText,ProgressBar probar){
-        startText.setText(getTime(start));
-        endText.setText(getTime(end));
-        probar.setSecondaryProgress(calcProgress(start,end));
-        probar.setRotation(calcStartAngleProgressBar(start));
+    private void setSleepCycleView(Date start,Date end,TextView startText,TextView endText,ProgressBar probar) {
+        if ((start != null) && (end != null)) {
+            startText.setText(getTime(start));
+            endText.setText(getTime(end));
+            probar.setProgress(calcProgress(start, end));
+            probar.setRotation(calcStartAngleProgressBar(start));
+        } else {
+            startText.setText("");
+            endText.setText("");
+            probar.setProgress(0);
+            probar.setRotation(0);
+        }
     }
 }
