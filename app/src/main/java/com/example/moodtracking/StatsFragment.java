@@ -1,14 +1,8 @@
 package com.example.moodtracking;
 
-
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.Matrix;
+;
 import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.RectF;
-import android.media.Image;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -44,7 +38,7 @@ import javax.xml.xpath.XPathExpressionException;
 import static java.lang.Math.floor;
 import static java.lang.Math.max;
 
-public class StatsFragment extends Fragment {
+public class StatsFragment extends Fragment{
 
     ImageView supsadExercise, sadExercise, neutralExercise, happyExercise,suphappyExercise;
     ImageView supsadSleep, sadSleep, neutralSleep, happySleep, suphappySleep;
@@ -56,6 +50,7 @@ public class StatsFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final RelativeLayout relativeLayout = (RelativeLayout) inflater.inflate(R.layout.fragment_stats, container, false);
+
 
         supsadExercise = (ImageView) relativeLayout.findViewById(R.id.supsadExercise);
         sadExercise = (ImageView) relativeLayout.findViewById(R.id.sadExercise);
@@ -83,6 +78,27 @@ public class StatsFragment extends Fragment {
             }
         });
 
+        final CalculateAllTime allTimeTask = new CalculateAllTime() {
+            @Override
+            protected Long[] doInBackground(Void... voids) {
+                return new Long[0];
+            }
+        };
+
+        final CalculateThirtyDays thirtyDaysTask = new CalculateThirtyDays() {
+            @Override
+            protected Long[] doInBackground(Void... voids) {
+                return new Long[0];
+            }
+        };
+
+        thirtyDaysTask.execute();
+        allTimeTask.execute();
+
+        final Long[] allTimeValues = allTimeTask.doInBackground();
+
+        final Long[] thirtyDayValues = ((CalculateThirtyDays) thirtyDaysTask).doInBackground();
+
         allTimeData.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -90,7 +106,7 @@ public class StatsFragment extends Fragment {
                 allTimeData.setTextColor(Color.WHITE);
                 ThirtyDaysData.setBackgroundResource(R.drawable.clickable_button);
                 ThirtyDaysData.setTextColor(Color.parseColor("#008577"));
-                graphData(40);
+                updateGraph(allTimeValues);
 
 
             }
@@ -103,12 +119,14 @@ public class StatsFragment extends Fragment {
                 ThirtyDaysData.setTextColor(Color.WHITE);
                 allTimeData.setBackgroundResource(R.drawable.clickable_button);
                 allTimeData.setTextColor(Color.parseColor("#008577"));
-                graphData(30);
+                updateGraph(thirtyDayValues);
 
             }
         });
 
-        graphData(30);
+
+        updateGraph(thirtyDayValues);
+
 
 
 
@@ -127,7 +145,41 @@ public class StatsFragment extends Fragment {
 
     }
 
-    private void graphData (int numDays) {
+    public abstract class CalculateAllTime extends AsyncTask<Void, Void, Long[]> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        protected Long[] doInBackground(Long[]... params) {
+            Long[] allTimeValues = graphData(40);
+            return allTimeValues;
+        }
+
+        @Override
+        protected void onPostExecute(Long[] results) {
+            super.onPostExecute(results);
+        }
+    }
+
+    public abstract class CalculateThirtyDays extends AsyncTask<Void, Void, Long[]> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        protected Long[] doInBackground(Long[]... params) {
+            Long[] allTimeValues = graphData(30);
+            return allTimeValues;
+        }
+
+        @Override
+        protected void onPostExecute(Long[] results) {
+            super.onPostExecute(results);
+        }
+    }
+
+    public Long[] graphData (int numDays) {
 
         InputStream exp = getResources().openRawResource(R.raw.export);
         InputStream mod = getResources().openRawResource(R.raw.mooddata);
@@ -167,11 +219,11 @@ public class StatsFragment extends Fragment {
         long e_happy = 0;
         long e_suphappy = 0;
 
-        int ctr_supsad = 0;
-        int ctr_sad = 0;
-        int ctr_neutral = 0;
-        int ctr_happy = 0;
-        int ctr_suphappy = 0;
+        long ctr_supsad = 0;
+        long ctr_sad = 0;
+        long ctr_neutral = 0;
+        long ctr_happy = 0;
+        long ctr_suphappy = 0;
         long max_sleep = 0;
         long max_exercise = 0;
 
@@ -213,6 +265,21 @@ public class StatsFragment extends Fragment {
 
         }
 
+        Long[] values = {s_supsad, s_sad, s_neutral, s_happy, s_suphappy, e_supsad, e_sad, e_neutral,
+                e_happy, e_suphappy, ctr_supsad, ctr_sad, ctr_neutral, ctr_happy, ctr_suphappy, max_exercise, max_sleep};
+
+        return values;
+
+    }
+
+    public void updateGraph (Long[] values) {
+
+        long s_supsad, s_sad, s_neutral, s_happy, s_suphappy, e_supsad, e_sad, e_neutral, e_happy, e_suphappy, ctr_supsad,
+                ctr_sad, ctr_neutral, ctr_happy, ctr_suphappy, max_exercise, max_sleep;
+        s_supsad = values[0]; s_sad = values[1]; s_neutral = values[2]; s_happy = values[3]; s_suphappy = values[4];
+        e_supsad = values[5]; e_sad = values[6]; e_neutral = values[7]; e_happy = values[8]; e_suphappy = values[9];
+        ctr_supsad = values[10]; ctr_sad = values[11]; ctr_neutral = values[12]; ctr_happy = values[13]; ctr_suphappy = values[14];
+        max_exercise = values[15]; max_sleep = values[16];
 
         float s_supsadP = (float) (s_supsad/ctr_supsad) / max_sleep * 180 - 90;
         float s_sadP = (float) (s_sad/ctr_sad) / max_sleep * 180 - 90;
