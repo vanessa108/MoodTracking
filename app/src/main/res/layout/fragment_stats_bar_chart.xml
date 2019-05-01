@@ -93,12 +93,12 @@
 
     <TextView
         android:id="@+id/textViewMood_2"
-        android:layout_width="74dp"
+        android:layout_width="100dp"
         android:layout_height="24dp"
         android:layout_below="@+id/selectedMoodIMG2"
         android:layout_alignEnd="@+id/selectedMoodIMG2"
         android:layout_alignParentStart="true"
-        android:layout_marginStart="33dp"
+        android:layout_marginStart="20dp"
         android:layout_marginTop="526dp"
         android:layout_marginEnd="-3dp"
         android:text="Awesome"

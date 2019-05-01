@@ -85,6 +85,7 @@ public class HealthData {
 
             if(lastDaysSleep.get(i).getEndDate()==null){
                 lastDaysSleep.get(i).endDate=dayMinusX(i);
+
             }
         }
         return lastDaysSleep;

@@ -13,7 +13,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -34,36 +33,17 @@ import com.github.mikephil.charting.listener.OnChartGestureListener;
 import com.github.mikephil.charting.utils.MPPointD;
 import com.github.mikephil.charting.utils.ViewPortHandler;
 
-import org.w3c.dom.Node;
-
-import org.xml.sax.SAXException;
-
-
-import java.io.IOException;
 import java.io.InputStream;
-import java.io.StringWriter;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Calendar;
-import java.util.Map;
 
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.OutputKeys;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
-import javax.xml.xpath.XPathExpressionException;
-
-import static java.lang.StrictMath.abs;
+import static java.lang.StrictMath.toIntExact;
 
 
 public class StatsBarChartFragment extends Fragment {
@@ -114,7 +94,7 @@ public class StatsBarChartFragment extends Fragment {
 
         final ArrayList<BarEntry> barEntriesSleep = new ArrayList<>();
         final ArrayList<BarEntry> barEntriesExercise = new ArrayList<>();
-
+        final ArrayList<Integer> mood_data = new ArrayList<>();
 
         List<extData> sd = MainActivity.sd;
         List<extData> md = MainActivity.md;
@@ -123,34 +103,34 @@ public class StatsBarChartFragment extends Fragment {
         InputStream exp = getResources().openRawResource(R.raw.export);
         InputStream mod = getResources().openRawResource(R.raw.mooddata);
 
-        final List<Date> Dates = new ArrayList<>();
+        final List<Date> startDates = new ArrayList<>();
+        final List<Date> endDates = new ArrayList<>();
 
-                    for(int i = 0;i<31;i++){
+        for(int i = 0;i<31;i++) {
 
-                //activityData
-                long actMin = (long)ad.get(i).getValue();
-                barEntriesExercise.add(new BarEntry(i, Float.valueOf(actMin)));
+            //activityData
+            long actMin = (long) ad.get(i).getValue();
+            barEntriesExercise.add(new BarEntry(i, Float.valueOf(actMin)));
 
 
-                //SleepData
-                Date temp_start = sd.get(i).getStartDate();
-                Date temp_end   = sd.get(i).getEndDate();
-                long sleep_min = (long)sd.get(i).getValue();
-                barEntriesSleep.add(new BarEntry(i, Float.valueOf(sleep_min)));
-                Dates.add(temp_end);
+            //SleepData
+            Date temp_start = sd.get(i).getStartDate();
+            Date temp_end = sd.get(i).getEndDate();
+            long sleep_min = (long) sd.get(i).getValue();
+            barEntriesSleep.add(new BarEntry(i, Float.valueOf(sleep_min)));
+            startDates.add(temp_start);
+            endDates.add(temp_end);
 
-                //Sleep circle moon
+            //Sleep circle moon
+            setSleepCycleView(temp_start, temp_end, startSleep_2, endSleep_2, proBar_2);
+            if (i == 0) {
                 setSleepCycleView(temp_start, temp_end, startSleep_2, endSleep_2, proBar_2);
-                if( i==0){
-                    setSleepCycleView(temp_start,temp_end,startSleep_2,endSleep_2,proBar_2);
-                    textViewSleep_2.setText(getTimeFromMin(sleep_min));
-                }
-
-                //TODO mood data
-
-
-
+                textViewSleep_2.setText(getTimeFromMin(sleep_min));
             }
+
+            //MoodData
+           mood_data.add((int)md.get(i).getValue());
+        }
 
             long actMin2 = (long)ad.get(0).getValue();
             String actMinStr = Long.toString(actMin2);
@@ -158,7 +138,9 @@ public class StatsBarChartFragment extends Fragment {
 
             Collections.reverse(barEntriesSleep);
             Collections.reverse(barEntriesExercise);
-            Collections.reverse(Dates);
+            Collections.reverse(startDates);
+            Collections.reverse(endDates);
+            Collections.reverse((mood_data));
 
 
 
@@ -253,14 +235,14 @@ public class StatsBarChartFragment extends Fragment {
                 Log.d("moveToVal",String.valueOf(moveToVal));
                 barChart_2.moveViewToX((float)(moveToVal));
                 //Date
-                date_2.setText(String.valueOf(setDateString(Dates.get(moveToVal+1))));
+                date_2.setText(setDateString(endDates.get(moveToVal+1)));
                 //Exercise
                 textViewExercise_2.setText(getTimeFromMin((long)barEntriesExercise.get(moveToVal+1).getY()));
                 //Sleep
                 textViewSleep_2.setText(getTimeFromMin((long)barEntriesSleep.get(moveToVal+1).getY()));
-                //TODO sleep progress
+                setSleepCycleView(startDates.get(moveToVal+1),endDates.get(moveToVal+1),startSleep_2,endSleep_2,proBar_2);
                 //Mood
-                setMoodView(moveToVal%5,mood,mood_text);
+                setMoodView((mood_data.get(moveToVal+1)),mood,mood_text);
             }
 
             @Override
@@ -414,5 +396,6 @@ public class StatsBarChartFragment extends Fragment {
 
         }
     }
+
 
 }
