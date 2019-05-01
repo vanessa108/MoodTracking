@@ -95,8 +95,6 @@ public class StatsFragment extends Fragment {
             ad = hd.getStepData(numDays);
 
 
-
-
         } catch (XPathExpressionException e) {
             e.printStackTrace();
         } catch (ParserConfigurationException e) {
@@ -135,7 +133,7 @@ public class StatsFragment extends Fragment {
         for (int i = 0; i < md.size(); i++) {
           int mood = (int) md.get(i).getValue();
           long stemp = (long) sd.get(i).getValue();
-          long etemp = (long) sd.get(i).getValue();
+          long etemp = (long) ad.get(i).getValue();
 
           if (stemp > max_sleep) {
               max_sleep = stemp;
@@ -171,9 +169,6 @@ public class StatsFragment extends Fragment {
           }
 
         }
-
-
-
 
 
         float s_supsadP = (float) (s_supsad/ctr_supsad) / max_sleep * 180 - 90;
@@ -220,7 +215,10 @@ public class StatsFragment extends Fragment {
             suphappyExercise.setVisibility(View.GONE);
         }
 
-        maxExercise.setText(Long.toString(s_supsad));
+        int maxExerciseH = (int) max_exercise / 60;
+        int maxExerciseM = (int) ((max_exercise / 60) - maxExerciseH) * 60;
+
+        maxExercise.setText(Integer.toString(maxExerciseH) + "h" + Integer.toString(maxExerciseM) + "m");
 
         int maxSleepH = (int) max_sleep / 60;
         int maxSleepM = (int)((max_sleep / 60 )- maxSleepH )* 60;
