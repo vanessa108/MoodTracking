@@ -8,9 +8,12 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
+import android.view.DragEvent;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -28,6 +31,9 @@ import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.mikephil.charting.formatter.IValueFormatter;
+import com.github.mikephil.charting.listener.ChartTouchListener;
+import com.github.mikephil.charting.listener.OnChartGestureListener;
+import com.github.mikephil.charting.utils.MPPointD;
 import com.github.mikephil.charting.utils.ViewPortHandler;
 
 import org.w3c.dom.Node;
@@ -58,6 +64,8 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.xpath.XPathExpressionException;
 
+import static java.lang.StrictMath.abs;
+
 
 public class StatsBarChartFragment extends Fragment {
 
@@ -66,9 +74,10 @@ public class StatsBarChartFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final RelativeLayout relativeLayout = (RelativeLayout) inflater.inflate(R.layout.fragment_stats_bar_chart, container, false);
 
-        TextView date_2 = (TextView) relativeLayout.findViewById(R.id.date_2);
+        final TextView date_2 = (TextView) relativeLayout.findViewById(R.id.date_2);
         TextView tv_month = (TextView) relativeLayout.findViewById(R.id.textViewMonth);
-        BarChart barChart_2 = (BarChart) relativeLayout.findViewById(R.id.barchart_2);
+        final BarChart barChart_2 = (BarChart) relativeLayout.findViewById(R.id.barchart_2);
+
         Button pie_chart_button = (Button) relativeLayout.findViewById(R.id.pieChartButton);
 
         String date = new SimpleDateFormat("EEE d MMM yyyy", Locale.getDefault()).format(new Date());
@@ -85,6 +94,11 @@ public class StatsBarChartFragment extends Fragment {
             }
         });
 
+
+
+
+
+
         //Bar Chart
         barChart_2.setDrawBarShadow(false);
         barChart_2.setDrawValueAboveBar(true);
@@ -92,6 +106,10 @@ public class StatsBarChartFragment extends Fragment {
         barChart_2.setPinchZoom(false);
         barChart_2.getDescription().setEnabled(false);
         barChart_2.getLegend().setEnabled(false);
+
+
+
+
 
         ArrayList<BarEntry> barEntriesSleep = new ArrayList<>();
         ArrayList<BarEntry> barEntriesExercise = new ArrayList<>();
@@ -155,12 +173,82 @@ public class StatsBarChartFragment extends Fragment {
         yAxisRight.setEnabled(false);
         yAxisLeft.setDrawGridLines(false);
 
+
+        xAxis.setDrawGridLines(true);
+
+
+
         //Scrolling
         barChart_2.setDragEnabled(true);
         barChart_2.setVisibleXRangeMaximum(5);
         barChart_2.moveViewToX(31); //TODO set to today
         barChart_2.invalidate();
-        //barChart_2.get
+
+        //int chart_width = barChart_2.get;
+        //int chart_pos = chart_width;
+        //Log.d("chart_width",String.valueOf(chart_width));
+        final ViewPortHandler handler = barChart_2.getViewPortHandler();
+        barChart_2.setOnChartGestureListener(new OnChartGestureListener() {
+            @Override
+            public void onChartGestureStart(MotionEvent me, ChartTouchListener.ChartGesture lastPerformedGesture) {
+
+            }
+
+            @Override
+            public void onChartGestureEnd(MotionEvent me, ChartTouchListener.ChartGesture lastPerformedGesture) {
+                //Log.d("me",String.valueOf(me));
+                //Log.d("getCenterOfView",String.valueOf(barChart_2.getCenterOfView().x));
+                //int scrollX = barChart_2.getScrollX();
+                //Log.d( "getX: ",String.valueOf(me.getX()));
+                //Log.d("getHighlightByTouchPoint",String.valueOf(barChart_2.getHighlightByTouchPoint()));
+                Log.d("me_trans",String.valueOf(handler.getTransX()));
+                float view_width = barChart_2.getWidth();
+                Log.d("width",String.valueOf(view_width));
+                float x = handler.getTransX();//+(view_width/2);
+                float y = handler.getTransY();
+
+                MPPointD point = barChart_2.getTransformer(YAxis.AxisDependency.LEFT).getValuesByTouchPoint(x,y);
+                double xValue = point.x;
+                double yValue = point.y;
+                Log.d("xValue",String.valueOf(xValue));
+
+                MPPointD bottomLeft = barChart_2.getValuesByTouchPoint(handler.contentLeft(), handler.contentBottom(), YAxis.AxisDependency.LEFT);
+                int moveToVal = (int)(bottomLeft.x);
+                Log.d("moveToVal",String.valueOf(moveToVal));
+                barChart_2.moveViewToX((float)(moveToVal));
+                date_2.setText(String.valueOf(moveToVal));
+
+            }
+
+            @Override
+            public void onChartLongPressed(MotionEvent me) {
+            }
+
+            @Override
+            public void onChartDoubleTapped(MotionEvent me) {
+
+            }
+
+            @Override
+            public void onChartSingleTapped(MotionEvent me) {
+
+            }
+
+            @Override
+            public void onChartFling(MotionEvent me1, MotionEvent me2, float velocityX, float velocityY) {
+
+            }
+
+            @Override
+            public void onChartScale(MotionEvent me, float scaleX, float scaleY) {
+
+            }
+
+            @Override
+            public void onChartTranslate(MotionEvent me, float dX, float dY) {
+            }
+        });
+
     return relativeLayout;
     }
 
