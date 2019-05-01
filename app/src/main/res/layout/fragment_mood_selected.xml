@@ -8,7 +8,7 @@
 
     <TextView
         android:id="@+id/date"
-        android:layout_width="132dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_marginStart="12dp"
@@ -242,7 +242,7 @@
         android:layout_alignParentBottom="@+id/sleepCircle"
         android:layout_gravity="right"
         android:layout_marginLeft="-23dp"
-        android:layout_marginTop="72dp"
+        android:layout_marginTop="65dp"
         android:text="22:45"
         android:textSize="12sp" />
 
@@ -257,7 +257,7 @@
         android:layout_gravity="right"
         android:layout_marginStart="-24dp"
         android:layout_marginLeft="-23dp"
-        android:layout_marginTop="534dp"
+        android:layout_marginTop="530dp"
         android:layout_marginEnd="1dp"
         android:text="22:45"
         android:textSize="12sp" />
@@ -273,7 +273,7 @@
         android:layout_gravity="right"
         android:layout_marginStart="-24dp"
         android:layout_marginLeft="-23dp"
-        android:layout_marginTop="534dp"
+        android:layout_marginTop="530dp"
         android:layout_marginEnd="1dp"
         android:text="22:45"
         android:textSize="12sp" />
@@ -289,7 +289,7 @@
         android:layout_gravity="right"
         android:layout_marginStart="-24dp"
         android:layout_marginLeft="-23dp"
-        android:layout_marginTop="534dp"
+        android:layout_marginTop="530dp"
         android:layout_marginEnd="1dp"
         android:text="22:45"
         android:textSize="12sp" />
@@ -305,7 +305,7 @@
         android:layout_gravity="right"
         android:layout_marginStart="-24dp"
         android:layout_marginLeft="-23dp"
-        android:layout_marginTop="534dp"
+        android:layout_marginTop="530dp"
         android:layout_marginEnd="1dp"
         android:text="22:45"
         android:textSize="12sp" />
