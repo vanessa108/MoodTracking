@@ -8,7 +8,7 @@
         android:id="@+id/activity_semicircle"
         android:layout_width="290dp"
         android:layout_height="220dp"
-        android:layout_below="@+id/stats_90days"
+        android:layout_below="@+id/stats_30days"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="60dp"
         app:srcCompat="@drawable/activity_semicircle" />
@@ -29,7 +29,7 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:layout_marginTop="70dp"
-        android:layout_marginEnd="0dp"
+        android:layout_marginEnd="16dp"
         android:background="@drawable/clickable_button"
         android:text="All Time"
         android:textColor="@color/colorPrimary" />
@@ -41,22 +41,11 @@
         android:layout_alignParentTop="true"
         android:layout_marginTop="70dp"
         android:layout_marginRight="10dp"
-        android:layout_toLeftOf="@id/stats_90days"
+        android:layout_toLeftOf="@id/stats_alltime"
         android:background="@drawable/clicked_button"
         android:text="30 Days"
         android:textColor="@color/white" />
 
-    <Button
-        android:id="@+id/stats_90days"
-        android:layout_width="wrap_content"
-        android:layout_height="40dp"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="70dp"
-        android:layout_marginRight="10dp"
-        android:layout_toLeftOf="@id/stats_alltime"
-        android:background="@drawable/clickable_button"
-        android:text="90 Days"
-        android:textColor="@color/colorPrimary" />
 
     <ImageView
         android:id="@+id/supsadExercise"

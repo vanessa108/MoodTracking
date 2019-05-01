@@ -46,11 +46,10 @@ import static java.lang.Math.max;
 
 public class StatsFragment extends Fragment {
 
-    private float rotation = 45F;
-    int numDays = 30;
     ImageView supsadExercise, sadExercise, neutralExercise, happyExercise,suphappyExercise;
     ImageView supsadSleep, sadSleep, neutralSleep, happySleep, suphappySleep;
     Button barChartButton;
+    Button allTimeData, ThirtyDaysData;
     TextView maxExercise, maxSleep;
 
     @Nullable
@@ -73,6 +72,8 @@ public class StatsFragment extends Fragment {
         maxExercise = (TextView) relativeLayout.findViewById(R.id.maxExercise);
         maxSleep = (TextView) relativeLayout.findViewById(R.id.maxSleep);
         barChartButton = (Button) relativeLayout.findViewById(R.id.barChartButton);
+        allTimeData = (Button) relativeLayout.findViewById(R.id.stats_alltime);
+        ThirtyDaysData = (Button) relativeLayout.findViewById(R.id.stats_30days);
 
         barChartButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -81,6 +82,52 @@ public class StatsFragment extends Fragment {
                 replaceFragment(newFragment);
             }
         });
+
+        allTimeData.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                allTimeData.setBackgroundResource(R.drawable.clicked_button);
+                allTimeData.setTextColor(Color.WHITE);
+                ThirtyDaysData.setBackgroundResource(R.drawable.clickable_button);
+                ThirtyDaysData.setTextColor(Color.parseColor("#008577"));
+                graphData(40);
+
+
+            }
+        });
+
+        ThirtyDaysData.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ThirtyDaysData.setBackgroundResource(R.drawable.clicked_button);
+                ThirtyDaysData.setTextColor(Color.WHITE);
+                allTimeData.setBackgroundResource(R.drawable.clickable_button);
+                allTimeData.setTextColor(Color.parseColor("#008577"));
+                graphData(30);
+
+            }
+        });
+
+        graphData(30);
+
+
+
+
+        return relativeLayout;
+    }
+
+    private void rotateArrow(float rotation, ImageView emoji) {
+
+        RotateAnimation rotate = new RotateAnimation(0.0f, rotation, Animation.RELATIVE_TO_SELF, 0.5f,
+                Animation.RELATIVE_TO_SELF, 1.0f);
+        rotate.setInterpolator(new LinearInterpolator());
+        rotate.setDuration(0);
+        rotate.setFillAfter(true);
+        emoji.startAnimation(rotate);
+
+    }
+
+    private void graphData (int numDays) {
 
         InputStream exp = getResources().openRawResource(R.raw.export);
         InputStream mod = getResources().openRawResource(R.raw.mooddata);
@@ -131,38 +178,38 @@ public class StatsFragment extends Fragment {
 
 
         for (int i = 0; i < md.size(); i++) {
-          int mood = (int) md.get(i).getValue();
-          long stemp = (long) sd.get(i).getValue();
-          long etemp = (long) ad.get(i).getValue();
+            int mood = (int) md.get(i).getValue();
+            long stemp = (long) sd.get(i).getValue();
+            long etemp = (long) ad.get(i).getValue();
 
-          if (stemp > max_sleep) {
-              max_sleep = stemp;
-          }
-          if (etemp > max_exercise) {
-              max_exercise = etemp;
-          }
-          if (mood == 1) {
-              s_supsad += stemp;
-              e_supsad += etemp;
-              ctr_supsad++;
-          }
-          else if (mood == 2) {
-              s_sad += stemp;
-              e_sad += etemp;
-              ctr_sad++;
-          } else if (mood == 3) {
-              s_neutral += stemp;
-              e_neutral += etemp;
-              ctr_neutral++;
-          } else if (mood == 4) {
-              s_happy += stemp;
-              e_happy += etemp;
-              ctr_happy++;
-          } else if (mood == 5) {
-              s_suphappy += stemp;
-              e_suphappy += etemp;
-              ctr_suphappy++;
-          }
+            if (stemp > max_sleep) {
+                max_sleep = stemp;
+            }
+            if (etemp > max_exercise) {
+                max_exercise = etemp;
+            }
+            if (mood == 1) {
+                s_supsad += stemp;
+                e_supsad += etemp;
+                ctr_supsad++;
+            }
+            else if (mood == 2) {
+                s_sad += stemp;
+                e_sad += etemp;
+                ctr_sad++;
+            } else if (mood == 3) {
+                s_neutral += stemp;
+                e_neutral += etemp;
+                ctr_neutral++;
+            } else if (mood == 4) {
+                s_happy += stemp;
+                e_happy += etemp;
+                ctr_happy++;
+            } else if (mood == 5) {
+                s_suphappy += stemp;
+                e_suphappy += etemp;
+                ctr_suphappy++;
+            }
 
         }
 
@@ -212,12 +259,12 @@ public class StatsFragment extends Fragment {
         }
 
         int maxExerciseH = (int) max_exercise / 60;
-        int maxExerciseM = (int) ((max_exercise / 60) - maxExerciseH) * 60;
+        int maxExerciseM = (int) (max_exercise % 60);
 
         maxExercise.setText(Integer.toString(maxExerciseH) + "h" + Integer.toString(maxExerciseM) + "m");
 
         int maxSleepH = (int) max_sleep / 60;
-        int maxSleepM = (int)((max_sleep / 60 )- maxSleepH )* 60;
+        int maxSleepM = (int) (max_sleep % 60 );
 
         maxSleep.setText(Integer.toString(maxSleepH) + "h" + Integer.toString(maxSleepM) + "m");
 
@@ -234,24 +281,8 @@ public class StatsFragment extends Fragment {
         rotateArrow(s_happyP, happySleep);
         rotateArrow(s_suphappyP, suphappySleep);
 
-
-        return relativeLayout;
     }
 
-    private void rotateArrow(float rotation, ImageView emoji) {
-
-        RotateAnimation rotate = new RotateAnimation(0.0f, rotation, Animation.RELATIVE_TO_SELF, 0.5f,
-                Animation.RELATIVE_TO_SELF, 1.0f);
-        rotate.setInterpolator(new LinearInterpolator());
-        rotate.setDuration(0);
-        rotate.setFillAfter(true);
-        emoji.startAnimation(rotate);
-
-    }
-
-    private float calculatePercentage(long mood, int ctr, long max_val) {
-        return (float) (mood/ctr) / max_val * 180 - 90;
-     }
 
     public void replaceFragment (Fragment fragment) {
         if (fragment != null) {
