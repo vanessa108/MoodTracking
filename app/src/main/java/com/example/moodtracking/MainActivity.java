@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                 break;
 
             case R.id.navigation_stats:
-                fragment = new StatsFragment();
+                fragment = new StatsBarChartFragment();
                 break;
 
             case R.id.navigation_settings:
