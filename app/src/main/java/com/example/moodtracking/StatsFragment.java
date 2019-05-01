@@ -1,14 +1,8 @@
 package com.example.moodtracking;
 
-
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.Matrix;
+;
 import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.RectF;
-import android.media.Image;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -44,7 +38,7 @@ import javax.xml.xpath.XPathExpressionException;
 import static java.lang.Math.floor;
 import static java.lang.Math.max;
 
-public class StatsFragment extends Fragment {
+public class StatsFragment extends Fragment{
 
     ImageView supsadExercise, sadExercise, neutralExercise, happyExercise,suphappyExercise;
     ImageView supsadSleep, sadSleep, neutralSleep, happySleep, suphappySleep;
@@ -56,6 +50,7 @@ public class StatsFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final RelativeLayout relativeLayout = (RelativeLayout) inflater.inflate(R.layout.fragment_stats, container, false);
+
 
         supsadExercise = (ImageView) relativeLayout.findViewById(R.id.supsadExercise);
         sadExercise = (ImageView) relativeLayout.findViewById(R.id.sadExercise);
@@ -83,6 +78,9 @@ public class StatsFragment extends Fragment {
             }
         });
 
+
+
+
         allTimeData.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -90,7 +88,8 @@ public class StatsFragment extends Fragment {
                 allTimeData.setTextColor(Color.WHITE);
                 ThirtyDaysData.setBackgroundResource(R.drawable.clickable_button);
                 ThirtyDaysData.setTextColor(Color.parseColor("#008577"));
-                graphData(40);
+
+                updateGraph(MainActivity.allTimeValues);
 
 
             }
@@ -103,12 +102,14 @@ public class StatsFragment extends Fragment {
                 ThirtyDaysData.setTextColor(Color.WHITE);
                 allTimeData.setBackgroundResource(R.drawable.clickable_button);
                 allTimeData.setTextColor(Color.parseColor("#008577"));
-                graphData(30);
+                updateGraph(MainActivity.thirtyDayValues);
 
             }
         });
 
-        graphData(30);
+
+        updateGraph(MainActivity.thirtyDayValues);
+
 
 
 
@@ -127,92 +128,15 @@ public class StatsFragment extends Fragment {
 
     }
 
-    private void graphData (int numDays) {
 
-        InputStream exp = getResources().openRawResource(R.raw.export);
-        InputStream mod = getResources().openRawResource(R.raw.mooddata);
-        HealthData hd = new HealthData(exp,mod);
-        List<extData> sd = null;
-        List<extData> md = null;
-        List<extData> ad = null;
+    public void updateGraph (Long[] values) {
 
-        try{
-            sd = hd.getSleepData(numDays);
-            md = hd.getMoodData(numDays);
-            ad = hd.getStepData(numDays);
-
-
-        } catch (XPathExpressionException e) {
-            e.printStackTrace();
-        } catch (ParserConfigurationException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (SAXException e) {
-            e.printStackTrace();
-        }
-
-
-
-//        int mood_day = 0;
-        long s_supsad = 0;
-        long s_sad = 0;
-        long s_neutral = 0;
-        long s_happy = 0;
-        long s_suphappy = 0;
-
-        long e_supsad = 0;
-        long e_sad = 0;
-        long e_neutral = 0;
-        long e_happy = 0;
-        long e_suphappy = 0;
-
-        int ctr_supsad = 0;
-        int ctr_sad = 0;
-        int ctr_neutral = 0;
-        int ctr_happy = 0;
-        int ctr_suphappy = 0;
-        long max_sleep = 0;
-        long max_exercise = 0;
-
-
-
-        for (int i = 0; i < md.size(); i++) {
-            int mood = (int) md.get(i).getValue();
-            long stemp = (long) sd.get(i).getValue();
-            long etemp = (long) ad.get(i).getValue();
-
-            if (stemp > max_sleep) {
-                max_sleep = stemp;
-            }
-            if (etemp > max_exercise) {
-                max_exercise = etemp;
-            }
-            if (mood == 1) {
-                s_supsad += stemp;
-                e_supsad += etemp;
-                ctr_supsad++;
-            }
-            else if (mood == 2) {
-                s_sad += stemp;
-                e_sad += etemp;
-                ctr_sad++;
-            } else if (mood == 3) {
-                s_neutral += stemp;
-                e_neutral += etemp;
-                ctr_neutral++;
-            } else if (mood == 4) {
-                s_happy += stemp;
-                e_happy += etemp;
-                ctr_happy++;
-            } else if (mood == 5) {
-                s_suphappy += stemp;
-                e_suphappy += etemp;
-                ctr_suphappy++;
-            }
-
-        }
-
+        long s_supsad, s_sad, s_neutral, s_happy, s_suphappy, e_supsad, e_sad, e_neutral, e_happy, e_suphappy, ctr_supsad,
+                ctr_sad, ctr_neutral, ctr_happy, ctr_suphappy, max_exercise, max_sleep;
+        s_supsad = values[0]; s_sad = values[1]; s_neutral = values[2]; s_happy = values[3]; s_suphappy = values[4];
+        e_supsad = values[5]; e_sad = values[6]; e_neutral = values[7]; e_happy = values[8]; e_suphappy = values[9];
+        ctr_supsad = values[10]; ctr_sad = values[11]; ctr_neutral = values[12]; ctr_happy = values[13]; ctr_suphappy = values[14];
+        max_exercise = values[15]; max_sleep = values[16];
 
         float s_supsadP = (float) (s_supsad/ctr_supsad) / max_sleep * 180 - 90;
         float s_sadP = (float) (s_sad/ctr_sad) / max_sleep * 180 - 90;

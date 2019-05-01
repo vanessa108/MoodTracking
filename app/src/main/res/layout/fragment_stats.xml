@@ -2,7 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/white">
 
     <ImageView
         android:id="@+id/activity_semicircle"
@@ -225,6 +226,24 @@
         android:text="Overview"
         android:textColor="@color/white"
         android:textSize="18dp" />
+
+    <ImageView
+        android:id="@+id/exerciseMan"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/activity_semicircle"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="19dp"
+        app:srcCompat="@drawable/running" />
+
+    <ImageView
+        android:id="@+id/moon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/sleep_semicircle"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="31dp"
+        app:srcCompat="@drawable/moon" />
 
 
 </RelativeLayout>

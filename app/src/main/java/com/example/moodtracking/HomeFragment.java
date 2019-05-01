@@ -14,7 +14,7 @@ import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 
 public class HomeFragment extends Fragment {
-    static  int moodSelected;
+    static int moodSelected;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

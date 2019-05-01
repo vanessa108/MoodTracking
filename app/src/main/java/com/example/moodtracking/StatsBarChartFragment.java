@@ -116,23 +116,16 @@ public class StatsBarChartFragment extends Fragment {
         final ArrayList<BarEntry> barEntriesExercise = new ArrayList<>();
 
 
+        List<extData> sd = MainActivity.sd;
+        List<extData> md = MainActivity.md;
+        List<extData> ad = MainActivity.ad;
         /*Read data*/
         InputStream exp = getResources().openRawResource(R.raw.export);
         InputStream mod = getResources().openRawResource(R.raw.mooddata);
-        HealthData hd = new HealthData(exp,mod);
-        List<extData> sd = null;
-        List<extData> md = null;
-        List<extData> ad = null;
+
         final List<Date> Dates = new ArrayList<>();
 
-        try {
-            int lastdays = 31;
-            //get the data from the "lasdays" Order of data is today-n -> reverse data for bars after adding it to the barchart
-            sd = hd.getSleepData(lastdays);
-            md = hd.getMoodData(lastdays);
-            ad = hd.getStepData(lastdays);
-
-            for(int i = 0;i<lastdays;i++){
+                    for(int i = 0;i<31;i++){
 
                 //activityData
                 long actMin = (long)ad.get(i).getValue();
@@ -167,16 +160,6 @@ public class StatsBarChartFragment extends Fragment {
             Collections.reverse(barEntriesExercise);
             Collections.reverse(Dates);
 
-
-        } catch (XPathExpressionException e) {
-            e.printStackTrace();
-        } catch (ParserConfigurationException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (SAXException e) {
-            e.printStackTrace();
-        }
 
 
         //BarDataSets
