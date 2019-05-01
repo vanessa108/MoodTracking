@@ -186,8 +186,6 @@ class StepActivityData extends extData<Long,Long>{
             e.printStackTrace();
 
         }
-        //Log.d("tempDiff",String.valueOf(diff));
-
         return diff;
     }
 
@@ -231,9 +229,10 @@ class MoodData extends extData<String,Integer>{
         String date1 = xpath.evaluate("/row/@DateTime", document);
         mood = Integer.parseInt(xpath.evaluate("/row/@Mood", document));
 
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss Z");
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
         try {
+            //Log.d("Date1",date1);
             startDate = format.parse(date1);
             endDate = format.parse(date1);
 

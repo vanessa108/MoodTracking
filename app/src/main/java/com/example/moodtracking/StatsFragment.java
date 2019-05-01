@@ -139,18 +139,14 @@ public class StatsFragment extends Fragment {
 
           if (stemp > max_sleep) {
               max_sleep = stemp;
-
           }
-
           if (etemp > max_exercise) {
               max_exercise = etemp;
           }
-
           if (mood == 1) {
               s_supsad += stemp;
               e_supsad += etemp;
               ctr_supsad++;
-
           }
           else if (mood == 2) {
               s_sad += stemp;
