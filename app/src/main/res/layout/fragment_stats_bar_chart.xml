@@ -5,6 +5,14 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+    <ImageView
+        android:id="@+id/circle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="342dp"
+        app:srcCompat="@drawable/circle" />
 
         <TextView
             android:id="@+id/date_2"
@@ -189,8 +197,16 @@
         android:layout_height="270dp"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginTop="130dp"
+        android:layout_marginTop="110dp"
         android:layout_marginEnd="20dp" />
+
+    <View
+        android:id="@+id/divider10"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="338dp"
+        android:background="?android:attr/listDivider" />
 
     <TextView
         android:id="@+id/textViewMonth"
@@ -213,8 +229,8 @@
         android:layout_alignParentEnd="true"
         android:layout_marginTop="0dp"
         android:layout_marginEnd="0dp"
-        android:background="@drawable/clickable_tab"
         android:text="Overview"
+        android:background="@android:color/transparent"
         android:textColor="@color/colorPrimary"
         android:textSize="18dp" />
 
@@ -226,7 +242,7 @@
         android:layout_marginTop="0dp"
         android:background="@drawable/clicked_tab"
         android:text="Detailed"
-        android:textColor="@color/white"
+        android:textColor="@color/colorPrimary"
         android:textSize="18dp" />
 
 </RelativeLayout>

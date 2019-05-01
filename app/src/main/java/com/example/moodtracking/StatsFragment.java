@@ -185,12 +185,12 @@ public class StatsFragment extends Fragment{
         int maxExerciseH = (int) max_exercise / 60;
         int maxExerciseM = (int) (max_exercise % 60);
 
-        maxExercise.setText(Integer.toString(maxExerciseH) + "h" + Integer.toString(maxExerciseM) + "m");
+        maxExercise.setText(Integer.toString(maxExerciseH) + "h " + Integer.toString(maxExerciseM) + "m");
 
         int maxSleepH = (int) max_sleep / 60;
         int maxSleepM = (int) (max_sleep % 60 );
 
-        maxSleep.setText(Integer.toString(maxSleepH) + "h" + Integer.toString(maxSleepM) + "m");
+        maxSleep.setText(Integer.toString(maxSleepH) + "h " + Integer.toString(maxSleepM) + "m");
 
 
         rotateArrow(e_supsadP, supsadExercise);
