@@ -193,8 +193,7 @@ public class MoodSelectedFragment extends Fragment {
             }
 
             long actMin2 = (long)ad.get(0).getValue();
-            String actMinStr = Long.toString(actMin2);
-            textViewExercise.setText(actMinStr + " min");
+            textViewExercise.setText(getTimeFromMin(actMin2));
 
             Collections.reverse(barEntriesSleep);
             Collections.reverse(barEntriesExercise);

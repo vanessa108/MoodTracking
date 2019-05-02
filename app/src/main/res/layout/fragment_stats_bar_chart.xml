@@ -11,20 +11,20 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="342dp"
+        android:layout_marginTop="344dp"
         app:srcCompat="@drawable/circle" />
 
-        <TextView
-            android:id="@+id/date_2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginStart="12dp"
-            android:layout_marginTop="398dp"
-            android:text="Date2"
-            android:textSize="24sp"
-            android:textStyle="bold" />
+    <TextView
+        android:id="@+id/date_2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="398dp"
+        android:text="Date2"
+        android:textSize="24sp"
+        android:textStyle="bold" />
 
         <ImageView
             android:id="@+id/selectedMoodIMG_2"
@@ -154,34 +154,34 @@
             android:text="Exercise"
             android:textAlignment="center" />
 
-        <TextView
-            android:id="@+id/textViewSleep_2"
-            android:layout_width="74dp"
-            android:layout_height="24dp"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentEnd="true"
-            android:layout_marginStart="50dp"
-            android:layout_marginTop="526dp"
-            android:layout_marginEnd="27dp"
-            android:layout_toEndOf="@+id/textViewExercise_2"
-            android:text="x h x m"
-            android:textAlignment="center"
-            android:textSize="16sp"
-            android:textStyle="bold" />
+    <TextView
+        android:id="@+id/textViewSleep_2"
+        android:layout_width="74dp"
+        android:layout_height="24dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="526dp"
+        android:layout_marginEnd="20dp"
+        android:layout_toEndOf="@+id/textViewExercise_2"
+        android:text="x h x m"
+        android:textAlignment="center"
+        android:textSize="16sp"
+        android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/textViewSleepDescription_2"
-            android:layout_width="104dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/textViewSleep_2"
-            android:layout_alignStart="@+id/textViewSleep_2"
-            android:layout_alignEnd="@+id/textViewSleep_2"
-            android:layout_marginStart="-8dp"
-            android:layout_marginTop="0dp"
-            android:layout_marginEnd="-17dp"
-            android:text="Sleep"
-            android:textAlignment="center"
-            android:textSize="14sp" />
+    <TextView
+        android:id="@+id/textViewSleepDescription_2"
+        android:layout_width="104dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textViewSleep_2"
+        android:layout_alignStart="@+id/textViewSleep_2"
+        android:layout_alignEnd="@+id/textViewSleep_2"
+        android:layout_marginStart="-10dp"
+        android:layout_marginTop="0dp"
+        android:layout_marginEnd="-13dp"
+        android:text="Sleep"
+        android:textAlignment="center"
+        android:textSize="14sp" />
 
         <View
             android:id="@+id/divider_2"
@@ -193,19 +193,27 @@
 
     <com.github.mikephil.charting.charts.BarChart
         android:id="@+id/barchart_2"
-        android:layout_width="391dp"
-        android:layout_height="270dp"
+        android:layout_width="412dp"
+        android:layout_height="271dp"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:layout_marginTop="110dp"
-        android:layout_marginEnd="20dp" />
+        android:layout_marginEnd="0dp" />
 
     <View
         android:id="@+id/divider10"
         android:layout_width="match_parent"
         android:layout_height="45dp"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="338dp"
+        android:layout_marginTop="340dp"
+        android:background="?android:attr/listDivider" />
+
+    <View
+        android:id="@+id/divider12"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="342dp"
         android:background="?android:attr/listDivider" />
 
     <TextView

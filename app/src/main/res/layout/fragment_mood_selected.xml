@@ -108,7 +108,7 @@
         android:layout_alignParentTop="true"
         android:layout_marginStart="20dp"
         android:layout_marginTop="13dp"
-        android:text="TODAY"
+        android:text="Today"
         android:textSize="24sp"
         android:textStyle="bold"
         app:srcCompat="@drawable/neutral" />
@@ -388,7 +388,7 @@
         android:layout_alignParentTop="true"
         android:layout_marginStart="20dp"
         android:layout_marginTop="212dp"
-        android:text="LAST DAYS"
+        android:text="Last days"
         android:textSize="24sp"
         android:textStyle="bold" />
 

@@ -55,7 +55,7 @@ public class StatsBarChartFragment extends Fragment {
 
         final TextView date_2 = (TextView) relativeLayout.findViewById(R.id.date_2);
         final TextView textViewSleep_2 = (TextView) relativeLayout.findViewById(R.id.textViewSleep_2);
-        TextView tv_month = (TextView) relativeLayout.findViewById(R.id.textViewMonth);
+        final TextView tv_month = (TextView) relativeLayout.findViewById(R.id.textViewMonth);
         final BarChart barChart_2 = (BarChart) relativeLayout.findViewById(R.id.barchart_2);
         final ImageView mood = (ImageView) relativeLayout.findViewById(R.id.selectedMoodIMG_2);
         final TextView mood_text = (TextView) relativeLayout.findViewById(R.id.textViewMood_2);
@@ -67,7 +67,7 @@ public class StatsBarChartFragment extends Fragment {
         final ProgressBar proBar_2 = (ProgressBar) relativeLayout.findViewById(R.id.sleepCircle_2);
 
         String date = new SimpleDateFormat("EEE d MMM yyyy", Locale.getDefault()).format(new Date());
-        date_2.setText("" + date);
+        date_2.setText("Today" + date);
 
         String month = new SimpleDateFormat("MMM yyyy", Locale.getDefault()).format(new Date());
         tv_month.setText("" + month);
@@ -133,8 +133,7 @@ public class StatsBarChartFragment extends Fragment {
         }
 
             long actMin2 = (long)ad.get(0).getValue();
-            String actMinStr = Long.toString(actMin2);
-            textViewExercise_2.setText(actMinStr + " min");
+            textViewExercise_2.setText(getTimeFromMin(actMin2));
 
             Collections.reverse(barEntriesSleep);
             Collections.reverse(barEntriesExercise);
@@ -175,14 +174,14 @@ public class StatsBarChartFragment extends Fragment {
         XAxis xAxis = barChart_2.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setGranularity(1);
-        barChart_2.getXAxis().setGranularityEnabled(true);
-        xAxis.setDrawGridLines(true);
-        xAxis.setAxisMinimum(1);
-        xAxis.setAxisMaximum(32);
+        xAxis.setGranularityEnabled(true);
+        xAxis.setAxisMinimum(-1);
+        xAxis.setAxisMaximum(34);
         xAxis.setValueFormatter(new dateFormatter());
-        xAxis.setTextSize(16f);
+        xAxis.setTextSize(18f);
         barChart_2.setExtraOffsets(0,0,20,12);
         xAxis.setCenterAxisLabels(true);
+        xAxis.setDrawAxisLine(false);
 
         //Y-axis
         YAxis yAxisLeft = barChart_2.getAxisLeft();
@@ -199,7 +198,7 @@ public class StatsBarChartFragment extends Fragment {
         //Scrolling
         barChart_2.setDragEnabled(true);
         barChart_2.setVisibleXRangeMaximum(5);
-        barChart_2.moveViewToX(31);
+        barChart_2.moveViewToX(34);
         barChart_2.invalidate();
 
         //int chart_width = barChart_2.get;
@@ -235,7 +234,13 @@ public class StatsBarChartFragment extends Fragment {
                 Log.d("moveToVal",String.valueOf(moveToVal));
                 barChart_2.moveViewToX((float)(moveToVal));
                 //Date
-                date_2.setText(setDateString(endDates.get(moveToVal+1)));
+                String today = new SimpleDateFormat("EEE d MMM yyyy", Locale.getDefault()).format(new Date());
+                String date = setDateString(endDates.get(moveToVal+1));
+                if(date.equals(today)){
+                    date_2.setText("Today " + setDateString(endDates.get(moveToVal+1)));
+                }else{
+                    date_2.setText(date);
+                }
                 //Exercise
                 textViewExercise_2.setText(getTimeFromMin((long)barEntriesExercise.get(moveToVal+1).getY()));
                 //Sleep
@@ -243,6 +248,10 @@ public class StatsBarChartFragment extends Fragment {
                 setSleepCycleView(startDates.get(moveToVal+1),endDates.get(moveToVal+1),startSleep_2,endSleep_2,proBar_2);
                 //Mood
                 setMoodView((mood_data.get(moveToVal+1)),mood,mood_text);
+
+                //Month
+                String month = new SimpleDateFormat("MMMM YYYY").format(endDates.get(moveToVal+1));
+                tv_month.setText(month);
             }
 
             @Override
@@ -301,14 +310,21 @@ public class StatsBarChartFragment extends Fragment {
         public String getFormattedValue(float value, AxisBase axis) {
             Calendar cal = Calendar.getInstance();
 
-            String pattern = "d";
             int val= Math.round(value);
             cal.add(Calendar.DATE, val - 31);
-            if(val - 31 == 0){
-                pattern = "d/M";
-            }
+            String str = Integer.toString(val - 31);
+
+            String pattern = "d";
             DateFormat dateFormat = new SimpleDateFormat(pattern);
+
             String date = dateFormat.format(cal.getTime());
+
+            if(date.equals("1")){
+                String pattern2 = "d/M";
+                DateFormat dateFormat2 = new SimpleDateFormat(pattern2);
+
+                date = dateFormat2.format(cal.getTime());
+            }
 
             return date;
         }
@@ -377,19 +393,19 @@ public class StatsBarChartFragment extends Fragment {
     private void setMoodView(int mood,ImageView iv,TextView tv){
         if (mood == 1) {
             iv.setImageResource(R.drawable.supersad);
-            tv.setText("Supersad");
+            tv.setText("Awful");
         } else if (mood == 2) {
             iv.setImageResource(R.drawable.sad);
-            tv.setText("sad");
+            tv.setText("Rough");
         } else if (mood == 3) {
             iv.setImageResource(R.drawable.neutral);
-            tv.setText("neutral");
+            tv.setText("Ok");
         } else if (mood == 4) {
             iv.setImageResource(R.drawable.happy);
-            tv.setText("happy");
+            tv.setText("Good");
         } else if (mood == 5) {
             iv.setImageResource(R.drawable.superhappy);
-            tv.setText("superhappy");
+            tv.setText("Awesome");
         } else if (mood ==999){
             iv.setImageResource(R.drawable.no_data);
             tv.setText("");
