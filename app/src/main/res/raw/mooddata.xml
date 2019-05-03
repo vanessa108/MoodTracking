@@ -59,4 +59,10 @@
     <row DateTime="2019-04-26 20:58:56" Mood="3"></row>
     <row DateTime="2019-04-27 20:58:56" Mood="2"></row>
     <row DateTime="2019-04-28 20:58:56" Mood="4"></row>
+    <row DateTime="2019-04-29 20:58:56" Mood="3"></row>
+    <row DateTime="2019-04-30 20:58:56" Mood="3"></row>
+    <row DateTime="2019-05-01 20:58:56" Mood="5"></row>
+    <row DateTime="2019-05-02 20:58:56" Mood="2"></row>
+    <row DateTime="2019-05-03 20:58:56" Mood="3"></row>
+
 </root>

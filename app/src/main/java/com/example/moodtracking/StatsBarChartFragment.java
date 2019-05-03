@@ -277,11 +277,14 @@ public class StatsBarChartFragment extends Fragment {
         @Override
         public String getFormattedValue(float value, Entry entry, int dataSetIndex, ViewPortHandler viewPortHandler)
         {
-            int totalMins = Math.round(value);
-            int diffHours = totalMins/ 60;
-            int diffMinutes = totalMins - (diffHours * 60);
-
-            return diffHours + "h "+ diffMinutes +"m";
+            if(value>0) {
+                int totalMins = Math.round(value);
+                int diffHours = totalMins / 60;
+                int diffMinutes = totalMins - (diffHours * 60);
+                return diffHours + "h " + diffMinutes + "m";
+            }else{
+                return "-";
+            }
         }
     }
 
