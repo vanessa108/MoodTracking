@@ -312,13 +312,13 @@ public class MoodSelectedFragment extends Fragment {
         long diff = end.getTime() - start.getTime();
         diff = diff / 1000;
         long diffMinutes = diff / (60 );
-        return Float.valueOf(diff / 60) ;
+        return Float.valueOf(diffMinutes / 60) ;
 
     }
     private float getSleepTime(long diff){
         diff = diff / 1000;
         long diffMinutes = diff / (60 );
-        return Float.valueOf(diff / 60) ;
+        return Float.valueOf(diffMinutes / 60) ;
     }
 
     private String getTime(Date in){

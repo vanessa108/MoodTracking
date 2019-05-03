@@ -55,6 +55,7 @@ public class StatsBarChartFragment extends Fragment {
         final RelativeLayout relativeLayout = (RelativeLayout) inflater.inflate(R.layout.fragment_stats_bar_chart, container, false);
 
         final TextView date_2 = (TextView) relativeLayout.findViewById(R.id.date_2);
+        final TextView date_today = (TextView) relativeLayout.findViewById(R.id.date_today);
         final TextView textViewSleep_2 = (TextView) relativeLayout.findViewById(R.id.textViewSleep_2);
         final TextView tv_month = (TextView) relativeLayout.findViewById(R.id.textViewMonth);
         final BarChart barChart_2 = (BarChart) relativeLayout.findViewById(R.id.barchart_2);
@@ -68,7 +69,8 @@ public class StatsBarChartFragment extends Fragment {
         final ProgressBar proBar_2 = (ProgressBar) relativeLayout.findViewById(R.id.sleepCircle_2);
 
         String date = new SimpleDateFormat("EEE d MMM yyyy", Locale.getDefault()).format(new Date());
-        date_2.setText("Today " + date);
+        date_2.setText(date);
+        date_today.setText("today");
 
         String month = new SimpleDateFormat("MMM yyyy", Locale.getDefault()).format(new Date());
         tv_month.setText("" + month);
@@ -232,11 +234,13 @@ public class StatsBarChartFragment extends Fragment {
                 Date date = endDates.get(moveToVal+1);
                 if (DateUtils.isToday(date.getTime())){
                 //if(date.equals(today)){
-                    date_2.setText("Today " + setDateString(endDates.get(moveToVal+1)));
+                    date_2.setText(setDateString(endDates.get(moveToVal+1)));
+                    date_today.setText("today");
                     setMoodView(todayMood, mood, mood_text);
                 }else{
                     date_2.setText(setDateString(date));
                     setMoodView((mood_data.get(moveToVal + 1)), mood, mood_text);
+                    date_today.setText("");
                 }
                 //Exercise
                 textViewExercise_2.setText(getTimeFromMin((long)barEntriesExercise.get(moveToVal+1).getY()));
@@ -283,7 +287,7 @@ public class StatsBarChartFragment extends Fragment {
                 int diffMinutes = totalMins - (diffHours * 60);
                 return diffHours + "h " + diffMinutes + "m";
             }else{
-                return "-";
+                return "";
             }
         }
     }
