@@ -1,7 +1,9 @@
 package com.example.moodtracking;
 
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -131,6 +133,10 @@ public class MoodSelectedFragment extends Fragment {
             moodSelected = true;
             whichMoodText.setText("Awesome");
         }
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this.getContext());
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putInt("todayMood",selectedMood);
+        editor.apply();
 
 
         editPen.setOnClickListener(new View.OnClickListener() {
@@ -354,10 +360,14 @@ public class MoodSelectedFragment extends Fragment {
         }
     }
     private String getTimeFromMin(long min){
-        long diffHours =min/ 60;
-        long diffMinutes = min%60;
-
-        return diffHours + "h "+ diffMinutes +"m";
+        if (min>0) {
+            long diffHours = min / 60;
+            long diffMinutes = min % 60;
+            return diffHours + "h " + diffMinutes + "m";
+        }
+        else{
+            return "no data";
+        }
     }
     private void setSleepCycleView(Date start,Date end,TextView startText,TextView endText,ProgressBar probar) {
         if ((start != null) && (end != null)) {

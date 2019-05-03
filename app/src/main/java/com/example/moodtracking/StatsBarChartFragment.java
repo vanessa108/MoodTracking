@@ -1,12 +1,15 @@
 package com.example.moodtracking;
 
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -43,8 +46,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Calendar;
 
-import static java.lang.StrictMath.toIntExact;
-
 
 public class StatsBarChartFragment extends Fragment {
 
@@ -67,7 +68,7 @@ public class StatsBarChartFragment extends Fragment {
         final ProgressBar proBar_2 = (ProgressBar) relativeLayout.findViewById(R.id.sleepCircle_2);
 
         String date = new SimpleDateFormat("EEE d MMM yyyy", Locale.getDefault()).format(new Date());
-        date_2.setText("Today" + date);
+        date_2.setText("Today " + date);
 
         String month = new SimpleDateFormat("MMM yyyy", Locale.getDefault()).format(new Date());
         tv_month.setText("" + month);
@@ -132,15 +133,29 @@ public class StatsBarChartFragment extends Fragment {
            mood_data.add((int)md.get(i).getValue());
         }
 
-            long actMin2 = (long)ad.get(0).getValue();
-            textViewExercise_2.setText(getTimeFromMin(actMin2));
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this.getContext());
 
-            Collections.reverse(barEntriesSleep);
-            Collections.reverse(barEntriesExercise);
-            Collections.reverse(startDates);
-            Collections.reverse(endDates);
-            Collections.reverse((mood_data));
 
+
+
+
+        //Set init values for the first view
+        //Mood
+        final int todayMood =         preferences.getInt("todayMood",999);
+        setMoodView(todayMood, mood, mood_text);
+        //Sleep
+        textViewSleep_2.setText(getTimeFromMin((long)barEntriesSleep.get(0).getY()));
+        setSleepCycleView(startDates.get(0),endDates.get(0),startSleep_2,endSleep_2,proBar_2);
+        //exercise
+        long actMin2 = (long)ad.get(0).getValue();
+        textViewExercise_2.setText(getTimeFromMin(actMin2));
+
+
+        Collections.reverse(barEntriesSleep);
+        Collections.reverse(barEntriesExercise);
+        Collections.reverse(startDates);
+        Collections.reverse(endDates);
+        Collections.reverse((mood_data));
 
 
         //BarDataSets
@@ -207,21 +222,14 @@ public class StatsBarChartFragment extends Fragment {
         final ViewPortHandler handler = barChart_2.getViewPortHandler();
         barChart_2.setOnChartGestureListener(new OnChartGestureListener() {
             @Override
-            public void onChartGestureStart(MotionEvent me, ChartTouchListener.ChartGesture lastPerformedGesture) {
-
-            }
-
+            public void onChartGestureStart(MotionEvent me, ChartTouchListener.ChartGesture lastPerformedGesture) {}
             @Override
             public void onChartGestureEnd(MotionEvent me, ChartTouchListener.ChartGesture lastPerformedGesture) {
-                //Log.d("me",String.valueOf(me));
-                //Log.d("getCenterOfView",String.valueOf(barChart_2.getCenterOfView().x));
-                //int scrollX = barChart_2.getScrollX();
-                //Log.d( "getX: ",String.valueOf(me.getX()));
-                //Log.d("getHighlightByTouchPoint",String.valueOf(barChart_2.getHighlightByTouchPoint()));
+
                 Log.d("me_trans",String.valueOf(handler.getTransX()));
                 float view_width = barChart_2.getWidth();
                 Log.d("width",String.valueOf(view_width));
-                float x = handler.getTransX();//+(view_width/2);
+                float x = handler.getTransX();
                 float y = handler.getTransY();
 
                 MPPointD point = barChart_2.getTransformer(YAxis.AxisDependency.LEFT).getValuesByTouchPoint(x,y);
@@ -233,21 +241,23 @@ public class StatsBarChartFragment extends Fragment {
                 int moveToVal = (int)(bottomLeft.x);
                 Log.d("moveToVal",String.valueOf(moveToVal));
                 barChart_2.moveViewToX((float)(moveToVal));
-                //Date
-                String today = new SimpleDateFormat("EEE d MMM yyyy", Locale.getDefault()).format(new Date());
-                String date = setDateString(endDates.get(moveToVal+1));
-                if(date.equals(today)){
+                //Date and mood
+                //String today = new SimpleDateFormat("EEE d MMM yyyy", Locale.getDefault()).format(new Date());
+                Date date = endDates.get(moveToVal+1);
+                if (DateUtils.isToday(date.getTime())){
+                //if(date.equals(today)){
                     date_2.setText("Today " + setDateString(endDates.get(moveToVal+1)));
+                    setMoodView(todayMood, mood, mood_text);
                 }else{
-                    date_2.setText(date);
+                    date_2.setText(setDateString(date));
+                    setMoodView((mood_data.get(moveToVal + 1)), mood, mood_text);
+
                 }
                 //Exercise
                 textViewExercise_2.setText(getTimeFromMin((long)barEntriesExercise.get(moveToVal+1).getY()));
                 //Sleep
                 textViewSleep_2.setText(getTimeFromMin((long)barEntriesSleep.get(moveToVal+1).getY()));
                 setSleepCycleView(startDates.get(moveToVal+1),endDates.get(moveToVal+1),startSleep_2,endSleep_2,proBar_2);
-                //Mood
-                setMoodView((mood_data.get(moveToVal+1)),mood,mood_text);
 
                 //Month
                 String month = new SimpleDateFormat("MMMM YYYY").format(endDates.get(moveToVal+1));
@@ -259,9 +269,7 @@ public class StatsBarChartFragment extends Fragment {
             }
             @Override
             public void onChartDoubleTapped(MotionEvent me) {
-
             }
-
             @Override
             public void onChartSingleTapped(MotionEvent me) {
 
@@ -370,10 +378,14 @@ public class StatsBarChartFragment extends Fragment {
     }
 
     private String getTimeFromMin(long min){
-        long diffHours =min/ 60;
-        long diffMinutes = min%60;
-
-        return diffHours + "h "+ diffMinutes +"m";
+        if (min>0) {
+            long diffHours = min / 60;
+            long diffMinutes = min % 60;
+            return diffHours + "h " + diffMinutes + "m";
+        }
+        else{
+            return "no data";
+        }
     }
 
     private float calcGroupSpace(float n, float barSpace, float barWidth){
