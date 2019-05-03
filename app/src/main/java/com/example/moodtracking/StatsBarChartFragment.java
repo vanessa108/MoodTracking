@@ -218,7 +218,6 @@ public class StatsBarChartFragment extends Fragment {
 
         //int chart_width = barChart_2.get;
         //int chart_pos = chart_width;
-        //Log.d("chart_width",String.valueOf(chart_width));
         final ViewPortHandler handler = barChart_2.getViewPortHandler();
         barChart_2.setOnChartGestureListener(new OnChartGestureListener() {
             @Override
@@ -226,23 +225,10 @@ public class StatsBarChartFragment extends Fragment {
             @Override
             public void onChartGestureEnd(MotionEvent me, ChartTouchListener.ChartGesture lastPerformedGesture) {
 
-                Log.d("me_trans",String.valueOf(handler.getTransX()));
-                float view_width = barChart_2.getWidth();
-                Log.d("width",String.valueOf(view_width));
-                float x = handler.getTransX();
-                float y = handler.getTransY();
-
-                MPPointD point = barChart_2.getTransformer(YAxis.AxisDependency.LEFT).getValuesByTouchPoint(x,y);
-                double xValue = point.x;
-                double yValue = point.y;
-                Log.d("xValue",String.valueOf(xValue));
-
                 MPPointD bottomLeft = barChart_2.getValuesByTouchPoint(handler.contentLeft(), handler.contentBottom(), YAxis.AxisDependency.LEFT);
                 int moveToVal = (int)(bottomLeft.x);
-                Log.d("moveToVal",String.valueOf(moveToVal));
                 barChart_2.moveViewToX((float)(moveToVal));
                 //Date and mood
-                //String today = new SimpleDateFormat("EEE d MMM yyyy", Locale.getDefault()).format(new Date());
                 Date date = endDates.get(moveToVal+1);
                 if (DateUtils.isToday(date.getTime())){
                 //if(date.equals(today)){
@@ -251,7 +237,6 @@ public class StatsBarChartFragment extends Fragment {
                 }else{
                     date_2.setText(setDateString(date));
                     setMoodView((mood_data.get(moveToVal + 1)), mood, mood_text);
-
                 }
                 //Exercise
                 textViewExercise_2.setText(getTimeFromMin((long)barEntriesExercise.get(moveToVal+1).getY()));
@@ -272,15 +257,12 @@ public class StatsBarChartFragment extends Fragment {
             }
             @Override
             public void onChartSingleTapped(MotionEvent me) {
-
             }
             @Override
             public void onChartFling(MotionEvent me1, MotionEvent me2, float velocityX, float velocityY) {
-
             }
             @Override
             public void onChartScale(MotionEvent me, float scaleX, float scaleY) {
-
             }
             @Override
             public void onChartTranslate(MotionEvent me, float dX, float dY) {
