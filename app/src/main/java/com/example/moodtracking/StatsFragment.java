@@ -2,6 +2,7 @@ package com.example.moodtracking;
 
 ;
 import android.graphics.Color;
+import android.media.Image;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -45,6 +46,7 @@ public class StatsFragment extends Fragment{
     Button barChartButton;
     Button allTimeData, ThirtyDaysData;
     TextView maxExercise, maxSleep;
+    ImageView infoBtn;
 
     @Nullable
     @Override
@@ -69,6 +71,7 @@ public class StatsFragment extends Fragment{
         barChartButton = (Button) relativeLayout.findViewById(R.id.barChartButton);
         allTimeData = (Button) relativeLayout.findViewById(R.id.stats_alltime);
         ThirtyDaysData = (Button) relativeLayout.findViewById(R.id.stats_30days);
+        infoBtn = (ImageView) relativeLayout.findViewById(R.id.info_btn);
 
         barChartButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -104,6 +107,14 @@ public class StatsFragment extends Fragment{
                 allTimeData.setTextColor(Color.parseColor("#008577"));
                 updateGraph(MainActivity.thirtyDayValues);
 
+            }
+        });
+
+        infoBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Fragment newFragment = new StatsInfoFragment();
+                replaceFragment(newFragment);
             }
         });
 
