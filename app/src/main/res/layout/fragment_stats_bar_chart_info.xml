@@ -18,7 +18,9 @@
         android:adjustViewBounds="true"
         android:padding="17dp"
         android:scaleType="fitCenter"
-        app:srcCompat="@drawable/info_button" />
+        app:srcCompat="@drawable/info_button"
+        android:background="@android:color/transparent"
+        />
 
     <ImageView
         android:id="@+id/bars_info"
@@ -41,8 +43,10 @@
         android:layout_centerHorizontal="true"
         android:textAlignment="center"
 
-        android:text="In the long-term evaluation, the data of each individual day can be viewed in detail. The duration of sleep of the previous night (purple) and the duration of activity measured in steps (red) are displayed.
-In the lower section, you can also view data about the period of sleep (start and end) and the mood of each day." />
+        android:text="Swipe left or right to change between days.
+        In the long-term evaluation, the data of each individual day can be viewed in detail. The duration of sleep of the previous night (purple) and the duration of activity measured in steps (red) are displayed.
+In the lower section, you can also view data about the period of sleep (start and end) and the mood of each day.
+"/>
 
     <ImageView
         android:id="@+id/stats_info"
@@ -50,7 +54,7 @@ In the lower section, you can also view data about the period of sleep (start an
         android:layout_height="180dp"
         android:layout_below="@+id/activity_semicircle"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="460dp"
+        android:layout_marginTop="490dp"
         app:srcCompat="@drawable/stats_info" />
 
 

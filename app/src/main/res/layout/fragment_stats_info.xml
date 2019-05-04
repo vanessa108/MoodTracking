@@ -18,7 +18,9 @@
         android:adjustViewBounds="true"
         android:padding="17dp"
         android:scaleType="fitCenter"
-        app:srcCompat="@drawable/info_button" />
+        app:srcCompat="@drawable/info_button"
+        android:background="@android:color/transparent"
+        />
 
     <ImageView
         android:id="@+id/bars_info"
