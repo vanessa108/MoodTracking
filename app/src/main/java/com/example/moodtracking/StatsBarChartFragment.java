@@ -2,6 +2,7 @@ package com.example.moodtracking;
 
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.media.Image;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
@@ -67,6 +68,7 @@ public class StatsBarChartFragment extends Fragment {
         final TextView startSleep_2 = (TextView) relativeLayout.findViewById(R.id.StartBedTime_2);
         final TextView endSleep_2 = (TextView) relativeLayout.findViewById(R.id.EndBedTime_2);
         final ProgressBar proBar_2 = (ProgressBar) relativeLayout.findViewById(R.id.sleepCircle_2);
+        final ImageView infoBtn = (ImageView) relativeLayout.findViewById(R.id.info_btn);
 
         String date = new SimpleDateFormat("EEE d MMM yyyy", Locale.getDefault()).format(new Date());
         date_2.setText(date);
@@ -91,9 +93,13 @@ public class StatsBarChartFragment extends Fragment {
         barChart_2.getDescription().setEnabled(false);
         barChart_2.getLegend().setEnabled(false);
 
-
-
-
+        infoBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Fragment newFragment = new StatsBarChartInfoFragment();
+                replaceFragment(newFragment);
+            }
+        });
 
         final ArrayList<BarEntry> barEntriesSleep = new ArrayList<>();
         final ArrayList<BarEntry> barEntriesExercise = new ArrayList<>();
@@ -235,7 +241,7 @@ public class StatsBarChartFragment extends Fragment {
                 if (DateUtils.isToday(date.getTime())){
                 //if(date.equals(today)){
                     date_2.setText(setDateString(endDates.get(moveToVal+1)));
-                    date_today.setText("today");
+                    date_today.setText("Today");
                     setMoodView(todayMood, mood, mood_text);
                 }else{
                     date_2.setText(setDateString(date));

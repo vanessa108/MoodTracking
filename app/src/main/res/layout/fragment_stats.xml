@@ -29,8 +29,8 @@
         android:layout_height="40dp"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginTop="60dp"
-        android:layout_marginEnd="10dp"
+        android:layout_marginTop="58dp"
+        android:layout_marginEnd="206dp"
         android:background="@drawable/clickable_button"
         android:text="All Time"
         android:textColor="@color/colorPrimary" />
@@ -40,8 +40,8 @@
         android:layout_width="wrap_content"
         android:layout_height="40dp"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="60dp"
-        android:layout_marginRight="10dp"
+        android:layout_marginTop="58dp"
+        android:layout_marginRight="8dp"
         android:layout_toLeftOf="@id/stats_alltime"
         android:background="@drawable/clicked_button"
         android:text="30 Days"
@@ -267,7 +267,7 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="73dp"
+        android:layout_marginTop="105dp"
         android:text="Exercise"
         android:textSize="24sp"
         android:textStyle="bold" />
@@ -290,8 +290,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginStart="118dp"
-        android:layout_marginTop="80dp"
+        android:layout_marginStart="120dp"
+        android:layout_marginTop="112dp"
         android:text="AVG"
         android:textSize="14sp" />
 
@@ -305,6 +305,16 @@
         android:layout_marginTop="368dp"
         android:text="AVG"
         android:textSize="14sp" />
+
+    <ImageView
+        android:id="@+id/info_btn"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="350dp"
+        android:layout_marginTop="60dp"
+        app:srcCompat="@drawable/info_button" />
 
 
 </RelativeLayout>

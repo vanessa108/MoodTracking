@@ -37,16 +37,15 @@
         android:layout_height="wrap_content"
         android:layout_alignBottom="@id/activity_semicircle"
         android:layout_alignParentEnd="true"
-        android:layout_marginEnd="20dp"
+        android:layout_centerHorizontal="true"
         android:layout_marginStart="20dp"
         android:layout_marginTop="350dp"
-        android:layout_centerHorizontal="true"
-        android:textAlignment="center"
-
-        android:text="Swipe left or right to change between days.
-        In the long-term evaluation, the data of each individual day can be viewed in detail. The duration of sleep of the previous night (purple) and the duration of activity measured in steps (red) are displayed.
+        android:layout_marginEnd="20dp"
+        android:text="Swipe left or right to change between days. In the long-term evaluation, the data of each individual day can be viewed in detail. The duration of sleep of the previous night (purple) and the duration of activity measured in steps (red) are displayed.
 In the lower section, you can also view data about the period of sleep (start and end) and the mood of each day.
-"/>
+"
+
+        android:textAlignment="viewStart" />
 
     <ImageView
         android:id="@+id/stats_info"
@@ -58,22 +57,6 @@ In the lower section, you can also view data about the period of sleep (start an
         app:srcCompat="@drawable/stats_info" />
 
 
-    <View
-        android:id="@+id/divider9"
-        android:layout_width="match_parent"
-        android:layout_height="6dp"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="457dp"
-        android:background="?android:attr/listDivider" />
-
-    <View
-        android:id="@+id/divider11"
-        android:layout_width="match_parent"
-        android:layout_height="6dp"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="386dp"
-        android:background="?android:attr/listDivider" />
-
     <TextView
         android:id="@+id/textviewEx"
         android:layout_width="wrap_content"
@@ -82,7 +65,7 @@ In the lower section, you can also view data about the period of sleep (start an
         android:layout_alignParentTop="true"
         android:layout_marginStart="85dp"
         android:layout_marginTop="20dp"
-        android:text="Info"
+        android:text="Detailed info"
         android:textSize="24sp"
         android:textStyle="bold" />
 
