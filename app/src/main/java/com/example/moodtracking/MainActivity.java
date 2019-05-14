@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         BottomNavigationView navigation = findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(this);
 
-         allTimeValues = graphData(40);
+         allTimeValues = graphData(55);
          thirtyDayValues = graphData(30);
          ArrayList<List<extData>> allData = loadData(31);
          sd = allData.get(0);

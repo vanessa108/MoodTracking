@@ -161,37 +161,27 @@ public class StatsFragment extends Fragment{
         float e_happyP = (float) (e_happy/ctr_happy) / max_exercise * 180 - 90;
         float e_suphappyP = (float) (e_suphappy/ ctr_suphappy) / max_exercise * 180 - 90;
 
-        if (s_supsad <= 0) {
+        if (ctr_supsad <= 0) {
             supsadSleep.setVisibility(View.GONE);
-        }
-        if (s_sad <= 0) {
-            sadSleep.setVisibility(View.GONE);
-        }
-        if (s_neutral <= 0) {
-            neutralSleep.setVisibility(View.GONE);
-        }
-        if (s_happy <= 0) {
-            happySleep.setVisibility(View.GONE);
-        }
-        if (s_suphappy <= 0) {
-            supsadSleep.setVisibility(View.GONE);
-        }
-
-        if (e_supsad <= 0) {
             supsadExercise.setVisibility(View.GONE);
         }
-        if (e_sad <= 0) {
+        if (ctr_sad <= 0) {
+            sadSleep.setVisibility(View.GONE);
             sadExercise.setVisibility(View.GONE);
         }
-        if (e_neutral <= 0) {
+        if (ctr_neutral <= 0) {
+            neutralSleep.setVisibility(View.GONE);
             neutralExercise.setVisibility(View.GONE);
         }
-        if (e_happy <= 0) {
+        if (ctr_happy <= 0) {
+            happySleep.setVisibility(View.GONE);
             happyExercise.setVisibility(View.GONE);
         }
-        if (e_suphappy <= 0) {
-            suphappyExercise.setVisibility(View.GONE);
+        if (ctr_suphappy <= 0) {
+            supsadSleep.setVisibility(View.GONE);
+            supsadExercise.setVisibility(View.GONE);
         }
+
 
         int maxExerciseH = (int) max_exercise / 60;
         int maxExerciseM = (int) (max_exercise % 60);
